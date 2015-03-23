@@ -1,0 +1,79 @@
+# Blender MTL File: 'nanosuit.blend'
+# Material Count: 6
+
+newmtl Arm
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump arm_showroom_ddn.png
+map_Ka arm_showroom_refl.png
+map_Kd arm_dif.png
+map_Ks arm_showroom_spec.png
+
+newmtl Body
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd body_dif.png
+map_Bump body_showroom_ddn.png
+map_Ka body_showroom_refl.png
+map_Ks body_showroom_spec.png
+
+newmtl Glass
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump glass_ddn.png
+map_Ka glass_refl.png
+map_Kd glass_dif.png
+
+newmtl Hand
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump hand_showroom_ddn.png
+map_Ka hand_showroom_refl.png
+map_Kd hand_dif.png
+map_Ks hand_showroom_spec.png
+
+newmtl Helmet
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump helmet_showroom_ddn.png
+map_Ka helmet_showroom_refl.png
+map_Kd helmet_diff.png
+map_Ks helmet_showroom_spec.png
+
+newmtl Leg
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump leg_showroom_ddn.png
+map_Ka leg_showroom_refl.png
+map_Kd leg_dif.png
+map_Ks leg_showroom_spec.png
