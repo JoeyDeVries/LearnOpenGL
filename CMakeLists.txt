@@ -4,19 +4,68 @@ cmake_policy(VERSION 2.8)
 
 project (LearnOpenGL)
 
+IF(NOT CMAKE_BUILD_TYPE)
+SET(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
+ENDIF(NOT CMAKE_BUILD_TYPE)
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 LINK_DIRECTORIES(${CMAKE_SOURCE_DIR}/lib )
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-
+set(EXECUTABLE_NAME "LearnOpenGL")
 list(APPEND CMAKE_CXX_FLAGS "-std=c++11")
 
 # ADD_CUSTOM_TARGET(debug ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Debug ${PROJECT_SOURCE_DIR})
 # ADD_CUSTOM_TARGET(release ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Release ${PROJECT_SOURCE_DIR})
 
 if(WIN32)
-set(LIBS glfw3 opengl32 glew32s SOIL assimp)
+	set(LIBS glfw3 opengl32 glew32s SOIL assimp)
 elseif (UNIX)
-set(LIBS gl X11 rt dl)
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
+	
+	find_package( OpenGL REQUIRED )
+	list( APPEND LIBS ${OPENGL_gl_LIBRARY} )
+	
+	find_package( Threads REQUIRED )
+	list( APPEND LIBS ${CMAKE_THREAD_LIBS_INIT} )
+	
+	find_package( X11 REQUIRED )
+	list( APPEND LIBS ${X11_Xrandr_LIB} ${X11_Xxf86vm_LIB} ${X11_Xi_LIB} )
+	
+	find_library( RT_LIB rt )
+	list( APPEND LIBS ${RT_LIB} )
+
+	#GLFW3 libraries
+	find_package(GLFW3 REQUIRED)
+	include_directories(${GLFW3_INCLUDE_DIRS})
+	set(LIBS ${GLFW3_LIBRARIES}) 
+	#	target_link_libraries(${EXECUTABLE_NAME} ${GLFW3_LIBRARIES})
+	message(STATUS "Found GLFW3 in ${GLFW3_INCLUDE_DIR}")
+
+	#GLM libraries
+	find_package(GLM REQUIRED)
+	include_directories(${GLM_INCLUDE_DIRS})
+	message(STATUS "GLM included at ${GLM_INCLUDE_DIRS}")
+	
+	#GLEW libraries
+	find_package(GLEW REQUIRED)
+	include_directories(${GLEW_INCLUDE_DIRS})
+	set(LIBS ${GLEW_LIBRARIES})
+	#	target_link_libraries(${EXECUTABLE_NAME} ${GLEW_LIBRARIES})
+	message(STATUS "Found GLEW in ${GLEW_INCLUDE_DIR}")
+
+	#SOIL libraries
+	find_package(SOIL REQUIRED)
+	include_directories(${SOIL_INCLUDE_DIRS})
+	set(LIBS ${SOIL_LIBRARIES})
+	#	target_link_libraries(${EXECUTABLE_NAME} ${SOIL_LIBRARIES})
+	message(STATUS "Found SOIL in ${SOIL_INCLUDE_DIR}")
+
+	#ASSIMP libraries
+	find_package(ASSIMP REQUIRED)
+	include_directories(${ASSIMP_INCLUDE_DIRS})
+	set(LIBS ${ASSIMP_LIBRARIES})
+	#	target_link_libraries(${EXECUTABLE_NAME} ${ASSIMP_LIBRARIES})
+	message(STATUS "Found ASSIMP in ${ASSIMP_INCLUDE_DIR}")	
 else()
 set(LIBS )
 endif()
@@ -76,7 +125,6 @@ set(4.advanced_opengl
     11.anti_aliasing
 )
 
-
 foreach(CHAPTER ${CHAPTERS})
     foreach(DEMO ${${CHAPTER}})
         file(GLOB SOURCE
@@ -85,6 +133,10 @@ foreach(CHAPTER ${CHAPTERS})
         )
       add_executable(${DEMO} ${SOURCE})
       target_link_libraries(${DEMO} ${LIBS})
+		if(UNIX)
+			target_link_libraries(${DEMO} ${GLEW_LIBRARIES} )
+			target_link_libraries(${DEMO} ${GLFW3_LIBRARIES})	
+		endif(UNIX)
       set_target_properties(${DEMO}
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${CHAPTER}"
