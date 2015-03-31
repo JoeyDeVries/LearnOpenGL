@@ -1,0 +1,10 @@
+set( 6.cubemaps_SOURCES
+	cubemaps_skybox_optimized.cpp )
+
+add_executable( 6.cubemaps ${6.cubemaps_SOURCES} )
+target_link_libraries(  6.cubemaps ${LEARNOPENGL_LIBS} )
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/skybox.vs DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/skybox.frag DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/framebuffers_screen.vs DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/framebuffers_screen.frag DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

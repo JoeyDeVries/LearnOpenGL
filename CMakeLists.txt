@@ -2,24 +2,59 @@ cmake_minimum_required (VERSION 2.8)
 cmake_policy(VERSION 2.8)
  # cmake_policy(SET CMP0037 OLD)
 
-project (LearnOpenGL)
+project (LEARNOPENGL)
 
-LINK_DIRECTORIES(${CMAKE_SOURCE_DIR}/lib )
+if(NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
+endif(NOT CMAKE_BUILD_TYPE)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 list(APPEND CMAKE_CXX_FLAGS "-std=c++11")
 
-# ADD_CUSTOM_TARGET(debug ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Debug ${PROJECT_SOURCE_DIR})
-# ADD_CUSTOM_TARGET(release ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Release ${PROJECT_SOURCE_DIR})
+find_package(GLM REQUIRED)
+message(STATUS "GLM included at ${GLM_INCLUDE_DIRS}")
+find_package(GLFW3 REQUIRED)
+message(STATUS "Found GLFW3 in ${GLFW3_INCLUDE_DIR}")
+find_package(ASSIMP REQUIRED)
+message(STATUS "Found ASSIMP in ${ASSIMP_INCLUDE_DIR}")	
+find_package(SOIL REQUIRED)
+message(STATUS "Found SOIL in ${SOIL_INCLUDE_DIR}")
+find_package(GLEW REQUIRED)	
+message(STATUS "Found GLEW in ${GLEW_INCLUDE_DIR}")
+
+set(LEARNOPENGL_INCLUDE ${LEARNOPENGL_SOURCE_DIR}/includes)
+
+list( APPEND LEARNOPENGL_INCLUDE ${GLM_INCLUDE_DIRS} )
+list( APPEND LEARNOPENGL_INCLUDE ${GLFW3_INCLUDE_DIRS} )
+# since the 'LEARNOPENGL_LIBS' variable hasn't been set yet - go ahead and set it
+set(LEARNOPENGL_LIBS ${GLFW3_LIBRARY} )
+list( APPEND LEARNOPENGL_INCLUDE ${GLEW_INCLUDE_DIRS} )
+list( APPEND LEARNOPENGL_LIBS ${GLEW_LIBRARY} )
+list( APPEND LEARNOPENGL_INCLUDE ${SOIL_INCLUDE_DIRS} )
+list( APPEND LEARNOPENGL_LIBS ${SOIL_LIBRARY} )
+list( APPEND LEARNOPENGL_INCLUDE ${ASSIMP_INCLUDE_DIRS} )
+list( APPEND LEARNOPENGL_LIBS ${ASSIMP_LIBRARY} )
 
 if(WIN32)
-set(LIBS glfw3 opengl32 glew32s SOIL assimp)
-elseif (UNIX)
-set(LIBS gl X11 rt dl)
-else()
-set(LIBS )
-endif()
+	find_package( OpenGL REQUIRED )
+	list( APPEND LEARNOPENGL_LIBS ${OPENGL_gl_LIBRARY} )
+endif(WIN32)
+
+if(UNIX)
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
+	
+	find_package( OpenGL REQUIRED )
+	list( APPEND LEARNOPENGL_LIBS ${OPENGL_gl_LIBRARY} )
+	
+	find_package( Threads REQUIRED )
+	list( APPEND LEARNOPENGL_LIBS ${CMAKE_THREAD_LIBS_INIT} )
+	
+	find_package( X11 REQUIRED )
+	list( APPEND LEARNOPENGL_LIBS ${X11_Xrandr_LIB} ${X11_Xxf86vm_LIB} ${X11_Xi_LIB} )
+	
+	find_library( RT_LIB rt )
+	list( APPEND LEARNOPENGL_LIBS ${RT_LIB} )
+endif(UNIX)
 
 IF(APPLE)
   INCLUDE_DIRECTORIES(/System/Library/Frameworks)
@@ -31,83 +66,39 @@ IF(APPLE)
   SET(APPLE_LIBS ${APPLE_LIBS} /usr/local/lib/libglfw.a)
 ENDIF(APPLE)
 
-set(LIBS ${LIBS} ${APPLE_LIBS})
+list(APPEND LEARNOPENGL_LIBS ${APPLE_LIBS})
 
-set(CHAPTERS
-    1.getting_started
-    2.lighting
-    3.model_loading
-    4.advanced_opengl
-)
+include_directories( ${LEARNOPENGL_INCLUDE} )
 
-set(1.getting_started   
-    1.hello_window
-    2.hello_triangle
-    3.shaders
-    4.textures
-    5.transformations
-    6.coordinate_systems
-    7.camera
-)
-
-set(2.lighting
-    1.colors
-    2.basic_lighting
-    3.materials
-    4.lighting_maps
-    5.light_casters
-    6.multiple_lights
-)
-
-set(3.model_loading
-    1.model_loading
-)
-
-set(4.advanced_opengl
-    1.depth_testing
-    2.stencil_testing
-    3.1.blending_discard
-    3.2.blending_sort
-    5.framebuffers
-    6.cubemaps
-    8.advanced_glsl
-    9.geometry_shader
-    10.instancing
-    11.anti_aliasing
-)
+# chapter 1
+add_subdirectory( src/1.getting_started/1.hello_window )
+add_subdirectory( src/1.getting_started/2.hello_triangle )
+add_subdirectory( src/1.getting_started/3.shaders )
+add_subdirectory( src/1.getting_started/4.textures )
+add_subdirectory( src/1.getting_started/5.transformations )
+add_subdirectory( src/1.getting_started/6.coordinate_systems )
+add_subdirectory( src/1.getting_started/7.camera )
+# chapter 2
+add_subdirectory( src/2.lighting/1.colors )
+add_subdirectory( src/2.lighting/2.basic_lighting )
+add_subdirectory( src/2.lighting/3.materials )
+add_subdirectory( src/2.lighting/4.lighting_maps )
+add_subdirectory( src/2.lighting/5.light_casters )
+add_subdirectory( src/2.lighting/6.multiple_lights )
+# chapter 3
+add_subdirectory( src/3.model_loading/1.model_loading )
+# chapter 4
+add_subdirectory( src/4.advanced_opengl/1.depth_testing )
+add_subdirectory( src/4.advanced_opengl/2.stencil_testing )
+add_subdirectory( src/4.advanced_opengl/3.1.blending_discard )
+add_subdirectory( src/4.advanced_opengl/3.2.blending_sort )
+add_subdirectory( src/4.advanced_opengl/5.framebuffers )
+add_subdirectory( src/4.advanced_opengl/6.cubemaps )
+add_subdirectory( src/4.advanced_opengl/8.advanced_glsl )
+add_subdirectory( src/4.advanced_opengl/9.geometry_shader )
+add_subdirectory( src/4.advanced_opengl/10.instancing )
+add_subdirectory( src/4.advanced_opengl/11.anti_aliasing )
 
 
-foreach(CHAPTER ${CHAPTERS})
-    foreach(DEMO ${${CHAPTER}})
-        file(GLOB SOURCE
-            "src/${CHAPTER}/${DEMO}/*.h"
-            "src/${CHAPTER}/${DEMO}/*.cpp"
-        )
-      add_executable(${DEMO} ${SOURCE})
-      target_link_libraries(${DEMO} ${LIBS})
-      set_target_properties(${DEMO}
-        PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${CHAPTER}"
-    )
-    # copy shader files to build directory
-    file(GLOB SHADERS 
-              "src/${CHAPTER}/${DEMO}/*.vs"
-             "src/${CHAPTER}/${DEMO}/*.frag"
-             "src/${CHAPTER}/${DEMO}/*.gs"
-    )
-    foreach(SHADER ${SHADERS})
-        # configure_file(${SHADER} "test")
-        add_custom_command(TARGET ${DEMO} PRE_BUILD
-                     COMMAND ${CMAKE_COMMAND} -E
-                         copy ${SHADER} $<TARGET_FILE_DIR:${DEMO}>)
-    endforeach(SHADER)
-    # if compiling for visual studio, also use configure file for each project (specifically to setup working directory)
-    if(MSVC)
-        configure_file(${CMAKE_SOURCE_DIR}/configuration/visualstudio.vcxproj.user.in ${CMAKE_CURRENT_BINARY_DIR}/${DEMO}.vcxproj.user @ONLY)
-    endif(MSVC)
-    endforeach(DEMO)
-endforeach(CHAPTER)
-
-include_directories(include)
-include_directories(${CMAKE_SOURCE_DIR}/includes)
-
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/dlls DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

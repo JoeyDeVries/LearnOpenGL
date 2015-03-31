@@ -16,11 +16,11 @@ using namespace std;
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "Mesh.h"
+#include <learnopengl/mesh.h>
 
 GLint TextureFromFile(const char* path, string directory);
 
-class Model 
+class Model
 {
 public:
     /*  Model Data */
@@ -41,7 +41,7 @@ public:
         for(GLuint i = 0; i < this->meshes.size(); i++)
             this->meshes[i].Draw(shader);
     }
-    
+
 private:
     /*  Functions   */
     // Loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
@@ -69,10 +69,10 @@ private:
         // Process each mesh located at the current node
         for(GLuint i = 0; i < node->mNumMeshes; i++)
         {
-            // The node object only contains indices to index the actual objects in the scene. 
+            // The node object only contains indices to index the actual objects in the scene.
             // The scene contains all the data, node is just to keep stuff organized (like relations between nodes).
-            aiMesh* mesh = scene->mMeshes[node->mMeshes[i]]; 
-            this->meshes.push_back(this->processMesh(mesh, scene));			
+            aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+            this->meshes.push_back(this->processMesh(mesh, scene));
         }
         // After we've processed all of the meshes (if any) we then recursively process each of the children nodes
         for(GLuint i = 0; i < node->mNumChildren; i++)
@@ -108,9 +108,9 @@ private:
             if(mesh->mTextureCoords[0]) // Does the mesh contain texture coordinates?
             {
                 glm::vec2 vec;
-                // A vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
+                // A vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't
                 // use models where a vertex can have multiple texture coordinates so we always take the first set (0).
-                vec.x = mesh->mTextureCoords[0][i].x; 
+                vec.x = mesh->mTextureCoords[0][i].x;
                 vec.y = mesh->mTextureCoords[0][i].y;
                 vertex.TexCoords = vec;
             }
@@ -131,7 +131,7 @@ private:
         {
             aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
             // We assume a convention for sampler names in the shaders. Each diffuse texture should be named
-            // as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
+            // as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER.
             // Same applies to other texture as the following list summarizes:
             // Diffuse: texture_diffuseN
             // Specular: texture_specularN
@@ -144,7 +144,7 @@ private:
             vector<Texture> specularMaps = this->loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
             textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
         }
-        
+
         // Return a mesh object created from the extracted mesh data
         return Mesh(vertices, indices, textures);
     }
@@ -188,7 +188,7 @@ private:
 
 GLint TextureFromFile(const char* path, string directory)
 {
-     //Generate texture ID and load texture data 
+     //Generate texture ID and load texture data
     string filename = string(path);
     filename = directory + '/' + filename;
     GLuint textureID;
@@ -198,7 +198,7 @@ GLint TextureFromFile(const char* path, string directory)
     // Assign texture to ID
     glBindTexture(GL_TEXTURE_2D, textureID);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-    glGenerateMipmap(GL_TEXTURE_2D);	
+    glGenerateMipmap(GL_TEXTURE_2D);
 
     // Parameters
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );

@@ -1,0 +1,9 @@
+set( 2.stencil_testing_SOURCES
+	stencil_testing.cpp )
+
+add_executable(  2.stencil_testing ${2.stencil_testing_SOURCES} )
+target_link_libraries(  2.stencil_testing ${LEARNOPENGL_LIBS} )
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/stencil_testing.frag DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/stencil_single_color.frag DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/stencil_testing.vs DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

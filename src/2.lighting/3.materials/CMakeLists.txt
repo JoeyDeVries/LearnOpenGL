@@ -1,0 +1,10 @@
+set( 3.materials_SOURCES
+	materials.cpp )
+
+add_executable( 3.materials ${3.materials_SOURCES} )
+target_link_libraries( 3.materials ${LEARNOPENGL_LIBS} )
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/materials.frag DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/materials.vs DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/lamp.frag DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/lamp.vs DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
