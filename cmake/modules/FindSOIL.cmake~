@@ -24,7 +24,7 @@ find_library(SOIL_LIBRARY
 	HINTS ${SOIL_ROOT_DIR}
 	PATH_SUFFIXES lib
 )
-
+message("-- SOIL Library " ${SOIL_LIBRARY})
 unset(INCLUDE_SEARCH_PATH)
 unset(LIB_SEARCH_PATH)
 unset(SOIL_INCLUDE_DIR_TMP)
