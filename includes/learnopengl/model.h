@@ -16,7 +16,7 @@ using namespace std;
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "Mesh.h"
+#include <learnopengl/mesh.h>
 
 GLint TextureFromFile(const char* path, string directory);
 
