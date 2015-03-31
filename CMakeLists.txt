@@ -4,9 +4,13 @@ cmake_policy(VERSION 2.8)
 
 project (LearnOpenGL)
 
-LINK_DIRECTORIES(${CMAKE_SOURCE_DIR}/lib )
+IF(NOT CMAKE_BUILD_TYPE)
+  SET(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
+ENDIF(NOT CMAKE_BUILD_TYPE)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+LINK_DIRECTORIES(${CMAKE_SOURCE_DIR}/lib )
 
 list(APPEND CMAKE_CXX_FLAGS "-std=c++11")
 
@@ -14,11 +18,11 @@ list(APPEND CMAKE_CXX_FLAGS "-std=c++11")
 # ADD_CUSTOM_TARGET(release ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Release ${PROJECT_SOURCE_DIR})
 
 if(WIN32)
-set(LIBS glfw3 opengl32 glew32s SOIL assimp)
+  set(LIBS glfw3 opengl32 glew32s SOIL assimp)
 elseif (UNIX)
-set(LIBS gl X11 rt dl)
+  set(LIBS GL X11 glfw GLEW SOIL assimp rt dl)
 else()
-set(LIBS )
+  set(LIBS )
 endif()
 
 IF(APPLE)
@@ -83,28 +87,28 @@ foreach(CHAPTER ${CHAPTERS})
             "src/${CHAPTER}/${DEMO}/*.h"
             "src/${CHAPTER}/${DEMO}/*.cpp"
         )
-      add_executable(${DEMO} ${SOURCE})
-      target_link_libraries(${DEMO} ${LIBS})
-      set_target_properties(${DEMO}
-        PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${CHAPTER}"
-    )
-    # copy shader files to build directory
-    file(GLOB SHADERS 
-              "src/${CHAPTER}/${DEMO}/*.vs"
-             "src/${CHAPTER}/${DEMO}/*.frag"
-             "src/${CHAPTER}/${DEMO}/*.gs"
-    )
-    foreach(SHADER ${SHADERS})
-        # configure_file(${SHADER} "test")
-        add_custom_command(TARGET ${DEMO} PRE_BUILD
-                     COMMAND ${CMAKE_COMMAND} -E
-                         copy ${SHADER} $<TARGET_FILE_DIR:${DEMO}>)
-    endforeach(SHADER)
-    # if compiling for visual studio, also use configure file for each project (specifically to setup working directory)
-    if(MSVC)
-        configure_file(${CMAKE_SOURCE_DIR}/configuration/visualstudio.vcxproj.user.in ${CMAKE_CURRENT_BINARY_DIR}/${DEMO}.vcxproj.user @ONLY)
-    endif(MSVC)
+        add_executable(${DEMO} ${SOURCE})
+        target_link_libraries(${DEMO} ${LIBS})
+        set_target_properties(${DEMO}
+          PROPERTIES
+          RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${CHAPTER}"
+        )
+        # copy shader files to build directory
+        file(GLOB SHADERS 
+                  "src/${CHAPTER}/${DEMO}/*.vs"
+                 "src/${CHAPTER}/${DEMO}/*.frag"
+                 "src/${CHAPTER}/${DEMO}/*.gs"
+        )
+        foreach(SHADER ${SHADERS})
+            # configure_file(${SHADER} "test")
+            add_custom_command(TARGET ${DEMO} PRE_BUILD
+                         COMMAND ${CMAKE_COMMAND} -E
+                             copy ${SHADER} $<TARGET_FILE_DIR:${DEMO}>)
+        endforeach(SHADER)
+      # if compiling for visual studio, also use configure file for each project (specifically to setup working directory)
+      if(MSVC)
+          configure_file(${CMAKE_SOURCE_DIR}/configuration/visualstudio.vcxproj.user.in ${CMAKE_CURRENT_BINARY_DIR}/${DEMO}.vcxproj.user @ONLY)
+      endif(MSVC)
     endforeach(DEMO)
 endforeach(CHAPTER)
 
