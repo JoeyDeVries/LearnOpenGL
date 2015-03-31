@@ -1,0 +1,10 @@
+set( 2.basic_lighting_SOURCES
+	basic_lighting_specular.cpp )
+
+add_executable( 1.colors_SOURCES ${2.basic_lighting_SOURCES} )
+target_link_libraries( 1.colors_SOURCES ${LEARNOPENGL_LIBS} )
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/basic_lighting.frag DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/basic_lighting.vs DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/lamp.frag DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/lamp.vs DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
