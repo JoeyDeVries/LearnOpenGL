@@ -1,0 +1,10 @@
+set( 9.geometry_shader_SOURCES
+	geometry_shader_houses.cpp )
+
+add_executable( 9.geometry_shader ${9.geometry_shader_SOURCES} )
+target_link_libraries(  9.geometry_shader ${LEARNOPENGL_LIBS} )
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/geometry_shader.frag DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/geometry_shader.vs DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/geometry_shader.gs DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+\\

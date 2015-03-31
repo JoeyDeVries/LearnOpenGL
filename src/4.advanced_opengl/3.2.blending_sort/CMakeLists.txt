@@ -1,0 +1,8 @@
+set( 3.2.blending_sort_SOURCES
+	blending_sorted.cpp )
+
+add_executable( 3.2.blending_sort ${3.2.blending_sort_SOURCES} )
+target_link_libraries(  3.2.blending_sort ${LEARNOPENGL_LIBS} )
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/blending_sorted.vs DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/blending_sorted.frag DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

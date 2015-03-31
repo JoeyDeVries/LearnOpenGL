@@ -1,0 +1,9 @@
+set( 11.anti_aliasing_SOURCES
+	anti_aliasing_framebuffers.cpp )
+
+add_executable( 11.anti_aliasing ${11.anti_aliasing_SOURCES} )
+target_link_libraries( 11.anti_aliasing ${LEARNOPENGL_LIBS} )
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/anti_aliasing.frag DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/anti_aliasing.vs DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/planet.vs DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
