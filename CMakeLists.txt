@@ -32,11 +32,10 @@ message(STATUS "Found GLEW in ${GLEW_INCLUDE_DIR}")
 if(WIN32)
   set(LIBS glfw3 opengl32 glew32s SOIL assimp)
 elseif (UNIX)
-#  set(LIBS GL X11 glfw GLEW SOIL assimp rt dl)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
   # Linux packages native to CMake
   find_package(OpenGL REQUIRED)
-  set(LIBS ${OPENGL_gl_LIBRARY})
+  set(LIBS ${OPENGL_gl_LIBRARY}) # setting LIBS for the first time
   add_definitions(${OPENGL_DEFINITIONS})
   find_package(X11 REQUIRED)
   list(APPEND LIBS ${X11_Xrandr_LIB} ${X11_Xxf86vm_LIB} ${X11_Xi_LIB})
@@ -59,9 +58,8 @@ IF(APPLE)
   MARK_AS_ADVANCED(COCOA_LIBRARY OpenGL_LIBRARY)
   SET(APPLE_LIBS ${COCOA_LIBRARY} ${IOKit_LIBRARY} ${OpenGL_LIBRARY})
   SET(APPLE_LIBS ${APPLE_LIBS} /usr/local/lib/libglfw.a)
+  set(LIBS ${LIBS} ${APPLE_LIBS})
 ENDIF(APPLE)
-
-#list(LIBS ${LIBS} ${APPLE_LIBS})
 
 set(CHAPTERS
     1.getting_started
@@ -138,6 +136,8 @@ foreach(CHAPTER ${CHAPTERS})
     endforeach(DEMO)
 endforeach(CHAPTER)
 
-#include_directories(${LEARNOPENGL_INCLUDES})
 include_directories(${CMAKE_SOURCE_DIR}/includes)
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 
