@@ -10,17 +10,43 @@ ENDIF(NOT CMAKE_BUILD_TYPE)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-LINK_DIRECTORIES(${CMAKE_SOURCE_DIR}/lib )
+link_directories(${CMAKE_SOURCE_DIR}/lib)
 
 list(APPEND CMAKE_CXX_FLAGS "-std=c++11")
 
 # ADD_CUSTOM_TARGET(debug ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Debug ${PROJECT_SOURCE_DIR})
 # ADD_CUSTOM_TARGET(release ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Release ${PROJECT_SOURCE_DIR})
 
+# find the required packages
+find_package(GLM REQUIRED)
+message(STATUS "GLM included at ${GLM_INCLUDE_DIR}")
+find_package(GLFW3 REQUIRED)
+message(STATUS "Found GLFW3 in ${GLFW3_INCLUDE_DIR}")
+find_package(ASSIMP REQUIRED)
+message(STATUS "Found ASSIMP in ${ASSIMP_INCLUDE_DIR}")
+find_package(SOIL REQUIRED)
+message(STATUS "Found SOIL in ${SOIL_INCLUDE_DIR}")
+find_package(GLEW REQUIRED)
+message(STATUS "Found GLEW in ${GLEW_INCLUDE_DIR}")
+
 if(WIN32)
   set(LIBS glfw3 opengl32 glew32s SOIL assimp)
 elseif (UNIX)
-  set(LIBS GL X11 glfw GLEW SOIL assimp rt dl)
+#  set(LIBS GL X11 glfw GLEW SOIL assimp rt dl)
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
+  # Linux packages native to CMake
+  find_package(OpenGL REQUIRED)
+  set(LIBS ${OPENGL_gl_LIBRARY})
+  add_definitions(${OPENGL_DEFINITIONS})
+  find_package(X11 REQUIRED)
+  list(APPEND LIBS ${X11_Xrandr_LIB} ${X11_Xxf86vm_LIB} ${X11_Xi_LIB})
+  find_library(RT_LIB rt)
+  list(APPEND LIBS ${RT_LIB})
+  # append non-native packages
+  list(APPEND LIBS ${GLFW3_LIBRARY})
+  list(APPEND LIBS ${GLEW_LIBRARY})
+  list(APPEND LIBS ${SOIL_LIBRARY})
+  list(APPEND LIBS ${ASSIMP_LIBRARY})
 else()
   set(LIBS )
 endif()
@@ -35,7 +61,7 @@ IF(APPLE)
   SET(APPLE_LIBS ${APPLE_LIBS} /usr/local/lib/libglfw.a)
 ENDIF(APPLE)
 
-set(LIBS ${LIBS} ${APPLE_LIBS})
+#list(LIBS ${LIBS} ${APPLE_LIBS})
 
 set(CHAPTERS
     1.getting_started
@@ -112,6 +138,6 @@ foreach(CHAPTER ${CHAPTERS})
     endforeach(DEMO)
 endforeach(CHAPTER)
 
-include_directories(include)
+#include_directories(${LEARNOPENGL_INCLUDES})
 include_directories(${CMAKE_SOURCE_DIR}/includes)
 
