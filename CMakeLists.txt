@@ -9,7 +9,11 @@ IF(NOT CMAKE_BUILD_TYPE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+
+if(WIN32)
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+endif(WIN32)
+
 link_directories(${CMAKE_SOURCE_DIR}/lib)
 
 list(APPEND CMAKE_CXX_FLAGS "-std=c++11")
@@ -31,7 +35,7 @@ message(STATUS "Found GLEW in ${GLEW_INCLUDE_DIR}")
 
 if(WIN32)
   set(LIBS glfw3 opengl32 glew32s SOIL assimp)
-elseif (UNIX)
+elseif(UNIX)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
   # Linux packages native to CMake
   find_package(OpenGL REQUIRED)
@@ -48,7 +52,7 @@ elseif (UNIX)
   list(APPEND LIBS ${ASSIMP_LIBRARY})
 else()
   set(LIBS )
-endif()
+endif(WIN32)
 
 IF(APPLE)
   INCLUDE_DIRECTORIES(/System/Library/Frameworks)
@@ -113,21 +117,23 @@ foreach(CHAPTER ${CHAPTERS})
         )
         add_executable(${DEMO} ${SOURCE})
         target_link_libraries(${DEMO} ${LIBS})
-        set_target_properties(${DEMO}
-          PROPERTIES
-          RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/bin/${CHAPTER}"
-        )
+		if(WIN32)
+        	set_target_properties(${DEMO} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${CHAPTER}")
+		endif(WIN32)
         # copy shader files to build directory
         file(GLOB SHADERS 
-                  "src/${CHAPTER}/${DEMO}/*.vs"
+                 "src/${CHAPTER}/${DEMO}/*.vs"
                  "src/${CHAPTER}/${DEMO}/*.frag"
                  "src/${CHAPTER}/${DEMO}/*.gs"
         )
         foreach(SHADER ${SHADERS})
-            # configure_file(${SHADER} "test")
-            add_custom_command(TARGET ${DEMO} PRE_BUILD
-                         COMMAND ${CMAKE_COMMAND} -E
-                             copy ${SHADER} $<TARGET_FILE_DIR:${DEMO}>)
+			if(WIN32)
+            	# configure_file(${SHADER} "test")
+            	add_custom_command(TARGET ${DEMO} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SHADER} $<TARGET_FILE_DIR:${DEMO}>)
+			elseif(UNIX)
+				file(COPY ${SHADER} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})			
+			endif(WIN32)
+
         endforeach(SHADER)
       # if compiling for visual studio, also use configure file for each project (specifically to setup working directory)
       if(MSVC)
@@ -138,4 +144,7 @@ endforeach(CHAPTER)
 
 include_directories(${CMAKE_SOURCE_DIR}/includes)
 
+if(UNIX)
+	file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+endif(UNIX)
 
