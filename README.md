@@ -9,5 +9,5 @@ The CMake script knows where to find the libraries so just run CMake script and 
 Note that you still have to manually copy the required .DLL files from the /dlls folder to your binary folder for the binaries to run.
 
 ## Linux building
-First get the required packages:
-Use root (sudo) and type `apt-get install libsoil-dev libglm-dev libassimp-dev libglew-dev libglfw-dev`
+First make sure you have CMake, Git, and GCC by typing as root (sudo) `apt-get install g++ cmake git` and then get the required packages:
+Using root (sudo) and type `apt-get install libsoil-dev libglm-dev libassimp-dev libglew-dev libglfw-dev`
