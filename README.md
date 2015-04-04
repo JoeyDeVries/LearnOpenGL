@@ -1,7 +1,7 @@
 # learnopengl.com code repository
 Contains code samples for all tutorials of [http://learnopengl.com](http://learnopengl.com). 
 
-The CMakeLists.txt is not yet finished for Linux/OS X; for more info see http://learnopengl.com/#!Code-repository
+The CMakeLists.txt is not yet tested/finished for OS X; for more info see http://learnopengl.com/#!Code-repository
 
 ## Windows building
 All relevant libraries are found in /libs and all DLLs found in /dlls (pre-)compiled for Windows. 

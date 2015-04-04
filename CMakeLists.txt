@@ -1,6 +1,5 @@
 cmake_minimum_required (VERSION 2.8)
 cmake_policy(VERSION 2.8)
- # cmake_policy(SET CMP0037 OLD)
 
 project (LearnOpenGL)
 
@@ -17,9 +16,6 @@ endif(WIN32)
 link_directories(${CMAKE_SOURCE_DIR}/lib)
 
 list(APPEND CMAKE_CXX_FLAGS "-std=c++11")
-
-# ADD_CUSTOM_TARGET(debug ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Debug ${PROJECT_SOURCE_DIR})
-# ADD_CUSTOM_TARGET(release ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Release ${PROJECT_SOURCE_DIR})
 
 # find the required packages
 find_package(GLM REQUIRED)
@@ -135,7 +131,7 @@ foreach(CHAPTER ${CHAPTERS})
 			endif(WIN32)
 
         endforeach(SHADER)
-      # if compiling for visual studio, also use configure file for each project (specifically to setup working directory)
+      # if compiling for visual studio, also use configure file for each project (specifically to set up working directory)
       if(MSVC)
           configure_file(${CMAKE_SOURCE_DIR}/configuration/visualstudio.vcxproj.user.in ${CMAKE_CURRENT_BINARY_DIR}/${DEMO}.vcxproj.user @ONLY)
       endif(MSVC)
