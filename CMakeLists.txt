@@ -115,6 +115,8 @@ foreach(CHAPTER ${CHAPTERS})
         target_link_libraries(${DEMO} ${LIBS})
 		if(WIN32)
         	set_target_properties(${DEMO} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${CHAPTER}")
+		elseif(UNIX)
+			set_target_properties(${DEMO} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin/${CHAPTER}")
 		endif(WIN32)
         # copy shader files to build directory
         file(GLOB SHADERS 
@@ -127,7 +129,7 @@ foreach(CHAPTER ${CHAPTERS})
             	# configure_file(${SHADER} "test")
             	add_custom_command(TARGET ${DEMO} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SHADER} $<TARGET_FILE_DIR:${DEMO}>)
 			elseif(UNIX)
-				file(COPY ${SHADER} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})			
+				file(COPY ${SHADER} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/${CHAPTER})			
 			endif(WIN32)
 
         endforeach(SHADER)
@@ -139,8 +141,3 @@ foreach(CHAPTER ${CHAPTERS})
 endforeach(CHAPTER)
 
 include_directories(${CMAKE_SOURCE_DIR}/includes)
-
-if(UNIX)
-	file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-endif(UNIX)
-
