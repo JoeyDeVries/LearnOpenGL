@@ -11,6 +11,9 @@
 // Properties
 GLuint screenWidth = 800, screenHeight = 600;
 
+bool keys[1024];
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+
 // The MAIN function, from here we start our application and run our Game loop
 int main()
 {
@@ -26,6 +29,9 @@ int main()
 
     // Options
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);	
+
+    // Set the required callback functions
+    glfwSetKeyCallback(window, key_callback);
 
     // Initialize GLEW to setup the OpenGL Function pointers
     glewExperimental = GL_TRUE;
@@ -80,4 +86,16 @@ int main()
 
     glfwTerminate();
     return 0;
+}
+
+// Is called whenever a key is pressed/released via GLFW
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+{
+    if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, GL_TRUE);
+
+    if(action == GLFW_PRESS)
+        keys[key] = true;
+    else if(action == GLFW_RELEASE)
+        keys[key] = false;	
 }
