@@ -27,14 +27,14 @@ void main()
         -1, -1, -1
     );
     
-    vec3 sample[9];
+    vec3 sampleTex[9];
     for(int i = 0; i < 9; i++)
     {
-        sample[i] = vec3(texture(screenTexture, TexCoords.st + offsets[i]));
+        sampleTex[i] = vec3(texture(screenTexture, TexCoords.st + offsets[i]));
     }
     vec3 col;
     for(int i = 0; i < 9; i++)
-        col += sample[i] * kernel[i];
+        col += sampleTex[i] * kernel[i];
     
     color = vec4(col, 1.0);
 } 
