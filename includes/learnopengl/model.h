@@ -18,7 +18,7 @@ using namespace std;
 
 #include <learnopengl/mesh.h>
 
-GLint TextureFromFile(const char* path, string directory);
+GLint TextureFromFile(const char* path, string directory, bool gamma = false);
 
 class Model 
 {
@@ -27,10 +27,11 @@ public:
     vector<Texture> textures_loaded;	// Stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
     vector<Mesh> meshes;
     string directory;
+    bool gammaCorrection;
 
     /*  Functions   */
     // Constructor, expects a filepath to a 3D model.
-    Model(GLchar* path)
+    Model(GLchar* path, bool gamma = false) : gammaCorrection(gamma)
     {
         this->loadModel(path);
     }
@@ -186,7 +187,7 @@ private:
 
 
 
-GLint TextureFromFile(const char* path, string directory)
+GLint TextureFromFile(const char* path, string directory, bool gamma)
 {
      //Generate texture ID and load texture data 
     string filename = string(path);
@@ -197,7 +198,7 @@ GLint TextureFromFile(const char* path, string directory)
     unsigned char* image = SOIL_load_image(filename.c_str(), &width, &height, 0, SOIL_LOAD_RGB);
     // Assign texture to ID
     glBindTexture(GL_TEXTURE_2D, textureID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+    glTexImage2D(GL_TEXTURE_2D, 0, gamma ? GL_SRGB : GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
     glGenerateMipmap(GL_TEXTURE_2D);	
 
     // Parameters
