@@ -110,13 +110,13 @@ set(5.advanced_lighting
     2.gamma_correction
     3.1.shadow_mapping
     3.2.point_shadows
-    3.3.csm
-    4.normal_mapping
-    5.parallax_mapping
-    6.hdr
-    7.bloom
-    8.deferred_shading
-    9.ssao
+    # 3.3.csm
+    # 4.normal_mapping
+    # 5.parallax_mapping
+    # 6.hdr
+    # 7.bloom
+    # 8.deferred_shading
+    # 9.ssao
 )
 
 
