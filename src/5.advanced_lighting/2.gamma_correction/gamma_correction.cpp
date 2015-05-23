@@ -35,7 +35,7 @@ GLfloat deltaTime = 0.0f;
 GLfloat lastFrame = 0.0f;
 
 // Options
-GLboolean gamma = false;
+GLboolean gammaEnabled = false;
 
 // The MAIN function, from here we start our application and run our Game loop
 int main()
@@ -141,14 +141,14 @@ int main()
         glUniform3fv(glGetUniformLocation(shader.Program, "lightPositions"), 4, &lightPositions[0][0]);
         glUniform3fv(glGetUniformLocation(shader.Program, "lightColors"), 4, &lightColors[0][0]);
         glUniform3fv(glGetUniformLocation(shader.Program, "viewPos"), 1, &camera.Position[0]);
-        glUniform1i(glGetUniformLocation(shader.Program, "gamma"), gamma);
+        glUniform1i(glGetUniformLocation(shader.Program, "gamma"), gammaEnabled);
         // Floor
         glBindVertexArray(planeVAO);
-        glBindTexture(GL_TEXTURE_2D, gamma ? floorTextureGammaCorrected : floorTexture);
+        glBindTexture(GL_TEXTURE_2D, gammaEnabled ? floorTextureGammaCorrected : floorTexture);
         glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(0);
 
-        std::cout << (gamma ? "Gamma enabled" : "Gamma disabled") << std::endl;
+        std::cout << (gammaEnabled ? "Gamma enabled" : "Gamma disabled") << std::endl;
 
         // Swap the buffers
         glfwSwapBuffers(window);
@@ -201,7 +201,7 @@ void Do_Movement()
 
     if (keys[GLFW_KEY_SPACE] && !keysPressed[GLFW_KEY_SPACE])
     {
-        gamma = !gamma;
+        gammaEnabled = !gammaEnabled;
         keysPressed[GLFW_KEY_SPACE] = true;
     }
 }
