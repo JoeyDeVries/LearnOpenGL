@@ -58,6 +58,7 @@ public:
         GLuint diffuseNr = 1;
         GLuint specularNr = 1;
         GLuint normalNr = 1;
+        GLuint heightNr = 1;
         for(GLuint i = 0; i < this->textures.size(); i++)
         {
             glActiveTexture(GL_TEXTURE0 + i); // Active proper texture unit before binding
@@ -71,6 +72,8 @@ public:
                 ss << specularNr++; // Transfer GLuint to stream
             else if(name == "texture_normal")
                 ss << normalNr++; // Transfer GLuint to stream
+             else if(name == "texture_height")
+                ss << heightNr++; // Transfer GLuint to stream
             number = ss.str(); 
             // Now set the sampler to the correct texture unit
             glUniform1i(glGetUniformLocation(shader.Program, (name + number).c_str()), i);
