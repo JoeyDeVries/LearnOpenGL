@@ -13,12 +13,16 @@ uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 
+uniform bool inverse_normals;
+
 void main()
 {
     gl_Position = projection * view * model * vec4(position, 1.0f);
     vs_out.FragPos = vec3(model * vec4(position, 1.0));   
     vs_out.TexCoords = texCoords;
-        
+    
+    vec3 n = inverse_normals ? -normal : normal;
+    
     mat3 normalMatrix = transpose(inverse(mat3(model)));
-    vs_out.Normal = normalize(normalMatrix * normal);
+    vs_out.Normal = normalize(normalMatrix * n);
 }

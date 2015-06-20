@@ -1,16 +1,28 @@
 #version 330 core
 out vec4 color;
+in vec2 TexCoords;
 
-float LinearizeDepth(float depth) // Note that this ranges from [0,1] instead of up to 'far plane distance' since we divide by 'far'
-{
-    float near = 0.1; 
-    float far = 100.0; 
-    float z = depth * 2.0 - 1.0; // Back to NDC 
-    return (2.0 * near) / (far + near - z * (far - near));	
-}
+uniform sampler2D hdrBuffer;
+uniform bool hdr;
+uniform float exposure;
 
 void main()
 {             
-    float depth = LinearizeDepth(gl_FragCoord.z);
-    color = vec4(vec3(depth), 1.0f);
+    const float gamma = 2.2;
+    vec3 hdrColor = texture(hdrBuffer, TexCoords).rgb;
+    if(hdr)
+    {
+        // reinhard
+        // vec3 result = hdrColor / (hdrColor + vec3(1.0));
+        // exposure
+        vec3 result = vec3(1.0) - exp(-hdrColor * exposure);
+        // also gamma correct while we're at it       
+        result = pow(result, vec3(1.0 / gamma));
+        color = vec4(result, 1.0f);
+    }
+    else
+    {
+        vec3 result = pow(hdrColor, vec3(1.0 / gamma));
+        color = vec4(result, 1.0);
+    }
 }

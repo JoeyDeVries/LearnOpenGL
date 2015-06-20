@@ -115,8 +115,8 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
         // Render normal-mapped quad
-        glm::mat4 model;
-        model = glm::rotate(model, (GLfloat)glfwGetTime() * -10, glm::normalize(glm::vec3(1.0, 0.0, 1.0))); // Rotates the quad to show parallax mapping works in all directions
+        glm::mat4 model; 
+        //model = glm::rotate(model, (GLfloat)glfwGetTime() * -10, glm::normalize(glm::vec3(1.0, 0.0, 1.0))); // Rotates the quad to show parallax mapping works in all directions
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glUniform3fv(glGetUniformLocation(shader.Program, "lightPos"), 1, &lightPos[0]);
 		glUniform3fv(glGetUniformLocation(shader.Program, "viewPos"), 1, &camera.Position[0]);
@@ -282,9 +282,9 @@ void Do_Movement()
 
     // Change parallax height scale
     if (keys[GLFW_KEY_Q])
-        height_scale -= 0.001;
+        height_scale -= 0.05 * deltaTime;
     else if (keys[GLFW_KEY_E])
-        height_scale += 0.001;
+        height_scale += 0.05 * deltaTime;
 
 	// Enable/disable parallax mapping
 	if (keys[GLFW_KEY_SPACE] && !keysPressed[GLFW_KEY_SPACE])
