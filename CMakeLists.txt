@@ -115,8 +115,8 @@ set(5.advanced_lighting
     5.parallax_mapping
     6.hdr
     7.bloom
-    # 8.deferred_shading
-    # 9.ssao
+    8.deferred_shading
+    9.ssao
 )
 
 
