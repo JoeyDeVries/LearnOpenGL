@@ -19,6 +19,7 @@
 
 // Other Libs
 #include <SOIL.h>
+#include <learnopengl/filesystem.h>
 
 // Properties
 GLuint screenWidth = 800, screenHeight = 600;
@@ -28,7 +29,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void Do_Movement();
-GLuint loadTexture(GLchar* path, GLboolean alpha = false);
+GLuint loadTexture(GLchar const * path, GLboolean alpha = false);
 
 // Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -177,9 +178,9 @@ int main()
     glBindVertexArray(0);
 
     // Load textures
-    GLuint cubeTexture = loadTexture("../../../resources/textures/marble.jpg");
-    GLuint floorTexture = loadTexture("../../../resources/textures/metal.png");
-    GLuint transparentTexture = loadTexture("../../../resources/textures/grass.png", true);
+    GLuint cubeTexture = loadTexture(FileSystem::getPath("resources/textures/marble.jpg").c_str());
+    GLuint floorTexture = loadTexture(FileSystem::getPath("resources/textures/metal.png").c_str());
+    GLuint transparentTexture = loadTexture(FileSystem::getPath("resources/textures/grass.png").c_str(), true);
 #pragma endregion
 
     std::vector<glm::vec3> vegetation;
@@ -252,7 +253,7 @@ int main()
 // This function loads a texture from file. Note: texture loading functions like these are usually 
 // managed by a 'Resource Manager' that manages all resources (like textures, models, audio). 
 // For learning purposes we'll just define it as a utility function.
-GLuint loadTexture(GLchar* path, GLboolean alpha)
+GLuint loadTexture(GLchar const * path, GLboolean alpha)
 {
     //Generate texture ID and load texture data 
     GLuint textureID;

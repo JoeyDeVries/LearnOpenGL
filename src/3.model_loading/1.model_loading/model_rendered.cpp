@@ -20,6 +20,7 @@
 
 // Other Libs
 #include <SOIL.h>
+#include <learnopengl/filesystem.h>
 
 // Properties
 GLuint screenWidth = 800, screenHeight = 600;
@@ -74,8 +75,8 @@ int main()
     Shader shader("shader.vs", "shader.frag");
 
     // Load models
-    Model ourModel("../../../resources/objects/nanosuit/nanosuit.obj");
-    
+    Model ourModel(FileSystem::getPath("resources/objects/nanosuit/nanosuit.obj").c_str());
+
     // Draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 

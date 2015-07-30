@@ -15,6 +15,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <learnopengl/filesystem.h>
+
 // Properties
 GLuint screenWidth = 800, screenHeight = 600;
 
@@ -67,8 +69,8 @@ int main()
     Shader instanceShader("instanced_asteroids.vs", "instanced_asteroids.frag");
 
     // Load models
-    Model rock("../../../resources/objects/rock/rock.obj");
-    Model planet("../../../resources/objects/planet/planet.obj");
+    Model rock(FileSystem::getPath("resources/objects/rock/rock.obj").c_str());
+    Model planet(FileSystem::getPath("resources/objects/planet/planet.obj").c_str());
 
     // Set projection matrix
     glm::mat4 projection = glm::perspective(45.0f, (GLfloat)screenWidth/(GLfloat)screenHeight, 1.0f, 10000.0f);

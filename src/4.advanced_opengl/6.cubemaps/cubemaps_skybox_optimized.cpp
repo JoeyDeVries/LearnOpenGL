@@ -21,6 +21,7 @@ using namespace std;
 
 // Other Libs
 #include <SOIL.h>
+#include <learnopengl/filesystem.h>
 
 // Properties
 GLuint screenWidth = 800, screenHeight = 600;
@@ -30,7 +31,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void Do_Movement();
-GLuint loadTexture(GLchar* path);
+GLuint loadTexture(GLchar const * path);
 GLuint loadCubemap(std::vector<const GLchar*> faces);
 
 // Camera
@@ -198,12 +199,12 @@ int main()
 
     // Cubemap (Skybox)
     std::vector<const GLchar*> faces;
-    faces.push_back("../../../resources/textures/skybox/right.jpg");
-    faces.push_back("../../../resources/textures/skybox/left.jpg");
-    faces.push_back("../../../resources/textures/skybox/top.jpg");
-    faces.push_back("../../../resources/textures/skybox/bottom.jpg");
-    faces.push_back("../../../resources/textures/skybox/back.jpg");
-    faces.push_back("../../../resources/textures/skybox/front.jpg");
+    faces.push_back(FileSystem::getPath("resources/textures/skybox/right.jpg").c_str());
+    faces.push_back(FileSystem::getPath("resources/textures/skybox/left.jpg").c_str());
+    faces.push_back(FileSystem::getPath("resources/textures/skybox/top.jpg").c_str());
+    faces.push_back(FileSystem::getPath("resources/textures/skybox/bottom.jpg").c_str());
+    faces.push_back(FileSystem::getPath("resources/textures/skybox/back.jpg").c_str());
+    faces.push_back(FileSystem::getPath("resources/textures/skybox/front.jpg").c_str());
     GLuint skyboxTexture = loadCubemap(faces);
 
     // Draw as wireframe
@@ -300,7 +301,7 @@ GLuint loadCubemap(std::vector<const GLchar*> faces)
 // This function loads a texture from file. Note: texture loading functions like these are usually 
 // managed by a 'Resource Manager' that manages all resources (like textures, models, audio). 
 // For learning purposes we'll just define it as a utility function.
-GLuint loadTexture(GLchar* path)
+GLuint loadTexture(GLchar const * path)
 {
     //Generate texture ID and load texture data 
     GLuint textureID;
