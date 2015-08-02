@@ -16,6 +16,7 @@
 
 // Other Libs
 #include <SOIL.h>
+#include <learnopengl/filesystem.h>
 
 // Properties
 const GLuint SCR_WIDTH = 800, SCR_HEIGHT = 600;
@@ -25,7 +26,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void Do_Movement();
-GLuint loadTexture(GLchar* path, bool gammaCorrection);
+GLuint loadTexture(GLchar const * path, bool gammaCorrection);
 
 // Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -112,8 +113,8 @@ int main()
     };
 
     // Load textures
-    GLuint floorTexture = loadTexture("../../../resources/textures/wood.png", false);
-    GLuint floorTextureGammaCorrected = loadTexture("../../../resources/textures/wood.png", true);
+    GLuint floorTexture = loadTexture(FileSystem::getPath("resources/textures/wood.png").c_str(), false);
+    GLuint floorTextureGammaCorrected = loadTexture(FileSystem::getPath("resources/textures/wood.png").c_str(), true);
 
     // Game loop
     while (!glfwWindowShouldClose(window))
@@ -161,7 +162,7 @@ int main()
 // This function loads a texture from file. Note: texture loading functions like these are usually 
 // managed by a 'Resource Manager' that manages all resources (like textures, models, audio). 
 // For learning purposes we'll just define it as a utility function.
-GLuint loadTexture(GLchar* path, bool gammaCorrection)
+GLuint loadTexture(GLchar const * path, bool gammaCorrection)
 {
     // Generate texture ID and load texture data 
     GLuint textureID;

@@ -20,6 +20,7 @@
 
 // Other Libs
 #include <SOIL.h>
+#include <learnopengl/filesystem.h>
 
 // Properties
 const GLuint SCR_WIDTH = 800, SCR_HEIGHT = 600;
@@ -29,7 +30,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void Do_Movement();
-GLuint loadTexture(GLchar* path);
+GLuint loadTexture(GLchar const * path);
 void RenderQuad();
 
 // Camera
@@ -76,12 +77,12 @@ int main()
     Shader shader("parallax_mapping.vs", "parallax_mapping.frag");
 
     // Load textures
-    GLuint diffuseMap = loadTexture("../../../resources/textures/bricks2.jpg");
-	GLuint normalMap = loadTexture("../../../resources/textures/bricks2_normal.jpg");
-	GLuint heightMap = loadTexture("../../../resources/textures/bricks2_disp.jpg");
-    //GLuint diffuseMap = loadTexture("../../../resources/textures/wood.png");
-    //GLuint normalMap = loadTexture("../../../resources/textures/toy_box_normal.png");
-    //GLuint heightMap = loadTexture("../../../resources/textures/toy_box_disp.png");
+    GLuint diffuseMap = loadTexture(FileSystem::getPath("resources/textures/bricks2.jpg").c_str());
+	GLuint normalMap = loadTexture(FileSystem::getPath("resources/textures/bricks2_normal.jpg").c_str());
+	GLuint heightMap = loadTexture(FileSystem::getPath("resources/textures/bricks2_disp.jpg").c_str());
+    //GLuint diffuseMap = loadTexture(FileSystem::getPath("resources/textures/wood.png").c_str();
+    //GLuint normalMap = loadTexture(FileSystem::getPath("resources/textures/toy_box_normal.png").c_str());
+    //GLuint heightMap = loadTexture(FileSystem::getPath("resources/textures/toy_box_disp.png").c_str());
 
     // Set texture units 
     shader.Use();
@@ -241,7 +242,7 @@ void RenderQuad()
 // This function loads a texture from file. Note: texture loading functions like these are usually 
 // managed by a 'Resource Manager' that manages all resources (like textures, models, audio). 
 // For learning purposes we'll just define it as a utility function.
-GLuint loadTexture(GLchar* path)
+GLuint loadTexture(GLchar const * path)
 {
     //Generate texture ID and load texture data 
     GLuint textureID;

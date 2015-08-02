@@ -19,6 +19,7 @@
 #include <SOIL.h>
 
 #include <random> // necessary for generation of random floats (for sample kernel and noise texture)
+#include <learnopengl/filesystem.h>
 
 // Properties
 const GLuint SCR_WIDTH = 800, SCR_HEIGHT = 600;
@@ -96,7 +97,7 @@ int main()
     glUniform1i(glGetUniformLocation(shaderSSAO.Program, "texNoise"), 2);
 
     // Objects
-    Model nanosuit("../../../resources/objects/nanosuit/nanosuit.obj");
+    Model nanosuit(FileSystem::getPath("resources/objects/nanosuit/nanosuit.obj").c_str());
 
     // Lights
     glm::vec3 lightPos = glm::vec3(2.0, 4.0, -2.0);
