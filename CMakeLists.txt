@@ -33,24 +33,13 @@ if(WIN32)
   set(LIBS glfw3 opengl32 glew32s SOIL assimp)
 elseif(UNIX)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
-  # Linux packages native to CMake
   find_package(OpenGL REQUIRED)
-  set(LIBS ${OPENGL_gl_LIBRARY}) # setting LIBS for the first time
   add_definitions(${OPENGL_DEFINITIONS})
   find_package(X11 REQUIRED)
-  list(APPEND LIBS ${X11_Xrandr_LIB} ${X11_Xxf86vm_LIB} ${X11_Xi_LIB})
-  find_library(RT_LIB rt)
-  list(APPEND LIBS ${RT_LIB})
-  # append non-native packages
-  list(APPEND LIBS ${GLFW3_LIBRARY})
-  list(APPEND LIBS ${GLEW_LIBRARY})
-  list(APPEND LIBS ${SOIL_LIBRARY})
-  list(APPEND LIBS ${ASSIMP_LIBRARY})
-else()
-  set(LIBS )
-endif(WIN32)
-
-IF(APPLE)
+  # note that the order is important for setting the libs
+  # use pkg-config --libs $(pkg-config --print-requires --print-requires-private glfw3) in a terminal to confirm
+  set(LIBS glfw3 X11 Xrandr Xinerama Xi Xxf86vm Xcursor GL dl pthread GLEW SOIL assimp)
+elseif(APPLE)
   INCLUDE_DIRECTORIES(/System/Library/Frameworks)
   FIND_LIBRARY(COCOA_LIBRARY Cocoa)
   FIND_LIBRARY(OpenGL_LIBRARY OpenGL)
@@ -59,7 +48,9 @@ IF(APPLE)
   SET(APPLE_LIBS ${COCOA_LIBRARY} ${IOKit_LIBRARY} ${OpenGL_LIBRARY})
   SET(APPLE_LIBS ${APPLE_LIBS} /usr/local/lib/libglfw.a)
   set(LIBS ${LIBS} ${APPLE_LIBS})
-ENDIF(APPLE)
+else()
+  set(LIBS )
+endif(WIN32)
 
 set(CHAPTERS
     1.getting_started
