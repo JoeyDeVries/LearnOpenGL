@@ -111,6 +111,8 @@ set(5.advanced_lighting
 )
 
 
+configure_file(configuration/root_directory.h.in configuration/root_directory.h)
+include_directories(${CMAKE_BINARY_DIR}/configuration)
 
 foreach(CHAPTER ${CHAPTERS})
     foreach(DEMO ${${CHAPTER}})
