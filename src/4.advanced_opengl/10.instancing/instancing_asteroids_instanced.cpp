@@ -173,6 +173,9 @@ int main()
 
         // Draw meteorites
         instanceShader.Use();
+        // NB: This could all be implemented as a method within the Model class, perhaps "DrawInstanced(const GLuint amount)"
+        glActiveTexture(GL_TEXTURE0); // Activate proper texture unit before binding
+        glUniform1i(glGetUniformLocation(instanceShader.Program, "texture_diffuse1"), 0); // Now set the sampler to the correct texture unit
         glBindTexture(GL_TEXTURE_2D, rock.textures_loaded[0].id); // Note we also made the textures_loaded vector public (instead of private) from the model class.
         for(GLuint i = 0; i < rock.meshes.size(); i++)
         {
@@ -180,6 +183,9 @@ int main()
             glDrawElementsInstanced(GL_TRIANGLES, rock.meshes[i].vertices.size(), GL_UNSIGNED_INT, 0, amount);
             glBindVertexArray(0);
         }
+        // reset our texture binding
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, 0);
         
         // Swap the buffers
         glfwSwapBuffers(window);
