@@ -53,7 +53,9 @@ int main()
     glewInit();
 
     // Define the viewport dimensions
-    glViewport(0, 0, WIDTH, HEIGHT);
+    int width, height;
+    glfwGetFramebufferSize(window, &width, &height);
+    glViewport(0, 0, width, height);
 
 
     // Build and compile our shader program

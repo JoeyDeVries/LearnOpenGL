@@ -49,7 +49,9 @@ int main()
     }    
 
     // Define the viewport dimensions
-    glViewport(0, 0, WIDTH, HEIGHT);
+    int width, height;
+    glfwGetFramebufferSize(window, &width, &height);
+    glViewport(0, 0, width, height);
 
     // Game loop
     while (!glfwWindowShouldClose(window))
