@@ -46,7 +46,7 @@ void APIENTRY glDebugOutput(GLenum source,
                             const GLchar *message, 
                             void *userParam)
 {
-    if(id == 131169 || id == 131185 || id == 131218) return; // ignore these non-significant error codes
+    if(id == 131169 || id == 131185 || id == 131218 || id == 131204) return; // ignore these non-significant error codes
 
     std::cout << "---------------" << std::endl;
     std::cout << "Debug message (" << id << "): " <<  message << std::endl;
@@ -130,47 +130,47 @@ int main()
     GLuint cubeVAO, cubeVBO;
     GLfloat vertices[] = {
          // Back face
-        -0.5f, -0.5f, -0.5f, // Bottom-left
-         0.5f,  0.5f, -0.5f, // top-right
-         0.5f, -0.5f, -0.5f, // bottom-right         
-         0.5f,  0.5f, -0.5f, // top-right
-        -0.5f, -0.5f, -0.5f, // bottom-left
-        -0.5f,  0.5f, -0.5f, // top-left
-         // Front face      
-        -0.5f, -0.5f,  0.5f, // bottom-left
-         0.5f, -0.5f,  0.5f, // bottom-right
-         0.5f,  0.5f,  0.5f, // top-right
-         0.5f,  0.5f,  0.5f, // top-right
-        -0.5f,  0.5f,  0.5f, // top-left
-        -0.5f, -0.5f,  0.5f, // bottom-left
-         // Left face       
-        -0.5f,  0.5f,  0.5f, // top-right
-        -0.5f,  0.5f, -0.5f, // top-left
-        -0.5f, -0.5f, -0.5f, // bottom-left
-        -0.5f, -0.5f, -0.5f, // bottom-left
-        -0.5f, -0.5f,  0.5f, // bottom-right
-        -0.5f,  0.5f,  0.5f, // top-right
-         // Right face      
-         0.5f,  0.5f,  0.5f, // top-left
-         0.5f, -0.5f, -0.5f, // bottom-right
-         0.5f,  0.5f, -0.5f, // top-right         
-         0.5f, -0.5f, -0.5f, // bottom-right
-         0.5f,  0.5f,  0.5f, // top-left
-         0.5f, -0.5f,  0.5f, // bottom-left     
-         // Bottom face     
-        -0.5f, -0.5f, -0.5f, // top-right
-         0.5f, -0.5f, -0.5f, // top-left
-         0.5f, -0.5f,  0.5f, // bottom-left
-         0.5f, -0.5f,  0.5f, // bottom-left
-        -0.5f, -0.5f,  0.5f, // bottom-right
-        -0.5f, -0.5f, -0.5f, // top-right
-         // Top face        
-        -0.5f,  0.5f, -0.5f, // top-left
-         0.5f,  0.5f,  0.5f, // bottom-right
-         0.5f,  0.5f, -0.5f, // top-right     
-         0.5f,  0.5f,  0.5f, // bottom-right
-        -0.5f,  0.5f, -0.5f, // top-left
-        -0.5f,  0.5f,  0.5f  // bottom-left        
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, // Bottom-left
+         0.5f,  0.5f, -0.5f,  1.0f,  1.0f, // top-right
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f, // bottom-right         
+         0.5f,  0.5f, -0.5f,  1.0f,  1.0f, // top-right
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, // bottom-left
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f, // top-left
+         // Front face
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, // bottom-left
+         0.5f, -0.5f,  0.5f,  1.0f,  0.0f, // bottom-right
+         0.5f,  0.5f,  0.5f,  1.0f,  1.0f, // top-right
+         0.5f,  0.5f,  0.5f,  1.0f,  1.0f, // top-right
+        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f, // top-left
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, // bottom-left
+         // Left face
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f, // top-right
+        -0.5f,  0.5f, -0.5f, -1.0f,  1.0f, // top-left
+        -0.5f, -0.5f, -0.5f, -0.0f,  1.0f, // bottom-left
+        -0.5f, -0.5f, -0.5f, -0.0f,  1.0f, // bottom-left
+        -0.5f, -0.5f,  0.5f, -0.0f,  0.0f, // bottom-right
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f, // top-right
+         // Right face
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f, // top-left
+         0.5f, -0.5f, -0.5f,  0.0f,  1.0f, // bottom-right
+         0.5f,  0.5f, -0.5f,  1.0f,  1.0f, // top-right         
+         0.5f, -0.5f, -0.5f,  0.0f,  1.0f, // bottom-right
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f, // top-left
+         0.5f, -0.5f,  0.5f,  0.0f,  0.0f, // bottom-left     
+         // Bottom face
+        -0.5f, -0.5f, -0.5f,  0.0f,  1.0f, // top-right
+         0.5f, -0.5f, -0.5f,  1.0f,  1.0f, // top-left
+         0.5f, -0.5f,  0.5f,  1.0f,  0.0f, // bottom-left
+         0.5f, -0.5f,  0.5f,  1.0f,  0.0f, // bottom-left
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, // bottom-right
+        -0.5f, -0.5f, -0.5f,  0.0f,  1.0f, // top-right
+         // Top face
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f, // top-left
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f, // bottom-right
+         0.5f,  0.5f, -0.5f,  1.0f,  1.0f, // top-right     
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f, // bottom-right
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f, // top-left
+        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f  // bottom-left        
     };
     glGenVertexArrays(1, &cubeVAO);
     glGenBuffers(1, &cubeVBO);
@@ -193,10 +193,10 @@ int main()
     unsigned char *image = SOIL_load_image(FileSystem::getPath("resources/textures/wood.png").c_str(), &texWidth, &texHeight, 0, SOIL_LOAD_RGB);
 
     glBindTexture(GL_TEXTURE_2D, textureID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texWidth, texHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+    glTexImage2D(GL_FRAMEBUFFER, 0, GL_RGB, texWidth, texHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
     glGenerateMipmap(GL_TEXTURE_2D);
 
-    glTexParameteri(GL_FRAMEBUFFER, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -204,12 +204,9 @@ int main()
     SOIL_free_image_data(image);
 
     // Set up projection matrix
-    // TODO(Joey): check with new version of GLM and then use glm::radians
-    glm::mat4 projection = glm::perspective(45.0f, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 10.0f);
-    shader.Use(); // use before setting uniforms
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 10.0f);
     glUniformMatrix4fv(glGetUniformLocation(shader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
-    glCheckError();
+    glUniform1i(glGetUniformLocation(shader.Program, "tex"), 0);
 
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     while (!glfwWindowShouldClose(window))
@@ -219,15 +216,17 @@ int main()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        shader.Use();
         GLfloat rotationSpeed = 10.0f;
         GLfloat angle = (float)glfwGetTime() * rotationSpeed;
         glm::mat4 model;
         model = glm::translate(model, glm::vec3(0.0, 0.0f, -2.5));
-        model = glm::rotate(model, angle, glm::vec3(1.0f, 1.0f, 1.0f));
+        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 1.0f, 1.0f));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
+        glBindTexture(GL_TEXTURE_2D, textureID);
         glBindVertexArray(cubeVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
 
         // Swap the buffers
