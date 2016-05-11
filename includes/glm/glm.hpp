@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -11,6 +11,10 @@
 /// 
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
+/// 
+/// Restrictions:
+///		By making use of the Software for military purposes, you choose to make
+///		a Bunny unhappy.
 /// 
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,9 +29,9 @@
 /// @date 2005-01-14 / 2011-10-24
 /// @author Christophe Riccio
 ///
-///	@defgroup core GLM Core
-///	
-///	@brief The core of GLM, which implements exactly and only the GLSL specification to the degree possible.
+/// @defgroup core GLM Core
+///
+/// @brief The core of GLM, which implements exactly and only the GLSL specification to the degree possible.
 ///
 /// The GLM core consists of @ref core_types "C++ types that mirror GLSL types" and
 /// C++ functions that mirror the GLSL functions. It also includes 
@@ -37,7 +41,6 @@
 /// The best documentation for GLM Core is the current GLSL specification,
 /// <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.clean.pdf">version 4.2
 /// (pdf file)</a>.
-/// There are a few @ref pg_differences "differences" between GLM core and GLSL.
 /// 
 /// GLM core functionnalities require <glm/glm.hpp> to be included to be used.
 /// 
@@ -75,55 +78,40 @@
 /// @ingroup core
 ///////////////////////////////////////////////////////////////////////////////////
 
-#include "core/_fixes.hpp"
+#include "detail/_fixes.hpp"
 
-#ifndef glm_glm
-#define glm_glm
+#pragma once
 
 #include <cmath>
 #include <climits>
 #include <cfloat>
 #include <limits>
-#include <cstdio>
-//#include <type_traits>
-#include "core/setup.hpp"
+#include <cassert>
+#include "fwd.hpp"
 
 #if(defined(GLM_MESSAGES) && !defined(GLM_MESSAGE_CORE_INCLUDED_DISPLAYED))
 #	define GLM_MESSAGE_CORE_INCLUDED_DISPLAYED
 #	pragma message("GLM: Core library included")
 #endif//GLM_MESSAGE
 
-#include "./core/_detail.hpp"
-#include "./core/_vectorize.hpp"
-#include "./core/type.hpp"
+#include "vec2.hpp"
+#include "vec3.hpp"
+#include "vec4.hpp"
+#include "mat2x2.hpp"
+#include "mat2x3.hpp"
+#include "mat2x4.hpp"
+#include "mat3x2.hpp"
+#include "mat3x3.hpp"
+#include "mat3x4.hpp"
+#include "mat4x2.hpp"
+#include "mat4x3.hpp"
+#include "mat4x4.hpp"
 
-#include "./core/func_trigonometric.hpp"
-#include "./core/func_exponential.hpp"
-#include "./core/func_common.hpp"
-#include "./core/func_packing.hpp"
-#include "./core/func_geometric.hpp"
-#include "./core/func_matrix.hpp"
-#include "./core/func_vector_relational.hpp"
-#include "./core/func_integer.hpp"
-#include "./core/func_noise.hpp"
-#include "./core/_swizzle.hpp"
-
-////////////////////
-// check type sizes
-#ifndef GLM_STATIC_ASSERT_NULL
-	GLM_STATIC_ASSERT(sizeof(glm::detail::int8) == 1, "int8 size isn't 1 byte on this platform");
-	GLM_STATIC_ASSERT(sizeof(glm::detail::int16) == 2, "int16 size isn't 2 bytes on this platform");
-	GLM_STATIC_ASSERT(sizeof(glm::detail::int32) == 4, "int32 size isn't 4 bytes on this platform");
-	GLM_STATIC_ASSERT(sizeof(glm::detail::int64) == 8, "int64 size isn't 8 bytes on this platform");
-
-	GLM_STATIC_ASSERT(sizeof(glm::detail::uint8) == 1, "uint8 size isn't 1 byte on this platform");
-	GLM_STATIC_ASSERT(sizeof(glm::detail::uint16) == 2, "uint16 size isn't 2 bytes on this platform");
-	GLM_STATIC_ASSERT(sizeof(glm::detail::uint32) == 4, "uint32 size isn't 4 bytes on this platform");
-	GLM_STATIC_ASSERT(sizeof(glm::detail::uint64) == 8, "uint64 size isn't 8 bytes on this platform");
-
-	GLM_STATIC_ASSERT(sizeof(glm::detail::float16) == 2, "float16 size isn't 2 bytes on this platform");
-	GLM_STATIC_ASSERT(sizeof(glm::detail::float32) == 4, "float32 size isn't 4 bytes on this platform");
-	GLM_STATIC_ASSERT(sizeof(glm::detail::float64) == 8, "float64 size isn't 8 bytes on this platform");
-#endif//GLM_STATIC_ASSERT_NULL
-
-#endif//glm_glm
+#include "trigonometric.hpp"
+#include "exponential.hpp"
+#include "common.hpp"
+#include "packing.hpp"
+#include "geometric.hpp"
+#include "matrix.hpp"
+#include "vector_relational.hpp"
+#include "integer.hpp"

@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -11,6 +11,10 @@
 /// 
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
+/// 
+/// Restrictions:
+///		By making use of the Software for military purposes, you choose to make
+///		a Bunny unhappy.
 /// 
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -22,7 +26,7 @@
 ///
 /// @ref gtx_string_cast
 /// @file glm/gtx/string_cast.hpp
-/// @date 2008-04-26 / 2011-06-07
+/// @date 2008-04-26 / 2014-05-10
 /// @author Christophe Riccio
 ///
 /// @see core (dependence)
@@ -36,19 +40,23 @@
 /// @brief Setup strings for GLM type values
 /// 
 /// <glm/gtx/string_cast.hpp> need to be included to use these functionalities.
+/// This extension is not supported with CUDA
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTX_string_cast
-#define GLM_GTX_string_cast GLM_VERSION
+#pragma once
 
 // Dependency:
 #include "../glm.hpp"
-#include "../gtc/half_float.hpp"
-#include "../gtx/integer.hpp"
-#include "../gtx/quaternion.hpp"
+#include "../gtc/type_precision.hpp"
+#include "../gtc/quaternion.hpp"
+#include "../gtx/dual_quaternion.hpp"
 #include <string>
 
-#if(defined(GLM_MESSAGES) && !defined(glm_ext))
+#if(GLM_COMPILER & GLM_COMPILER_CUDA)
+#	error "GLM_GTX_string_cast is not supported on CUDA compiler"
+#endif
+
+#if(defined(GLM_MESSAGES) && !defined(GLM_EXT_INCLUDED))
 #	pragma message("GLM: GLM_GTX_string_cast extension included")
 #endif
 
@@ -57,14 +65,12 @@ namespace glm
 	/// @addtogroup gtx_string_cast
 	/// @{
 
-	/// Create a string from a GLM type value.
-	/// From GLM_GTX_string_cast extension.
-	template <typename genType> 
-	std::string to_string(genType const & x);
+	/// Create a string from a GLM vector or matrix typed variable.
+	/// @see gtx_string_cast extension.
+	template <template <typename, precision> class matType, typename T, precision P>
+	GLM_FUNC_DECL std::string to_string(matType<T, P> const & x);
 
 	/// @}
 }//namespace glm
 
 #include "string_cast.inl"
-
-#endif//GLM_GTX_string_cast

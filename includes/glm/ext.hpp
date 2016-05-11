@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -11,6 +11,10 @@
 /// 
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
+/// 
+/// Restrictions:
+///		By making use of the Software for military purposes, you choose to make
+///		a Bunny unhappy.
 /// 
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -48,45 +52,42 @@
 /// Even if it's highly unrecommended, it's possible to include all the extensions 
 /// at once by including <glm/ext.hpp>. Otherwise, each extension needs to be 
 /// included  a specific file.
-/// 
-/// @defgroup virtrev VIRTREV Extensions
-/// 
-/// @brief Extensions develop and maintain by Mathieu [matrem] Roumillac
-/// (http://www.opengl.org/discussion_boards/ubbthreads.php?ubb=showprofile&User=22660).
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef glm_ext
-#define glm_ext
+#pragma once
 
 #if(defined(GLM_MESSAGES) && !defined(GLM_MESSAGE_EXT_INCLUDED_DISPLAYED))
 #	define GLM_MESSAGE_EXT_INCLUDED_DISPLAYED
 #	pragma message("GLM: All extensions included (not recommanded)")
 #endif//GLM_MESSAGES
 
+#include "./gtc/bitfield.hpp"
 #include "./gtc/constants.hpp"
 #include "./gtc/epsilon.hpp"
-#include "./gtc/half_float.hpp"
+#include "./gtc/integer.hpp"
 #include "./gtc/matrix_access.hpp"
 #include "./gtc/matrix_integer.hpp"
 #include "./gtc/matrix_inverse.hpp"
 #include "./gtc/matrix_transform.hpp"
 #include "./gtc/noise.hpp"
+#include "./gtc/packing.hpp"
 #include "./gtc/quaternion.hpp"
 #include "./gtc/random.hpp"
 #include "./gtc/reciprocal.hpp"
-#include "./gtc/swizzle.hpp"
+#include "./gtc/round.hpp"
 #include "./gtc/type_precision.hpp"
 #include "./gtc/type_ptr.hpp"
 #include "./gtc/ulp.hpp"
+#include "./gtc/vec1.hpp"
 
 #include "./gtx/associated_min_max.hpp"
 #include "./gtx/bit.hpp"
 #include "./gtx/closest_point.hpp"
-#include "./gtx/color_cast.hpp"
 #include "./gtx/color_space.hpp"
 #include "./gtx/color_space_YCoCg.hpp"
 #include "./gtx/compatibility.hpp"
 #include "./gtx/component_wise.hpp"
+#include "./gtx/dual_quaternion.hpp"
 #include "./gtx/euler_angles.hpp"
 #include "./gtx/extend.hpp"
 #include "./gtx/extented_min_max.hpp"
@@ -95,8 +96,6 @@
 #include "./gtx/fast_trigonometry.hpp"
 #include "./gtx/gradient_paint.hpp"
 #include "./gtx/handed_coordinate_space.hpp"
-#include "./gtx/inertia.hpp"
-#include "./gtx/int_10_10_10_2.hpp"
 #include "./gtx/integer.hpp"
 #include "./gtx/intersect.hpp"
 #include "./gtx/log_base.hpp"
@@ -106,12 +105,10 @@
 #include "./gtx/matrix_operation.hpp"
 #include "./gtx/matrix_query.hpp"
 #include "./gtx/mixed_product.hpp"
-#include "./gtx/multiple.hpp"
 #include "./gtx/norm.hpp"
 #include "./gtx/normal.hpp"
 #include "./gtx/normalize_dot.hpp"
 #include "./gtx/number_precision.hpp"
-#include "./gtx/ocl_type.hpp"
 #include "./gtx/optimum_pow.hpp"
 #include "./gtx/orthonormalize.hpp"
 #include "./gtx/perpendicular.hpp"
@@ -122,24 +119,25 @@
 #include "./gtx/rotate_vector.hpp"
 #include "./gtx/spline.hpp"
 #include "./gtx/std_based_type.hpp"
-#include "./gtx/string_cast.hpp"
+#if !(GLM_COMPILER & GLM_COMPILER_CUDA)
+#	include "./gtx/string_cast.hpp"
+#endif
 #include "./gtx/transform.hpp"
 #include "./gtx/transform2.hpp"
-#include "./gtx/vec1.hpp"
-#include "./gtx/vector_access.hpp"
+#include "./gtx/type_aligned.hpp"
 #include "./gtx/vector_angle.hpp"
 #include "./gtx/vector_query.hpp"
-#include "./gtx/verbose_operator.hpp"
 #include "./gtx/wrap.hpp"
 
-#if(GLM_ARCH & GLM_ARCH_SSE2)
+#if GLM_HAS_TEMPLATE_ALIASES
+#	include "./gtx/scalar_multiplication.hpp"
+#endif
+
+#if GLM_HAS_RANGE_FOR
+#	include "./gtx/range.hpp"
+#endif
+
+#if GLM_ARCH & GLM_ARCH_SSE2
 #	include "./gtx/simd_vec4.hpp"
 #	include "./gtx/simd_mat4.hpp"
 #endif
-
-#include "./virtrev/xstream.hpp"
-
-//const float goldenRatio = 1.618033988749894848f;
-//const float pi = 3.141592653589793238f;
-
-#endif //glm_ext

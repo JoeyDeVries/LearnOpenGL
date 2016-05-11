@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -11,6 +11,10 @@
 /// 
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
+/// 
+/// Restrictions:
+///		By making use of the Software for military purposes, you choose to make
+///		a Bunny unhappy.
 /// 
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -36,14 +40,12 @@
 /// <glm/gtx/extented_min_max.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTX_extented_min_max
-#define GLM_GTX_extented_min_max GLM_VERSION
+#pragma once
 
 // Dependency:
 #include "../glm.hpp"
-#include "../gtc/half_float.hpp"
 
-#if(defined(GLM_MESSAGES) && !defined(glm_ext))
+#if(defined(GLM_MESSAGES) && !defined(GLM_EXT_INCLUDED))
 #	pragma message("GLM: GLM_GTX_extented_min_max extension included")
 #endif
 
@@ -55,31 +57,23 @@ namespace glm
 	/// Return the minimum component-wise values of 3 inputs 
 	/// @see gtx_extented_min_max
 	template <typename T>
-	T min(
+	GLM_FUNC_DECL T min(
 		T const & x, 
 		T const & y, 
 		T const & z);
 
 	/// Return the minimum component-wise values of 3 inputs
 	/// @see gtx_extented_min_max
-	template 
-	<
-		typename T, 
-		template <typename> class C
-	>
-	C<T> min(
+	template <typename T, template <typename> class C>
+	GLM_FUNC_DECL C<T> min(
 		C<T> const & x, 
-		typename C<T>::value_type const & y, 
-		typename C<T>::value_type const & z);
+		typename C<T>::T const & y, 
+		typename C<T>::T const & z);
 
 	/// Return the minimum component-wise values of 3 inputs 
 	/// @see gtx_extented_min_max
-	template 
-	<
-		typename T, 
-		template <typename> class C
-	>
-	C<T> min(
+	template <typename T, template <typename> class C>
+	GLM_FUNC_DECL C<T> min(
 		C<T> const & x, 
 		C<T> const & y, 
 		C<T> const & z);
@@ -87,7 +81,7 @@ namespace glm
 	/// Return the minimum component-wise values of 4 inputs 
 	/// @see gtx_extented_min_max
 	template <typename T>
-	T min(
+	GLM_FUNC_DECL T min(
 		T const & x, 
 		T const & y, 
 		T const & z, 
@@ -95,25 +89,17 @@ namespace glm
 
 	/// Return the minimum component-wise values of 4 inputs 
 	/// @see gtx_extented_min_max
-	template 
-	<
-		typename T, 
-		template <typename> class C
-	>
-	C<T> min(
+	template <typename T, template <typename> class C>
+	GLM_FUNC_DECL C<T> min(
 		C<T> const & x, 
-		typename C<T>::value_type const & y, 
-		typename C<T>::value_type const & z, 
-		typename C<T>::value_type const & w);
+		typename C<T>::T const & y, 
+		typename C<T>::T const & z, 
+		typename C<T>::T const & w);
 
 	/// Return the minimum component-wise values of 4 inputs
 	/// @see gtx_extented_min_max
-	template 
-	<
-		typename T, 
-		template <typename> class C
-	>
-	C<T> min(
+	template <typename T, template <typename> class C>
+	GLM_FUNC_DECL C<T> min(
 		C<T> const & x, 
 		C<T> const & y, 
 		C<T> const & z,
@@ -122,31 +108,23 @@ namespace glm
 	/// Return the maximum component-wise values of 3 inputs 
 	/// @see gtx_extented_min_max
 	template <typename T>
-	T max(
+	GLM_FUNC_DECL T max(
 		T const & x, 
 		T const & y, 
 		T const & z);
 
 	/// Return the maximum component-wise values of 3 inputs
 	/// @see gtx_extented_min_max
-	template 
-	<
-		typename T, 
-		template <typename> class C
-	>
-	C<T> max(
+	template <typename T, template <typename> class C>
+	GLM_FUNC_DECL C<T> max(
 		C<T> const & x, 
-		typename C<T>::value_type const & y, 
-		typename C<T>::value_type const & z);
+		typename C<T>::T const & y, 
+		typename C<T>::T const & z);
 
 	/// Return the maximum component-wise values of 3 inputs 
 	/// @see gtx_extented_min_max
-	template 
-	<
-		typename T, 
-		template <typename> class C
-	>
-	C<T> max(
+	template <typename T, template <typename> class C>
+	GLM_FUNC_DECL C<T> max(
 		C<T> const & x, 
 		C<T> const & y, 
 		C<T> const & z);
@@ -154,7 +132,7 @@ namespace glm
 	/// Return the maximum component-wise values of 4 inputs
 	/// @see gtx_extented_min_max
 	template <typename T>
-	T max(
+	GLM_FUNC_DECL T max(
 		T const & x, 
 		T const & y, 
 		T const & z, 
@@ -162,25 +140,17 @@ namespace glm
 
 	/// Return the maximum component-wise values of 4 inputs 
 	/// @see gtx_extented_min_max
-	template 
-	<
-		typename T, 
-		template <typename> class C
-	>
-	C<T> max(
+	template <typename T, template <typename> class C>
+	GLM_FUNC_DECL C<T> max(
 		C<T> const & x, 
-		typename C<T>::value_type const & y, 
-		typename C<T>::value_type const & z, 
-		typename C<T>::value_type const & w);
+		typename C<T>::T const & y, 
+		typename C<T>::T const & z, 
+		typename C<T>::T const & w);
 
 	/// Return the maximum component-wise values of 4 inputs 
 	/// @see gtx_extented_min_max
-	template 
-	<
-		typename T, 
-		template <typename> class C
-	>
-	C<T> max(
+	template <typename T, template <typename> class C>
+	GLM_FUNC_DECL C<T> max(
 		C<T> const & x, 
 		C<T> const & y, 
 		C<T> const & z, 
@@ -190,5 +160,3 @@ namespace glm
 }//namespace glm
 
 #include "extented_min_max.inl"
-
-#endif//GLM_GTX_extented_min_max

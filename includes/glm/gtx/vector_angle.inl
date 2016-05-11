@@ -1,57 +1,87 @@
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// OpenGL Mathematics Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// Created : 2005-12-30
-// Updated : 2008-09-29
-// Licence : This source is under MIT License
-// File    : glm/gtx/vector_angle.inl
-///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+/// OpenGL Mathematics (glm.g-truc.net)
+///
+/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to deal
+/// in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+/// 
+/// The above copyright notice and this permission notice shall be included in
+/// all copies or substantial portions of the Software.
+/// 
+/// Restrictions:
+///		By making use of the Software for military purposes, you choose to make
+///		a Bunny unhappy.
+/// 
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+/// THE SOFTWARE.
+///
+/// @ref gtx_vector_angle
+/// @file glm/gtx/vector_angle.inl
+/// @date 2005-12-30 / 2011-06-07
+/// @author Christophe Riccio
+///////////////////////////////////////////////////////////////////////////////////
 
 namespace glm
 {
 	template <typename genType> 
-	GLM_FUNC_QUALIFIER typename genType::value_type angle
+	GLM_FUNC_QUALIFIER genType angle
 	(
-		genType const & x, 
+		genType const & x,
 		genType const & y
 	)
 	{
-		return degrees(acos(dot(x, y)));
+		GLM_STATIC_ASSERT(std::numeric_limits<genType>::is_iec559, "'angle' only accept floating-point inputs");
+		return acos(clamp(dot(x, y), genType(-1), genType(1)));
+	}
+
+	template <typename T, precision P, template <typename, precision> class vecType> 
+	GLM_FUNC_QUALIFIER T angle
+	(
+		vecType<T, P> const & x,
+		vecType<T, P> const & y
+	)
+	{
+		GLM_STATIC_ASSERT(std::numeric_limits<T>::is_iec559, "'angle' only accept floating-point inputs");
+		return acos(clamp(dot(x, y), T(-1), T(1)));
 	}
 
 	//! \todo epsilon is hard coded to 0.01
-	template <typename valType> 
-	GLM_FUNC_QUALIFIER valType orientedAngle
+	template <typename T, precision P>
+	GLM_FUNC_QUALIFIER T orientedAngle
 	(
-		detail::tvec2<valType> const & x, 
-		detail::tvec2<valType> const & y
+		tvec2<T, P> const & x,
+		tvec2<T, P> const & y
 	)
 	{
-#ifdef GLM_FORCE_RADIANS
-		valType const Angle(acos(dot(x, y)));
-#else
-		valType const Angle(glm::degrees(acos(dot(x, y))));
-#endif
-		detail::tvec2<valType> const TransformedVector(glm::rotate(x, Angle));
-		if(all(epsilonEqual(y, TransformedVector, valType(0.01))))
+		GLM_STATIC_ASSERT(std::numeric_limits<T>::is_iec559, "'orientedAngle' only accept floating-point inputs");
+		T const Angle(acos(clamp(dot(x, y), T(-1), T(1))));
+
+		if(all(epsilonEqual(y, glm::rotate(x, Angle), T(0.0001))))
 			return Angle;
 		else
 			return -Angle;
 	}
 
-	template <typename valType>
-	GLM_FUNC_QUALIFIER valType orientedAngle
+	template <typename T, precision P>
+	GLM_FUNC_QUALIFIER T orientedAngle
 	(
-		detail::tvec3<valType> const & x,
-		detail::tvec3<valType> const & y,
-		detail::tvec3<valType> const & ref
+		tvec3<T, P> const & x,
+		tvec3<T, P> const & y,
+		tvec3<T, P> const & ref
 	)
 	{
-		valType const Angle(glm::degrees(glm::acos(glm::dot(x, y))));
+		GLM_STATIC_ASSERT(std::numeric_limits<T>::is_iec559, "'orientedAngle' only accept floating-point inputs");
 
-		if(glm::dot(ref, glm::cross(x, y)) < valType(0))
-			return -Angle;
-		else
-			return Angle;
+		T const Angle(acos(clamp(dot(x, y), T(-1), T(1))));
+		return mix(Angle, -Angle, dot(ref, cross(x, y)) < T(0));
 	}
 }//namespace glm

@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -11,6 +11,10 @@
 /// 
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
+/// 
+/// Restrictions:
+///		By making use of the Software for military purposes, you choose to make
+///		a Bunny unhappy.
 /// 
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -35,13 +39,12 @@
 /// <glm/gtx/extend.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTX_extend
-#define GLM_GTX_extend GLM_VERSION
+#pragma once
 
 // Dependency:
 #include "../glm.hpp"
 
-#if(defined(GLM_MESSAGES) && !defined(glm_ext))
+#if(defined(GLM_MESSAGES) && !defined(GLM_EXT_INCLUDED))
 #	pragma message("GLM: GLM_GTX_extend extension included")
 #endif
 
@@ -53,7 +56,7 @@ namespace glm
 	/// Extends of Length the Origin position using the (Source - Origin) direction.
 	/// @see gtx_extend
 	template <typename genType> 
-	genType extend(
+	GLM_FUNC_DECL genType extend(
 		genType const & Origin, 
 		genType const & Source, 
 		typename genType::value_type const Length);
@@ -62,5 +65,3 @@ namespace glm
 }//namespace glm
 
 #include "extend.inl"
-
-#endif//GLM_GTX_extend

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// OpenGL Mathematics Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
+// OpenGL Mathematics Copyright (c) 2005 - 2014 G-Truc Creation (www.g-truc.net)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Created : 2007-04-03
 // Updated : 2009-01-20
@@ -7,11 +7,28 @@
 // File    : glm/gtx/intersect.inl
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <cfloat>
-#include <limits>
-
 namespace glm
 {
+	template <typename genType>
+	GLM_FUNC_QUALIFIER bool intersectRayPlane
+	(
+		genType const & orig, genType const & dir,
+		genType const & planeOrig, genType const & planeNormal,
+		typename genType::value_type & intersectionDistance
+	)
+	{
+		typename genType::value_type d = glm::dot(dir, planeNormal);
+		typename genType::value_type Epsilon = std::numeric_limits<typename genType::value_type>::epsilon();
+
+		if(d < Epsilon)
+		{
+			intersectionDistance = glm::dot(planeOrig - orig, planeNormal) / d;
+			return true;
+		}
+
+		return false;
+	}
+
 	template <typename genType>
 	GLM_FUNC_QUALIFIER bool intersectRayTriangle
 	(

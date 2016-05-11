@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -11,6 +11,10 @@
 /// 
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
+/// 
+/// Restrictions:
+///		By making use of the Software for military purposes, you choose to make
+///		a Bunny unhappy.
 /// 
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -37,14 +41,13 @@
 /// <glm/gtx/number_precision.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTX_number_precision
-#define GLM_GTX_number_precision GLM_VERSION
+#pragma once
 
 // Dependency:
 #include "../glm.hpp"
 #include "../gtc/type_precision.hpp"
 
-#if(defined(GLM_MESSAGES) && !defined(glm_ext))
+#if(defined(GLM_MESSAGES) && !defined(GLM_EXT_INCLUDED))
 #	pragma message("GLM: GLM_GTX_number_precision extension included")
 #endif
 
@@ -65,15 +68,12 @@ namespace gtx
 	//////////////////////
 	// Float vector types 
 
-	typedef f16			f16vec1;    //!< \brief Half-precision floating-point scalar. (from GLM_GTX_number_precision extension)
 	typedef f32			f32vec1;    //!< \brief Single-precision floating-point scalar. (from GLM_GTX_number_precision extension)
 	typedef f64			f64vec1;    //!< \brief Single-precision floating-point scalar. (from GLM_GTX_number_precision extension)
 
 	//////////////////////
 	// Float matrix types 
 
-	typedef f16			f16mat1;    //!< \brief Half-precision floating-point scalar. (from GLM_GTX_number_precision extension)
-	typedef f16			f16mat1x1;	//!< \brief Half-precision floating-point scalar. (from GLM_GTX_number_precision extension)
 	typedef f32			f32mat1;	//!< \brief Single-precision floating-point scalar. (from GLM_GTX_number_precision extension)
 	typedef f32			f32mat1x1;	//!< \brief Single-precision floating-point scalar. (from GLM_GTX_number_precision extension)
 	typedef f64			f64mat1;	//!< \brief Double-precision floating-point scalar. (from GLM_GTX_number_precision extension)
@@ -84,5 +84,3 @@ namespace gtx
 }//namespace glm
 
 #include "number_precision.inl"
-
-#endif//GLM_GTX_number_precision

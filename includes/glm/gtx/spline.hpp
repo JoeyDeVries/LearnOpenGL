@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -11,6 +11,10 @@
 /// 
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
+/// 
+/// Restrictions:
+///		By making use of the Software for military purposes, you choose to make
+///		a Bunny unhappy.
 /// 
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -35,14 +39,13 @@
 /// <glm/gtx/spline.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTX_spline
-#define GLM_GTX_spline GLM_VERSION
+#pragma once
 
 // Dependency:
 #include "../glm.hpp"
 #include "../gtx/optimum_pow.hpp"
 
-#if(defined(GLM_MESSAGES) && !defined(glm_ext))
+#if(defined(GLM_MESSAGES) && !defined(GLM_EXT_INCLUDED))
 #	pragma message("GLM: GLM_GTX_spline extension included")
 #endif
 
@@ -51,30 +54,30 @@ namespace glm
 	/// @addtogroup gtx_spline
 	/// @{
 
-	//! Return a point from a catmull rom curve.
-	//! From GLM_GTX_spline extension.
+	/// Return a point from a catmull rom curve.
+	/// @see gtx_spline extension.
 	template <typename genType> 
-	genType catmullRom(
+	GLM_FUNC_DECL genType catmullRom(
 		genType const & v1, 
 		genType const & v2, 
 		genType const & v3, 
 		genType const & v4, 
 		typename genType::value_type const & s);
 		
-	//! Return a point from a hermite curve.
-	//! From GLM_GTX_spline extension.
-    template <typename genType> 
-	genType hermite(
+	/// Return a point from a hermite curve.
+	/// @see gtx_spline extension.
+	template <typename genType> 
+	GLM_FUNC_DECL genType hermite(
 		genType const & v1, 
 		genType const & t1, 
 		genType const & v2, 
 		genType const & t2, 
 		typename genType::value_type const & s);
 		
-    //! Return a point from a cubic curve. 
-	//! From GLM_GTX_spline extension.
+	/// Return a point from a cubic curve. 
+	/// @see gtx_spline extension.
 	template <typename genType> 
-	genType cubic(
+	GLM_FUNC_DECL genType cubic(
 		genType const & v1, 
 		genType const & v2, 
 		genType const & v3, 
@@ -85,6 +88,3 @@ namespace glm
 }//namespace glm
 
 #include "spline.inl"
-
-#endif//GLM_GTX_spline
-

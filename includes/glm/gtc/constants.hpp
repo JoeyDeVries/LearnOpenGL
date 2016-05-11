@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -11,6 +11,10 @@
 /// 
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
+/// 
+/// Restrictions:
+///		By making use of the Software for military purposes, you choose to make
+///		a Bunny unhappy.
 /// 
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -31,19 +35,17 @@
 /// @defgroup gtc_constants GLM_GTC_constants
 /// @ingroup gtc
 /// 
-/// @brief Allow to perform bit operations on integer values
+/// @brief Provide a list of constants and precomputed useful values.
 /// 
 /// <glm/gtc/constants.hpp> need to be included to use these features.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTC_constants
-#define GLM_GTC_constants GLM_VERSION
+#pragma once
 
-// Dependency:
-#include "../glm.hpp"
-#include "../gtc/half_float.hpp"
+// Dependencies
+#include "../detail/setup.hpp"
 
-#if(defined(GLM_MESSAGES) && !defined(glm_ext))
+#if(defined(GLM_MESSAGES) && !defined(GLM_EXT_INCLUDED))
 #	pragma message("GLM: GLM_GTC_constants extension included")
 #endif
 
@@ -53,134 +55,151 @@ namespace glm
 	/// @{
 
 	/// Return the epsilon constant for floating point types.
-	/// @todo Implement epsilon for half-precision floating point type.
 	/// @see gtc_constants
 	template <typename genType>
-	genType epsilon();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType epsilon();
 
 	/// Return 0.
 	/// @see gtc_constants
 	template <typename genType>
-	genType zero();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType zero();
 
 	/// Return 1.
 	/// @see gtc_constants
 	template <typename genType>
-	genType one();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType one();
 
 	/// Return the pi constant.
 	/// @see gtc_constants
 	template <typename genType>
-	genType pi();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType pi();
+
+	/// Return pi * 2.
+	/// @see gtc_constants
+	template <typename genType>
+	GLM_FUNC_DECL GLM_CONSTEXPR genType two_pi();
 
 	/// Return square root of pi.
 	/// @see gtc_constants
 	template <typename genType>
-	genType root_pi();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType root_pi();
 
 	/// Return pi / 2.
 	/// @see gtc_constants
 	template <typename genType>
-	genType half_pi();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType half_pi();
+
+	/// Return pi / 2 * 3.
+	/// @see gtc_constants
+	template <typename genType>
+	GLM_FUNC_DECL GLM_CONSTEXPR genType three_over_two_pi();
 
 	/// Return pi / 4.
 	/// @see gtc_constants
 	template <typename genType>
-	genType quarter_pi();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType quarter_pi();
 
 	/// Return 1 / pi.
 	/// @see gtc_constants
 	template <typename genType>
-	genType one_over_pi();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType one_over_pi();
+
+	/// Return 1 / (pi * 2).
+	/// @see gtc_constants
+	template <typename genType>
+	GLM_FUNC_DECL GLM_CONSTEXPR genType one_over_two_pi();
 
 	/// Return 2 / pi.
 	/// @see gtc_constants
 	template <typename genType>
-	genType two_over_pi();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType two_over_pi();
+
+	/// Return 4 / pi.
+	/// @see gtc_constants
+	template <typename genType>
+	GLM_FUNC_DECL GLM_CONSTEXPR genType four_over_pi();
 
 	/// Return 2 / sqrt(pi).
 	/// @see gtc_constants
 	template <typename genType>
-	genType two_over_root_pi();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType two_over_root_pi();
 
 	/// Return 1 / sqrt(2).
 	/// @see gtc_constants
 	template <typename genType>
-	genType one_over_root_two();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType one_over_root_two();
 
 	/// Return sqrt(pi / 2).
 	/// @see gtc_constants
 	template <typename genType>
-	genType root_half_pi();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType root_half_pi();
 
 	/// Return sqrt(2 * pi).
 	/// @see gtc_constants
 	template <typename genType>
-	genType root_two_pi();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType root_two_pi();
 
 	/// Return sqrt(ln(4)).
 	/// @see gtc_constants
 	template <typename genType>
-	genType root_ln_four();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType root_ln_four();
 
 	/// Return e constant.
 	/// @see gtc_constants
 	template <typename genType>
-	genType e();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType e();
 
 	/// Return Euler's constant.
 	/// @see gtc_constants
 	template <typename genType>
-	genType euler();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType euler();
 
 	/// Return sqrt(2).
 	/// @see gtc_constants
 	template <typename genType>
-	genType root_two();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType root_two();
 
 	/// Return sqrt(3).
 	/// @see gtc_constants
 	template <typename genType>
-	genType root_three();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType root_three();
 
 	/// Return sqrt(5).
 	/// @see gtc_constants
 	template <typename genType>
-	genType root_five();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType root_five();
 
 	/// Return ln(2).
 	/// @see gtc_constants
 	template <typename genType>
-	genType ln_two();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType ln_two();
 
 	/// Return ln(10).
 	/// @see gtc_constants
 	template <typename genType>
-	genType ln_ten();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType ln_ten();
 
 	/// Return ln(ln(2)).
 	/// @see gtc_constants
 	template <typename genType>
-	genType ln_ln_two();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType ln_ln_two();
 
 	/// Return 1 / 3.
 	/// @see gtc_constants
 	template <typename genType>
-	genType third();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType third();
 
 	/// Return 2 / 3.
 	/// @see gtc_constants
 	template <typename genType>
-	genType two_thirds();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType two_thirds();
 
 	/// Return the golden ratio constant.
 	/// @see gtc_constants
 	template <typename genType>
-	genType golden_ratio();
+	GLM_FUNC_DECL GLM_CONSTEXPR genType golden_ratio();
 
 	/// @}
 } //namespace glm
 
 #include "constants.inl"
-
-#endif//GLM_GTC_constants

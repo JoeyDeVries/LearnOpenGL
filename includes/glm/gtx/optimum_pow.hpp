@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -11,6 +11,10 @@
 /// 
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
+/// 
+/// Restrictions:
+///		By making use of the Software for military purposes, you choose to make
+///		a Bunny unhappy.
 /// 
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -35,13 +39,12 @@
 /// <glm/gtx/optimum_pow.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTX_optimum_pow
-#define GLM_GTX_optimum_pow GLM_VERSION
+#pragma once
 
 // Dependency:
 #include "../glm.hpp"
 
-#if(defined(GLM_MESSAGES) && !defined(glm_ext))
+#if(defined(GLM_MESSAGES) && !defined(GLM_EXT_INCLUDED))
 #	pragma message("GLM: GLM_GTX_optimum_pow extension included")
 #endif
 
@@ -51,41 +54,26 @@ namespace gtx
 	/// @addtogroup gtx_optimum_pow
 	/// @{
 
-	//! Returns x raised to the power of 2.
-	//! From GLM_GTX_optimum_pow extension.
-    template <typename genType> 
-	genType pow2(const genType& x);
+	/// Returns x raised to the power of 2.
+	///
+	/// @see gtx_optimum_pow
+	template <typename genType>
+	GLM_FUNC_DECL genType pow2(genType const & x);
 
-	//! Returns x raised to the power of 3.
-	//! From GLM_GTX_optimum_pow extension.
-    template <typename genType> 
-	genType pow3(const genType& x);
+	/// Returns x raised to the power of 3.
+	///
+	/// @see gtx_optimum_pow
+	template <typename genType>
+	GLM_FUNC_DECL genType pow3(genType const & x);
 
-	//! Returns x raised to the power of 4.
-	//! From GLM_GTX_optimum_pow extension.
-	template <typename genType> 
-	genType pow4(const genType& x);
-        
-	//! Checks if the parameter is a power of 2 number. 
-	//! From GLM_GTX_optimum_pow extension.
-    bool powOfTwo(int num);
-
-	//! Checks to determine if the parameter component are power of 2 numbers.
-	//! From GLM_GTX_optimum_pow extension.
-    detail::tvec2<bool> powOfTwo(const detail::tvec2<int>& x);
-
-	//! Checks to determine if the parameter component are power of 2 numbers. 
-	//! From GLM_GTX_optimum_pow extension.
-    detail::tvec3<bool> powOfTwo(const detail::tvec3<int>& x);
-
-	//! Checks to determine if the parameter component are power of 2 numbers. 
-	//! From GLM_GTX_optimum_pow extension.
-    detail::tvec4<bool> powOfTwo(const detail::tvec4<int>& x);
+	/// Returns x raised to the power of 4.
+	///
+	/// @see gtx_optimum_pow
+	template <typename genType>
+	GLM_FUNC_DECL genType pow4(genType const & x);
 
 	/// @}
 }//namespace gtx
 }//namespace glm
 
 #include "optimum_pow.inl"
-
-#endif//GLM_GTX_optimum_pow

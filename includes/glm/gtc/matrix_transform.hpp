@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 /// OpenGL Mathematics (glm.g-truc.net)
 ///
-/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
+/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
 /// in the Software without restriction, including without limitation the rights
@@ -11,6 +11,10 @@
 /// 
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
+/// 
+/// Restrictions:
+///		By making use of the Software for military purposes, you choose to make
+///		a Bunny unhappy.
 /// 
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -43,13 +47,16 @@
 /// <glm/gtc/matrix_transform.hpp> need to be included to use these functionalities.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GLM_GTC_matrix_transform
-#define GLM_GTC_matrix_transform GLM_VERSION
+#pragma once
 
-// Dependency:
-#include "../glm.hpp"
+// Dependencies
+#include "../mat4x4.hpp"
+#include "../vec2.hpp"
+#include "../vec3.hpp"
+#include "../vec4.hpp"
+#include "../gtc/constants.hpp"
 
-#if(defined(GLM_MESSAGES) && !defined(glm_ext))
+#if(defined(GLM_MESSAGES) && !defined(GLM_EXT_INCLUDED))
 #	pragma message("GLM: GLM_GTC_matrix_transform extension included")
 #endif
 
@@ -74,31 +81,27 @@ namespace glm
 	/// // m[3][0] == 1.0f, m[3][1] == 1.0f, m[3][2] == 1.0f, m[3][3] == 1.0f
 	/// @endcode
 	/// @see gtc_matrix_transform
-	/// @see gtx_transform
-	/// @see - translate(T x, T y, T z)
-	/// @see - translate(detail::tmat4x4<T> const & m, T x, T y, T z)
-	/// @see - translate(detail::tvec3<T> const & v)
-	template <typename T> 
-	detail::tmat4x4<T> translate(
-		detail::tmat4x4<T> const & m,
-		detail::tvec3<T> const & v);
+	/// @see - translate(tmat4x4<T, P> const & m, T x, T y, T z)
+	/// @see - translate(tvec3<T, P> const & v)
+	template <typename T, precision P>
+	GLM_FUNC_DECL tmat4x4<T, P> translate(
+		tmat4x4<T, P> const & m,
+		tvec3<T, P> const & v);
 		
 	/// Builds a rotation 4 * 4 matrix created from an axis vector and an angle. 
 	/// 
 	/// @param m Input matrix multiplied by this rotation matrix.
-	/// @param angle Rotation angle expressed in radians if GLM_FORCE_RADIANS is define or degrees otherwise.
-	/// @param axis Rotation axis, recommanded to be normalized.
+	/// @param angle Rotation angle expressed in radians.
+	/// @param axis Rotation axis, recommended to be normalized.
 	/// @tparam T Value type used to build the matrix. Supported: half, float or double.
 	/// @see gtc_matrix_transform
-	/// @see gtx_transform
-	/// @see - rotate(T angle, T x, T y, T z) 
-	/// @see - rotate(detail::tmat4x4<T> const & m, T angle, T x, T y, T z) 
-	/// @see - rotate(T angle, detail::tvec3<T> const & v) 
-	template <typename T> 
-	detail::tmat4x4<T> rotate(
-		detail::tmat4x4<T> const & m,
-		T const & angle, 
-		detail::tvec3<T> const & axis);
+	/// @see - rotate(tmat4x4<T, P> const & m, T angle, T x, T y, T z) 
+	/// @see - rotate(T angle, tvec3<T, P> const & v) 
+	template <typename T, precision P>
+	GLM_FUNC_DECL tmat4x4<T, P> rotate(
+		tmat4x4<T, P> const & m,
+		T angle,
+		tvec3<T, P> const & axis);
 
 	/// Builds a scale 4 * 4 matrix created from 3 scalars. 
 	/// 
@@ -106,14 +109,12 @@ namespace glm
 	/// @param v Ratio of scaling for each axis.
 	/// @tparam T Value type used to build the matrix. Currently supported: half (not recommanded), float or double.
 	/// @see gtc_matrix_transform
-	/// @see gtx_transform
-	/// @see - scale(T x, T y, T z) scale(T const & x, T const & y, T const & z)
-	/// @see - scale(detail::tmat4x4<T> const & m, T x, T y, T z)
-	/// @see - scale(detail::tvec3<T> const & v)
-	template <typename T> 
-	detail::tmat4x4<T> scale(
-		detail::tmat4x4<T> const & m,
-		detail::tvec3<T> const & v);
+	/// @see - scale(tmat4x4<T, P> const & m, T x, T y, T z)
+	/// @see - scale(tvec3<T, P> const & v)
+	template <typename T, precision P>
+	GLM_FUNC_DECL tmat4x4<T, P> scale(
+		tmat4x4<T, P> const & m,
+		tvec3<T, P> const & v);
 
 	/// Creates a matrix for an orthographic parallel viewing volume.
 	/// 
@@ -126,14 +127,14 @@ namespace glm
 	/// @tparam T Value type used to build the matrix. Currently supported: half (not recommanded), float or double.
 	/// @see gtc_matrix_transform
 	/// @see - glm::ortho(T const & left, T const & right, T const & bottom, T const & top)
-	template <typename T> 
-	detail::tmat4x4<T> ortho(
-		T const & left, 
-		T const & right, 
-		T const & bottom, 
-		T const & top, 
-		T const & zNear, 
-		T const & zFar);
+	template <typename T>
+	GLM_FUNC_DECL tmat4x4<T, defaultp> ortho(
+		T left,
+		T right,
+		T bottom,
+		T top,
+		T zNear,
+		T zFar);
 
 	/// Creates a matrix for projecting two-dimensional coordinates onto the screen.
 	/// 
@@ -143,13 +144,13 @@ namespace glm
 	/// @param top 
 	/// @tparam T Value type used to build the matrix. Currently supported: half (not recommanded), float or double.
 	/// @see gtc_matrix_transform
-    /// @see - glm::ortho(T const & left, T const & right, T const & bottom, T const & top, T const & zNear, T const & zFar)
-	template <typename T> 
-	detail::tmat4x4<T> ortho(
-		T const & left, 
-		T const & right, 
-		T const & bottom, 
-		T const & top);
+	/// @see - glm::ortho(T const & left, T const & right, T const & bottom, T const & top, T const & zNear, T const & zFar)
+	template <typename T>
+	GLM_FUNC_DECL tmat4x4<T, defaultp> ortho(
+		T left,
+		T right,
+		T bottom,
+		T top);
 
 	/// Creates a frustum matrix.
 	/// 
@@ -161,131 +162,233 @@ namespace glm
 	/// @param far 
 	/// @tparam T Value type used to build the matrix. Currently supported: half (not recommanded), float or double.
 	/// @see gtc_matrix_transform
-	template <typename T> 
-	detail::tmat4x4<T> frustum(
-		T const & left, 
-		T const & right, 
-		T const & bottom, 
-		T const & top, 
-		T const & near, 
-		T const & far);
+	template <typename T>
+	GLM_FUNC_DECL tmat4x4<T, defaultp> frustum(
+		T left,
+		T right,
+		T bottom,
+		T top,
+		T near,
+		T far);
 
-	/// Creates a matrix for a symetric perspective-view frustum.
+	/// Creates a matrix for a symetric perspective-view frustum based on the default handedness.
 	/// 
-	/// @param fovy Expressed in radians if GLM_FORCE_RADIANS is define or degrees otherwise.
-	/// @param aspect 
-	/// @param near 
-	/// @param far 
+	/// @param fovy Specifies the field of view angle in the y direction. Expressed in radians.
+	/// @param aspect Specifies the aspect ratio that determines the field of view in the x direction. The aspect ratio is the ratio of x (width) to y (height).
+	/// @param near Specifies the distance from the viewer to the near clipping plane (always positive).
+	/// @param far Specifies the distance from the viewer to the far clipping plane (always positive).
 	/// @tparam T Value type used to build the matrix. Currently supported: half (not recommanded), float or double.
 	/// @see gtc_matrix_transform
-	template <typename T> 
-	detail::tmat4x4<T> perspective(
-		T const & fovy, 
-		T const & aspect, 
-		T const & near, 
-		T const & far);
+	template <typename T>
+	GLM_FUNC_DECL tmat4x4<T, defaultp> perspective(
+		T fovy,
+		T aspect,
+		T near,
+		T far);
 
-	/// Builds a perspective projection matrix based on a field of view.
+	/// Creates a matrix for a right handed, symetric perspective-view frustum.
 	/// 
-	/// @param fov Expressed in radians if GLM_FORCE_RADIANS is define or degrees otherwise.
+	/// @param fovy Specifies the field of view angle, in degrees, in the y direction. Expressed in radians.
+	/// @param aspect Specifies the aspect ratio that determines the field of view in the x direction. The aspect ratio is the ratio of x (width) to y (height).
+	/// @param near Specifies the distance from the viewer to the near clipping plane (always positive).
+	/// @param far Specifies the distance from the viewer to the far clipping plane (always positive).
+	/// @tparam T Value type used to build the matrix. Currently supported: half (not recommanded), float or double.
+	/// @see gtc_matrix_transform
+	template <typename T>
+	GLM_FUNC_DECL tmat4x4<T, defaultp> perspectiveRH(
+		T fovy,
+		T aspect,
+		T near,
+		T far);
+
+	/// Creates a matrix for a left handed, symetric perspective-view frustum.
+	/// 
+	/// @param fovy Specifies the field of view angle, in degrees, in the y direction. Expressed in radians.
+	/// @param aspect Specifies the aspect ratio that determines the field of view in the x direction. The aspect ratio is the ratio of x (width) to y (height).
+	/// @param near Specifies the distance from the viewer to the near clipping plane (always positive).
+	/// @param far Specifies the distance from the viewer to the far clipping plane (always positive).
+	/// @tparam T Value type used to build the matrix. Currently supported: half (not recommanded), float or double.
+	/// @see gtc_matrix_transform
+	template <typename T>
+	GLM_FUNC_DECL tmat4x4<T, defaultp> perspectiveLH(
+		T fovy,
+		T aspect,
+		T near,
+		T far);
+
+	/// Builds a perspective projection matrix based on a field of view and the default handedness.
+	/// 
+	/// @param fov Expressed in radians.
 	/// @param width 
 	/// @param height 
-	/// @param near 
-	/// @param far 
+	/// @param near Specifies the distance from the viewer to the near clipping plane (always positive).
+	/// @param far Specifies the distance from the viewer to the far clipping plane (always positive).
 	/// @tparam T Value type used to build the matrix. Currently supported: half (not recommanded), float or double.
 	/// @see gtc_matrix_transform
-	template <typename valType> 
-	detail::tmat4x4<valType> perspectiveFov(
-		valType const & fov, 
-		valType const & width, 
-		valType const & height, 
-		valType const & near, 
-		valType const & far);
+	template <typename T>
+	GLM_FUNC_DECL tmat4x4<T, defaultp> perspectiveFov(
+		T fov,
+		T width,
+		T height,
+		T near,
+		T far);
+
+	/// Builds a right handed perspective projection matrix based on a field of view.
+	/// 
+	/// @param fov Expressed in radians.
+	/// @param width 
+	/// @param height 
+	/// @param near Specifies the distance from the viewer to the near clipping plane (always positive).
+	/// @param far Specifies the distance from the viewer to the far clipping plane (always positive).
+	/// @tparam T Value type used to build the matrix. Currently supported: half (not recommanded), float or double.
+	/// @see gtc_matrix_transform
+	template <typename T>
+	GLM_FUNC_DECL tmat4x4<T, defaultp> perspectiveFovRH(
+		T fov,
+		T width,
+		T height,
+		T near,
+		T far);
+
+	/// Builds a left handed perspective projection matrix based on a field of view.
+	/// 
+	/// @param fov Expressed in radians.
+	/// @param width 
+	/// @param height 
+	/// @param near Specifies the distance from the viewer to the near clipping plane (always positive).
+	/// @param far Specifies the distance from the viewer to the far clipping plane (always positive).
+	/// @tparam T Value type used to build the matrix. Currently supported: half (not recommanded), float or double.
+	/// @see gtc_matrix_transform
+	template <typename T>
+	GLM_FUNC_DECL tmat4x4<T, defaultp> perspectiveFovLH(
+		T fov,
+		T width,
+		T height,
+		T near,
+		T far);
 
 	/// Creates a matrix for a symmetric perspective-view frustum with far plane at infinite.
 	/// 
-	/// @param fovy Expressed in radians if GLM_FORCE_RADIANS is define or degrees otherwise.
-	/// @param aspect 
-	/// @param near 
+	/// @param fovy Specifies the field of view angle, in degrees, in the y direction. Expressed in radians.
+	/// @param aspect Specifies the aspect ratio that determines the field of view in the x direction. The aspect ratio is the ratio of x (width) to y (height).
+	/// @param near Specifies the distance from the viewer to the near clipping plane (always positive).
 	/// @tparam T Value type used to build the matrix. Currently supported: half (not recommanded), float or double.
 	/// @see gtc_matrix_transform
-    template <typename T> 
-	detail::tmat4x4<T> infinitePerspective(
+	template <typename T>
+	GLM_FUNC_DECL tmat4x4<T, defaultp> infinitePerspective(
 		T fovy, T aspect, T near);
 
 	/// Creates a matrix for a symmetric perspective-view frustum with far plane at infinite for graphics hardware that doesn't support depth clamping.
 	/// 
-	/// @param fovy Expressed in radians if GLM_FORCE_RADIANS is define or degrees otherwise.
-	/// @param aspect 
-	/// @param near 
+	/// @param fovy Specifies the field of view angle, in degrees, in the y direction. Expressed in radians.
+	/// @param aspect Specifies the aspect ratio that determines the field of view in the x direction. The aspect ratio is the ratio of x (width) to y (height).
+	/// @param near Specifies the distance from the viewer to the near clipping plane (always positive).
 	/// @tparam T Value type used to build the matrix. Currently supported: half (not recommanded), float or double.
 	/// @see gtc_matrix_transform
-    template <typename T> 
-	detail::tmat4x4<T> tweakedInfinitePerspective(
+	template <typename T>
+	GLM_FUNC_DECL tmat4x4<T, defaultp> tweakedInfinitePerspective(
 		T fovy, T aspect, T near);
+
+	/// Creates a matrix for a symmetric perspective-view frustum with far plane at infinite for graphics hardware that doesn't support depth clamping.
+	/// 
+	/// @param fovy Specifies the field of view angle, in degrees, in the y direction. Expressed in radians.
+	/// @param aspect Specifies the aspect ratio that determines the field of view in the x direction. The aspect ratio is the ratio of x (width) to y (height).
+	/// @param near Specifies the distance from the viewer to the near clipping plane (always positive).
+	/// @param ep 
+	/// @tparam T Value type used to build the matrix. Currently supported: half (not recommanded), float or double.
+	/// @see gtc_matrix_transform
+	template <typename T>
+	GLM_FUNC_DECL tmat4x4<T, defaultp> tweakedInfinitePerspective(
+		T fovy, T aspect, T near, T ep);
 
 	/// Map the specified object coordinates (obj.x, obj.y, obj.z) into window coordinates.
 	/// 
-	/// @param obj 
-	/// @param model 
-	/// @param proj
-	/// @param viewport 
+	/// @param obj Specify the object coordinates.
+	/// @param model Specifies the current modelview matrix
+	/// @param proj Specifies the current projection matrix
+	/// @param viewport Specifies the current viewport
+	/// @return Return the computed window coordinates.
 	/// @tparam T Native type used for the computation. Currently supported: half (not recommanded), float or double.
 	/// @tparam U Currently supported: Floating-point types and integer types.
 	/// @see gtc_matrix_transform
-	template <typename T, typename U> 
-	detail::tvec3<T> project(
-		detail::tvec3<T> const & obj, 
-		detail::tmat4x4<T> const & model, 
-		detail::tmat4x4<T> const & proj, 
-		detail::tvec4<U> const & viewport);
+	template <typename T, typename U, precision P>
+	GLM_FUNC_DECL tvec3<T, P> project(
+		tvec3<T, P> const & obj,
+		tmat4x4<T, P> const & model,
+		tmat4x4<T, P> const & proj,
+		tvec4<U, P> const & viewport);
 
 	/// Map the specified window coordinates (win.x, win.y, win.z) into object coordinates.
-	/// 
-	/// @param win 
-	/// @param model 
-	/// @param proj
-	/// @param viewport 
+	///
+	/// @param win Specify the window coordinates to be mapped.
+	/// @param model Specifies the modelview matrix
+	/// @param proj Specifies the projection matrix
+	/// @param viewport Specifies the viewport
+	/// @return Returns the computed object coordinates.
 	/// @tparam T Native type used for the computation. Currently supported: half (not recommanded), float or double.
 	/// @tparam U Currently supported: Floating-point types and integer types.
 	/// @see gtc_matrix_transform
-	template <typename T, typename U> 
-	detail::tvec3<T> unProject(
-		detail::tvec3<T> const & win, 
-		detail::tmat4x4<T> const & model, 
-		detail::tmat4x4<T> const & proj, 
-		detail::tvec4<U> const & viewport);
+	template <typename T, typename U, precision P>
+	GLM_FUNC_DECL tvec3<T, P> unProject(
+		tvec3<T, P> const & win,
+		tmat4x4<T, P> const & model,
+		tmat4x4<T, P> const & proj,
+		tvec4<U, P> const & viewport);
 
 	/// Define a picking region
-	/// 
-	/// @param center 
-	/// @param delta 
+	///
+	/// @param center
+	/// @param delta
 	/// @param viewport
 	/// @tparam T Native type used for the computation. Currently supported: half (not recommanded), float or double.
 	/// @tparam U Currently supported: Floating-point types and integer types.
 	/// @see gtc_matrix_transform
-	template <typename T, typename U> 
-	detail::tmat4x4<T> pickMatrix(
-		detail::tvec2<T> const & center, 
-		detail::tvec2<T> const & delta, 
-		detail::tvec4<U> const & viewport);
+	template <typename T, precision P, typename U>
+	GLM_FUNC_DECL tmat4x4<T, P> pickMatrix(
+		tvec2<T, P> const & center,
+		tvec2<T, P> const & delta,
+		tvec4<U, P> const & viewport);
 
-	/// Build a look at view matrix.
-	/// 
+	/// Build a look at view matrix based on the default handedness.
+	///
 	/// @param eye Position of the camera
 	/// @param center Position where the camera is looking at
 	/// @param up Normalized up vector, how the camera is oriented. Typically (0, 0, 1)
 	/// @see gtc_matrix_transform
 	/// @see - frustum(T const & left, T const & right, T const & bottom, T const & top, T const & nearVal, T const & farVal) frustum(T const & left, T const & right, T const & bottom, T const & top, T const & nearVal, T const & farVal)
-	template <typename T> 
-	detail::tmat4x4<T> lookAt(
-		detail::tvec3<T> const & eye, 
-		detail::tvec3<T> const & center, 
-		detail::tvec3<T> const & up);
+	template <typename T, precision P>
+	GLM_FUNC_DECL tmat4x4<T, P> lookAt(
+		tvec3<T, P> const & eye,
+		tvec3<T, P> const & center,
+		tvec3<T, P> const & up);
+
+	/// Build a right handed look at view matrix.
+	///
+	/// @param eye Position of the camera
+	/// @param center Position where the camera is looking at
+	/// @param up Normalized up vector, how the camera is oriented. Typically (0, 0, 1)
+	/// @see gtc_matrix_transform
+	/// @see - frustum(T const & left, T const & right, T const & bottom, T const & top, T const & nearVal, T const & farVal) frustum(T const & left, T const & right, T const & bottom, T const & top, T const & nearVal, T const & farVal)
+	template <typename T, precision P>
+	GLM_FUNC_DECL tmat4x4<T, P> lookAtRH(
+		tvec3<T, P> const & eye,
+		tvec3<T, P> const & center,
+		tvec3<T, P> const & up);
+
+	/// Build a left handed look at view matrix.
+	///
+	/// @param eye Position of the camera
+	/// @param center Position where the camera is looking at
+	/// @param up Normalized up vector, how the camera is oriented. Typically (0, 0, 1)
+	/// @see gtc_matrix_transform
+	/// @see - frustum(T const & left, T const & right, T const & bottom, T const & top, T const & nearVal, T const & farVal) frustum(T const & left, T const & right, T const & bottom, T const & top, T const & nearVal, T const & farVal)
+	template <typename T, precision P>
+	GLM_FUNC_DECL tmat4x4<T, P> lookAtLH(
+		tvec3<T, P> const & eye,
+		tvec3<T, P> const & center,
+		tvec3<T, P> const & up);
 
 	/// @}
 }//namespace glm
 
 #include "matrix_transform.inl"
-
-#endif//GLM_GTC_matrix_transform

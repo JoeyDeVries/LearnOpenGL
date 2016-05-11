@@ -1,22 +1,45 @@
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// OpenGL Mathematics Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// Created : 2006-04-19
-// Updated : 2009-02-19
-// Licence : This source is under MIT License
-// File    : glm/gtx/matrix_major_storage.inl
-///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+/// OpenGL Mathematics (glm.g-truc.net)
+///
+/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to deal
+/// in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+/// 
+/// The above copyright notice and this permission notice shall be included in
+/// all copies or substantial portions of the Software.
+/// 
+/// Restrictions:
+///		By making use of the Software for military purposes, you choose to make
+///		a Bunny unhappy.
+/// 
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+/// THE SOFTWARE.
+///
+/// @ref gtx_matrix_major_storage
+/// @file glm/gtx/matrix_major_storage.hpp
+/// @date 2006-04-19 / 2014-11-25
+/// @author Christophe Riccio
+///////////////////////////////////////////////////////////////////////////////////
 
 namespace glm
 {
-	template <typename T> 
-	GLM_FUNC_QUALIFIER detail::tmat2x2<T> rowMajor2
+	template <typename T, precision P> 
+	GLM_FUNC_QUALIFIER tmat2x2<T, P> rowMajor2
 	(
-		detail::tvec2<T> const & v1, 
-		detail::tvec2<T> const & v2
+		tvec2<T, P> const & v1, 
+		tvec2<T, P> const & v2
 	)
 	{
-		detail::tmat2x2<T> Result;
+		tmat2x2<T, P> Result;
 		Result[0][0] = v1.x;
 		Result[1][0] = v1.y;
 		Result[0][1] = v2.x;
@@ -24,11 +47,11 @@ namespace glm
 		return Result;
 	}
 
-	template <typename T> 
-	GLM_FUNC_QUALIFIER detail::tmat2x2<T> rowMajor2(
-		const detail::tmat2x2<T>& m)
+	template <typename T, precision P> 
+	GLM_FUNC_QUALIFIER tmat2x2<T, P> rowMajor2(
+		const tmat2x2<T, P>& m)
 	{
-		detail::tmat2x2<T> Result;
+		tmat2x2<T, P> Result;
 		Result[0][0] = m[0][0];
 		Result[0][1] = m[1][0];
 		Result[1][0] = m[0][1];
@@ -36,13 +59,13 @@ namespace glm
 		return Result;
 	}
 
-	template <typename T> 
-	GLM_FUNC_QUALIFIER detail::tmat3x3<T> rowMajor3(
-		const detail::tvec3<T>& v1, 
-		const detail::tvec3<T>& v2, 
-		const detail::tvec3<T>& v3)
+	template <typename T, precision P> 
+	GLM_FUNC_QUALIFIER tmat3x3<T, P> rowMajor3(
+		const tvec3<T, P>& v1, 
+		const tvec3<T, P>& v2, 
+		const tvec3<T, P>& v3)
 	{
-		detail::tmat3x3<T> Result;
+		tmat3x3<T, P> Result;
 		Result[0][0] = v1.x;
 		Result[1][0] = v1.y;
 		Result[2][0] = v1.z;
@@ -55,11 +78,11 @@ namespace glm
 		return Result;
 	}
 
-	template <typename T> 
-	GLM_FUNC_QUALIFIER detail::tmat3x3<T> rowMajor3(
-		const detail::tmat3x3<T>& m)
+	template <typename T, precision P> 
+	GLM_FUNC_QUALIFIER tmat3x3<T, P> rowMajor3(
+		const tmat3x3<T, P>& m)
 	{
-		detail::tmat3x3<T> Result;
+		tmat3x3<T, P> Result;
 		Result[0][0] = m[0][0];
 		Result[0][1] = m[1][0];
 		Result[0][2] = m[2][0];
@@ -72,14 +95,14 @@ namespace glm
 		return Result;
 	}
 
-	template <typename T> 
-	GLM_FUNC_QUALIFIER detail::tmat4x4<T> rowMajor4(
-		const detail::tvec4<T>& v1, 
-		const detail::tvec4<T>& v2, 
-		const detail::tvec4<T>& v3, 
-		const detail::tvec4<T>& v4)
+	template <typename T, precision P> 
+	GLM_FUNC_QUALIFIER tmat4x4<T, P> rowMajor4(
+		const tvec4<T, P>& v1, 
+		const tvec4<T, P>& v2, 
+		const tvec4<T, P>& v3, 
+		const tvec4<T, P>& v4)
 	{
-		detail::tmat4x4<T> Result;
+		tmat4x4<T, P> Result;
 		Result[0][0] = v1.x;
 		Result[1][0] = v1.y;
 		Result[2][0] = v1.z;
@@ -99,11 +122,11 @@ namespace glm
 		return Result;
 	}
 
-	template <typename T> 
-	GLM_FUNC_QUALIFIER detail::tmat4x4<T> rowMajor4(
-		const detail::tmat4x4<T>& m)
+	template <typename T, precision P> 
+	GLM_FUNC_QUALIFIER tmat4x4<T, P> rowMajor4(
+		const tmat4x4<T, P>& m)
 	{
-		detail::tmat4x4<T> Result;
+		tmat4x4<T, P> Result;
 		Result[0][0] = m[0][0];
 		Result[0][1] = m[1][0];
 		Result[0][2] = m[2][0];
@@ -123,51 +146,51 @@ namespace glm
 		return Result;
 	}
 
-	template <typename T> 
-	GLM_FUNC_QUALIFIER detail::tmat2x2<T> colMajor2(
-		const detail::tvec2<T>& v1, 
-		const detail::tvec2<T>& v2)
+	template <typename T, precision P> 
+	GLM_FUNC_QUALIFIER tmat2x2<T, P> colMajor2(
+		const tvec2<T, P>& v1, 
+		const tvec2<T, P>& v2)
 	{
-		return detail::tmat2x2<T>(v1, v2);
+		return tmat2x2<T, P>(v1, v2);
 	}
 
-	template <typename T> 
-	GLM_FUNC_QUALIFIER detail::tmat2x2<T> colMajor2(
-		const detail::tmat2x2<T>& m)
+	template <typename T, precision P> 
+	GLM_FUNC_QUALIFIER tmat2x2<T, P> colMajor2(
+		const tmat2x2<T, P>& m)
 	{
-		return detail::tmat2x2<T>(m);
+		return tmat2x2<T, P>(m);
 	}
 
-	template <typename T> 
-	GLM_FUNC_QUALIFIER detail::tmat3x3<T> colMajor3(
-		const detail::tvec3<T>& v1, 
-		const detail::tvec3<T>& v2, 
-		const detail::tvec3<T>& v3)
+	template <typename T, precision P> 
+	GLM_FUNC_QUALIFIER tmat3x3<T, P> colMajor3(
+		const tvec3<T, P>& v1, 
+		const tvec3<T, P>& v2, 
+		const tvec3<T, P>& v3)
 	{
-		return detail::tmat3x3<T>(v1, v2, v3);
+		return tmat3x3<T, P>(v1, v2, v3);
 	}
 
-	template <typename T> 
-	GLM_FUNC_QUALIFIER detail::tmat3x3<T> colMajor3(
-		const detail::tmat3x3<T>& m)
+	template <typename T, precision P> 
+	GLM_FUNC_QUALIFIER tmat3x3<T, P> colMajor3(
+		const tmat3x3<T, P>& m)
 	{
-		return detail::tmat3x3<T>(m);
+		return tmat3x3<T, P>(m);
 	}
 
-	template <typename T> 
-	GLM_FUNC_QUALIFIER detail::tmat4x4<T> colMajor4(
-		const detail::tvec4<T>& v1, 
-		const detail::tvec4<T>& v2, 
-		const detail::tvec4<T>& v3, 
-		const detail::tvec4<T>& v4)
+	template <typename T, precision P> 
+	GLM_FUNC_QUALIFIER tmat4x4<T, P> colMajor4(
+		const tvec4<T, P>& v1, 
+		const tvec4<T, P>& v2, 
+		const tvec4<T, P>& v3, 
+		const tvec4<T, P>& v4)
 	{
-		return detail::tmat4x4<T>(v1, v2, v3, v4);
+		return tmat4x4<T, P>(v1, v2, v3, v4);
 	}
 
-	template <typename T> 
-	GLM_FUNC_QUALIFIER detail::tmat4x4<T> colMajor4(
-		const detail::tmat4x4<T>& m)
+	template <typename T, precision P> 
+	GLM_FUNC_QUALIFIER tmat4x4<T, P> colMajor4(
+		const tmat4x4<T, P>& m)
 	{
-		return detail::tmat4x4<T>(m);
+		return tmat4x4<T, P>(m);
 	}
 }//namespace glm
