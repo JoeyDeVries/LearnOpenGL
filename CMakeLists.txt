@@ -58,6 +58,7 @@ set(CHAPTERS
     3.model_loading
     4.advanced_opengl
     5.advanced_lighting
+    6.in_practice
 )
 
 set(1.getting_started   
@@ -109,6 +110,12 @@ set(5.advanced_lighting
     8.deferred_shading
     9.ssao
 )
+
+set(6.in_practice
+    1.debugging
+    2.text_rendering
+)
+
 
 
 configure_file(configuration/root_directory.h.in configuration/root_directory.h)
