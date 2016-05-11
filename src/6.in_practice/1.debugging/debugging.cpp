@@ -9,10 +9,10 @@
 #include <learnopengl/filesystem.h>
 #include <learnopengl/shader.h>
 
-// Function prototypes
+// function prototypes
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
-// Properties
+// properties
 const GLuint SCR_WIDTH = 800, SCR_HEIGHT = 600;
 
 
@@ -102,7 +102,7 @@ int main()
     // GLEW initialization
     glewExperimental = GL_TRUE;
     glewInit();
-    // Due to a bug in GLEW the glewInit call always generates an OpenGL error; clear the flag(s) by calling glGetError();
+    // due to a bug in GLEW the glewInit call always generates an OpenGL error; clear the flag(s) by calling glGetError();
     glGetError();  
 
     // enable OpenGL debug context if context allows for debug context
@@ -126,45 +126,45 @@ int main()
     // OpenGL initial state
     Shader shader("debugging.vs", "debugging.frag");
 
-    // Configure 3D cube
+    // configure 3D cube
     GLuint cubeVAO, cubeVBO;
     GLfloat vertices[] = {
-         // Back face
+         // back face
         -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, // Bottom-left
          0.5f,  0.5f, -0.5f,  1.0f,  1.0f, // top-right
          0.5f, -0.5f, -0.5f,  1.0f,  0.0f, // bottom-right         
          0.5f,  0.5f, -0.5f,  1.0f,  1.0f, // top-right
         -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, // bottom-left
         -0.5f,  0.5f, -0.5f,  0.0f,  1.0f, // top-left
-         // Front face
+         // front face
         -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, // bottom-left
          0.5f, -0.5f,  0.5f,  1.0f,  0.0f, // bottom-right
          0.5f,  0.5f,  0.5f,  1.0f,  1.0f, // top-right
          0.5f,  0.5f,  0.5f,  1.0f,  1.0f, // top-right
         -0.5f,  0.5f,  0.5f,  0.0f,  1.0f, // top-left
         -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, // bottom-left
-         // Left face
+         // left face
         -0.5f,  0.5f,  0.5f, -1.0f,  0.0f, // top-right
         -0.5f,  0.5f, -0.5f, -1.0f,  1.0f, // top-left
         -0.5f, -0.5f, -0.5f, -0.0f,  1.0f, // bottom-left
         -0.5f, -0.5f, -0.5f, -0.0f,  1.0f, // bottom-left
         -0.5f, -0.5f,  0.5f, -0.0f,  0.0f, // bottom-right
         -0.5f,  0.5f,  0.5f, -1.0f,  0.0f, // top-right
-         // Right face
+         // right face
          0.5f,  0.5f,  0.5f,  1.0f,  0.0f, // top-left
          0.5f, -0.5f, -0.5f,  0.0f,  1.0f, // bottom-right
          0.5f,  0.5f, -0.5f,  1.0f,  1.0f, // top-right         
          0.5f, -0.5f, -0.5f,  0.0f,  1.0f, // bottom-right
          0.5f,  0.5f,  0.5f,  1.0f,  0.0f, // top-left
          0.5f, -0.5f,  0.5f,  0.0f,  0.0f, // bottom-left     
-         // Bottom face
+         // bottom face
         -0.5f, -0.5f, -0.5f,  0.0f,  1.0f, // top-right
          0.5f, -0.5f, -0.5f,  1.0f,  1.0f, // top-left
          0.5f, -0.5f,  0.5f,  1.0f,  0.0f, // bottom-left
          0.5f, -0.5f,  0.5f,  1.0f,  0.0f, // bottom-left
         -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, // bottom-right
         -0.5f, -0.5f, -0.5f,  0.0f,  1.0f, // top-right
-         // Top face
+         // top face
         -0.5f,  0.5f, -0.5f,  0.0f,  1.0f, // top-left
          0.5f,  0.5f,  0.5f,  1.0f,  0.0f, // bottom-right
          0.5f,  0.5f, -0.5f,  1.0f,  1.0f, // top-right     
@@ -174,10 +174,10 @@ int main()
     };
     glGenVertexArrays(1, &cubeVAO);
     glGenBuffers(1, &cubeVBO);
-    // Fill buffer
+    // fill buffer
     glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    // Link vertex attributes
+    // link vertex attributes
     glBindVertexArray(cubeVAO);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
@@ -186,7 +186,7 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    // Load cube texture
+    // load cube texture
     GLuint textureID;
     glGenTextures(1, &textureID);
     int texWidth, texHeight;
@@ -203,7 +203,7 @@ int main()
     glBindTexture(GL_TEXTURE_2D, 0);
     SOIL_free_image_data(image);
 
-    // Set up projection matrix
+    // set up projection matrix
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 10.0f);
     glUniformMatrix4fv(glGetUniformLocation(shader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     glUniform1i(glGetUniformLocation(shader.Program, "tex"), 0);
@@ -211,7 +211,7 @@ int main()
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     while (!glfwWindowShouldClose(window))
     {
-        // Check and call events
+        // check and call events
         glfwPollEvents();      
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -229,7 +229,7 @@ int main()
             glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
 
-        // Swap the buffers
+        // swap the buffers
         glfwSwapBuffers(window);
     }
 
