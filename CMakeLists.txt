@@ -113,7 +113,7 @@ set(5.advanced_lighting
 
 set(6.in_practice
     1.debugging
-    2.text_rendering
+    # 2.text_rendering
 )
 
 
