@@ -21,7 +21,7 @@ Running `ls $LOGL_ROOT_PATH` should list, among other things, this README file a
 ## Mac OS X building
 Thanks to Stéphane le Boeuf, a Github fork was set up that successfully compiles on Mac OSX (and Linux as well); current CMake hasn't been adapted for Mac OSX yet.  The following command lines build the projects on Mac OSX:
 ```
-git clone --recursive [https://github.com/stephane-lb/LearnOpenGL.git
+git clone --recursive https://github.com/stephane-lb/LearnOpenGL.git
 cd LearnOpenGL
 mkdir build
 cd build
