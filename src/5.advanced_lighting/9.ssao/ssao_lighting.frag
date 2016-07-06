@@ -52,8 +52,8 @@ void main()
         FragColor = vec4(vec3(Depth / 50.0), 1.0);
     else if(draw_mode == 3)
         FragColor = vec4(FragPos, 1.0);
-     else if(draw_mode == 3)
+     else if(draw_mode == 4)
         FragColor = vec4(Normal, 1.0);
-    else if(draw_mode == 4)
+    else if(draw_mode == 5)
         FragColor = vec4(vec3(AmbientOcclusion), 1.0);
 }
