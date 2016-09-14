@@ -14,7 +14,7 @@ Using root (sudo) and type `apt-get install libsoil-dev libglm-dev libassimp-dev
 
 Note that CodeBlocks or other IDEs may have issues running the programs due to problems finding the shader and resource files, however it should still be able to generate the exectuables. To work around this problem it is possible to set an environment variable to tell the tutorials where the resource files can be found. The environment variable is named LOGL_ROOT_PATH and may be set to the path to the root of the LearnOpenGL directory tree. For example:
 
-    `export LOGL_ROOT_PATH=/home/user/tutorials/LearmOpenGL`
+    `export LOGL_ROOT_PATH=/home/user/tutorials/LearnOpenGL`
 
 Running `ls $LOGL_ROOT_PATH` should list, among other things, this README file and the resources direcory.
 
