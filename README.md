@@ -8,6 +8,8 @@ All relevant libraries are found in /libs and all DLLs found in /dlls (pre-)comp
 The CMake script knows where to find the libraries so just run CMake script and generate project of choice.
 Note that you still have to manually copy the required .DLL files from the /dlls folder to your binary folder for the binaries to run.
 
+Keep in mind the supplied libraries were generated with a specific compiler version which may or may not work on your system (generating la large batch of link errors). In that case it's advised to build the libraries yourself from the source.
+
 ## Linux building
 First make sure you have CMake, Git, and GCC by typing as root (sudo) `apt-get install g++ cmake git` and then get the required packages:
 Using root (sudo) and type `apt-get install libsoil-dev libglm-dev libassimp-dev libglew-dev libglfw3-dev` . Next, run CMake (preferably CMake-gui). The source directory is LearnOpenGL and specify the build directory as LearnOpenGL/build. Creating the build directory within LearnOpenGL is important for linking to the resource files (it also will be ignored by Git). Hit configure and specify your compiler files (Unix Makefiles are recommended), resolve any missing directories or libraries, and then hit generate. Navigate to the build directory (`cd LearnOpenGL/build`) and type `make` in the terminal. This should generate the executables in the respective chapter folders.

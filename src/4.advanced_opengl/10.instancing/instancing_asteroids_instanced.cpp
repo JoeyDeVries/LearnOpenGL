@@ -112,17 +112,19 @@ int main()
         modelMatrices[i] = model;
     }
 
+    // forward declare the buffer
+    GLuint buffer;
+    glGenBuffers(1, &buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+
     // Set transformation matrices as an instance vertex attribute (with divisor 1)
     // NOTE: We're cheating a little by taking the, now publicly declared, VAO of the model's mesh(es) and adding new vertexAttribPointers
     // Normally you'd want to do this in a more organized fashion, but for learning purposes this will do.
     for(GLuint i = 0; i < rock.meshes.size(); i++)
     {
         GLuint VAO = rock.meshes[i].VAO;
-        GLuint buffer;
         glBindVertexArray(VAO);
-        glGenBuffers(1, &buffer);
-        glBindBuffer(GL_ARRAY_BUFFER, buffer);
-        glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
         // Set attribute pointers for matrix (4 times vec4)
         glEnableVertexAttribArray(3); 
         glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (GLvoid*)0);
