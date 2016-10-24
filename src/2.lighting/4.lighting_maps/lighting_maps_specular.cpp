@@ -156,10 +156,9 @@ int main()
     
 
     // Load textures
-    GLuint diffuseMap, specularMap, emissionMap;
+    GLuint diffuseMap, specularMap;
     glGenTextures(1, &diffuseMap);
     glGenTextures(1, &specularMap);
-    glGenTextures(1, &emissionMap);
     int width, height;
     unsigned char* image;
     // Diffuse map
