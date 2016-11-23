@@ -34,8 +34,9 @@ void main()
     vs_out.Normal = normalize(normalMatrix * normal);
     
     vec3 T = normalize(normalMatrix * tangent);
-    vec3 B = normalize(normalMatrix * bitangent);
     vec3 N = normalize(normalMatrix * normal);
+    T = normalize(T - dot(T, N) * N);
+    vec3 B = cross(N, T);
     mat3 TBN = transpose(mat3(T, B, N));
     vs_out.TBN = TBN;
     
