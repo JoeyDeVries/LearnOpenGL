@@ -2,7 +2,7 @@
 out vec4 FragColor;
 in vec2 TexCoords;
 
-uniform sampler2D gPositionDepth;
+uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedo;
 uniform sampler2D ssao;
@@ -21,10 +21,9 @@ uniform int draw_mode;
 void main()
 {             
     // Retrieve data from gbuffer
-    vec3 FragPos = texture(gPositionDepth, TexCoords).rgb;
+    vec3 FragPos = texture(gPosition, TexCoords).rgb;
     vec3 Normal = texture(gNormal, TexCoords).rgb;
     vec3 Diffuse = texture(gAlbedo, TexCoords).rgb;
-    float Depth = texture(gPositionDepth, TexCoords).a;
     float AmbientOcclusion = texture(ssao, TexCoords).r;
     
     // Then calculate lighting as usual
@@ -49,11 +48,9 @@ void main()
     if(draw_mode == 1)
         FragColor = vec4(lighting, 1.0);
     else if(draw_mode == 2)
-        FragColor = vec4(vec3(Depth / 50.0), 1.0);
-    else if(draw_mode == 3)
         FragColor = vec4(FragPos, 1.0);
-     else if(draw_mode == 4)
+     else if(draw_mode == 3)
         FragColor = vec4(Normal, 1.0);
-    else if(draw_mode == 5)
+    else if(draw_mode == 4)
         FragColor = vec4(vec3(AmbientOcclusion), 1.0);
 }
