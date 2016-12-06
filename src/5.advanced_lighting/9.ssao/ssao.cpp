@@ -124,7 +124,7 @@ int main()
     // - Normal color buffer
     glGenTextures(1, &gNormal);
     glBindTexture(GL_TEXTURE_2D, gNormal);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGB, GL_FLOAT, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGB, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, gNormal, 0);
@@ -200,7 +200,7 @@ int main()
     }
     GLuint noiseTexture; glGenTextures(1, &noiseTexture);
     glBindTexture(GL_TEXTURE_2D, noiseTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, 4, 4, 0, GL_RGB, GL_FLOAT, &ssaoNoise[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, 4, 4, 0, GL_RGB, GL_FLOAT, &ssaoNoise[0]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -224,13 +224,41 @@ int main()
         // 1. Geometry Pass: render scene's geometry/color data into gbuffer
         glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glm::mat4 projection = glm::perspective(camera.Zoom, (GLfloat)SCR_WIDTH / (GLfloat)SCR_HEIGHT, 0.1f, 50.0f);
+            glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (GLfloat)SCR_WIDTH / (GLfloat)SCR_HEIGHT, 0.1f, 50.0f);
             glm::mat4 view = camera.GetViewMatrix();
             glm::mat4 model;
             shaderGeometryPass.Use();
             glUniformMatrix4fv(glGetUniformLocation(shaderGeometryPass.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
             glUniformMatrix4fv(glGetUniformLocation(shaderGeometryPass.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+            // Background cubes
+            // Note that AO doesn't work too well on flat surfaces so simply scaling the cube as the background room wouldn't work
+            // as the resulting faces of the cube are completely flat.
+            model = glm::translate(model, glm::vec3(10.0f, 0.0f, 0.0f));
+            model = glm::scale(model, glm::vec3(1.0f, 20.0f, 20.0f));
+            glUniformMatrix4fv(glGetUniformLocation(shaderGeometryPass.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+            RenderCube();
+            model = glm::mat4();
+            model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.0f));
+            model = glm::scale(model, glm::vec3(1.0f, 20.0f, 20.0f));
+            glUniformMatrix4fv(glGetUniformLocation(shaderGeometryPass.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+            RenderCube();
+            model = glm::mat4();
+            model = glm::translate(model, glm::vec3(0.0f, 0.0f, 10.0f));
+            model = glm::scale(model, glm::vec3(20.0f, 20.0f, 1.0f));
+            glUniformMatrix4fv(glGetUniformLocation(shaderGeometryPass.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+            RenderCube();
+            model = glm::mat4();
+            model = glm::translate(model, glm::vec3(0.0f, 0.0f, -10.0f));
+            model = glm::scale(model, glm::vec3(20.0f, 20.0f, 1.0f));
+            glUniformMatrix4fv(glGetUniformLocation(shaderGeometryPass.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+            RenderCube();
+            model = glm::mat4();
+            model = glm::translate(model, glm::vec3(0.0f, 10.0f, 0.0f));
+            model = glm::scale(model, glm::vec3(20.0f, 1.0f, 20.0f));
+            glUniformMatrix4fv(glGetUniformLocation(shaderGeometryPass.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+            RenderCube();
             // Floor cube
+            model = glm::mat4();
             model = glm::translate(model, glm::vec3(0.0, -1.0f, 0.0f));
             model = glm::scale(model, glm::vec3(20.0f, 1.0f, 20.0f));
             glUniformMatrix4fv(glGetUniformLocation(shaderGeometryPass.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));

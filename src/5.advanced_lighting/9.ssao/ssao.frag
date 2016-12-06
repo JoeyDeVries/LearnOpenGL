@@ -22,8 +22,8 @@ void main()
 {
     // Get input for SSAO algorithm
     vec3 fragPos = texture(gPosition, TexCoords).xyz;
-    vec3 normal = texture(gNormal, TexCoords).rgb;
-    vec3 randomVec = texture(texNoise, TexCoords * noiseScale).xyz;
+    vec3 normal = normalize(texture(gNormal, TexCoords).rgb);
+    vec3 randomVec = normalize(texture(texNoise, TexCoords * noiseScale).xyz);
     // Create TBN change-of-basis matrix: from tangent-space to view-space
     vec3 tangent = normalize(randomVec - normal * dot(randomVec, normal));
     vec3 bitangent = cross(normal, tangent);
