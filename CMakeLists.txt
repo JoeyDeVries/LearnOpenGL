@@ -58,7 +58,8 @@ set(CHAPTERS
     3.model_loading
     4.advanced_opengl
     5.advanced_lighting
-    6.in_practice
+    6.pbr
+    7.in_practice
 )
 
 set(1.getting_started   
@@ -111,7 +112,14 @@ set(5.advanced_lighting
     9.ssao
 )
 
-set(6.in_practice
+set(6.pbr
+    1.1.lighting
+    1.2.lighting_textured
+    # 2.1.ibl_irradiance
+    # 2.2.ibl_specular
+)
+
+set(7.in_practice
     1.debugging
     # 2.text_rendering
 )
