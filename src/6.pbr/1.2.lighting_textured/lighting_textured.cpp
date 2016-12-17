@@ -144,7 +144,7 @@ int main()
         glActiveTexture(GL_TEXTURE4);
         glBindTexture(GL_TEXTURE_2D, ao);
 
-        // render rows*column number of spheres with varying metallic/roughness values scaled by rows and columns respectively
+        // render rows*column number of spheres with material properties defined by textures (they all have the same material properties)
         glm::mat4 model;
         for (int row = 0; row < nrRows; ++row) 
         {
@@ -214,7 +214,7 @@ void renderSphere()
             {
                 float xSegment = (float)x / (float)X_SEGMENTS;
                 float ySegment = (float)y / (float)Y_SEGMENTS;
-                float xPos = std::cos(xSegment * 2.0f * PI) * std::sin(ySegment * PI); // NOTE(Joey): TAU is 2PI
+                float xPos = std::cos(xSegment * 2.0f * PI) * std::sin(ySegment * PI); 
                 float yPos = std::cos(ySegment * PI);
                 float zPos = std::sin(xSegment * 2.0f * PI) * std::sin(ySegment * PI);
 
@@ -227,7 +227,7 @@ void renderSphere()
         bool oddRow = false;
         for (int y = 0; y < Y_SEGMENTS; ++y)
         {
-            if (!oddRow) // NOTE(Joey): even rows: y == 0, y == 2; and so on
+            if (!oddRow) // even rows: y == 0, y == 2; and so on
             {
                 for (int x = 0; x <= X_SEGMENTS; ++x)
                 {
