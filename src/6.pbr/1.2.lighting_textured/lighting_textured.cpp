@@ -31,7 +31,6 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void Do_Movement();
 GLuint loadTexture(GLchar const * path);
-void RenderQuad();
 void renderSphere();
 
 
@@ -87,11 +86,11 @@ int main()
 
     // set material texture uniforms
     shader.Use();
-    glUniform1i(glGetUniformLocation(shader.Program, "albedo"), 0);
-    glUniform1i(glGetUniformLocation(shader.Program, "normal"), 1);
-    glUniform1i(glGetUniformLocation(shader.Program, "metallic"), 2);
-    glUniform1i(glGetUniformLocation(shader.Program, "roughness"), 3);
-    glUniform1i(glGetUniformLocation(shader.Program, "ao"), 4);
+    glUniform1i(glGetUniformLocation(shader.Program, "albedoMap"), 0);
+    glUniform1i(glGetUniformLocation(shader.Program, "normalMap"), 1);
+    glUniform1i(glGetUniformLocation(shader.Program, "metallicMap"), 2);
+    glUniform1i(glGetUniformLocation(shader.Program, "roughnessMap"), 3);
+    glUniform1i(glGetUniformLocation(shader.Program, "aoMap"), 4);
 
     // projection setup
     glm::mat4 projection = glm::perspective(camera.Zoom, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -99,16 +98,10 @@ int main()
 
     // lights
     glm::vec3 lightPositions[] = {
-        glm::vec3(-10.0f,  10.0f, 10.0f),
-        glm::vec3( 10.0f,  10.0f, 10.0f),
-        glm::vec3(-10.0f, -10.0f, 10.0f),
-        glm::vec3( 10.0f, -10.0f, 10.0f),
+        glm::vec3(0.0, 0.0f, 10.0f),
     };
     glm::vec3 lightColors[] = {
-        glm::vec3(2.0f, 2.0f, 2.0f),
-        glm::vec3(2.0f, 2.0f, 2.0f),
-        glm::vec3(2.0f, 2.0f, 2.0f),
-        glm::vec3(2.0f, 2.0f, 2.0f)
+        glm::vec3(2.5f, 2.5f, 2.5f)
     };
     int nrRows    = 7;
     int nrColumns = 7;
@@ -173,11 +166,13 @@ int main()
         // keeps the codeprint small.
         for (unsigned int i = 0; i < sizeof(lightPositions) / sizeof(lightPositions[0]); ++i)
         {
-            glUniform3fv(glGetUniformLocation(shader.Program, ("lightPositions[" + std::to_string(i) + "]").c_str()), 1, &lightPositions[i][0]);
+            glm::vec3 newPos = lightPositions[i] + glm::vec3(sin(glfwGetTime() * 5.0) * 5.0, 0.0, 0.0);
+            newPos = lightPositions[i];
+            glUniform3fv(glGetUniformLocation(shader.Program, ("lightPositions[" + std::to_string(i) + "]").c_str()), 1, &newPos[0]);
             glUniform3fv(glGetUniformLocation(shader.Program, ("lightColors[" + std::to_string(i) + "]").c_str()), 1, &lightColors[i][0]);
 
             model = glm::mat4();
-            model = glm::translate(model, lightPositions[i]);
+            model = glm::translate(model, newPos);
             model = glm::scale(model, glm::vec3(0.5f));
             glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
             renderSphere();
@@ -191,6 +186,8 @@ int main()
     return 0;
 }
 
+
+// renders (and builds if necessary) a sphere
 unsigned int sphereVAO = 0;
 unsigned int indexCount;
 void renderSphere()
@@ -206,8 +203,6 @@ void renderSphere()
         std::vector<glm::vec3> positions;
         std::vector<glm::vec2> uv;
         std::vector<glm::vec3> normals;
-        std::vector<glm::vec3> tangents;
-        std::vector<glm::vec3> bitangents;
         std::vector<unsigned int> indices;
 
         const unsigned int X_SEGMENTS = 64;
@@ -251,6 +246,7 @@ void renderSphere()
             oddRow = !oddRow;
         }
         indexCount = indices.size();
+
         std::vector<float> data;
         for (int i = 0; i < positions.size(); ++i)
         {
@@ -268,25 +264,12 @@ void renderSphere()
                 data.push_back(normals[i].y);
                 data.push_back(normals[i].z);
             }
-            if (tangents.size() > 0)
-            {
-                data.push_back(tangents[i].x);
-                data.push_back(tangents[i].y);
-                data.push_back(tangents[i].z);
-            }
-            if (bitangents.size() > 0)
-            {
-                data.push_back(bitangents[i].x);
-                data.push_back(bitangents[i].y);
-                data.push_back(bitangents[i].z);
-            }
         }
         glBindVertexArray(sphereVAO);
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), &data[0], GL_STATIC_DRAW);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-        //float stride = (3 + 2 + 3 + 3 + 3) * sizeof(float);
         float stride = (3 + 2 + 3) * sizeof(float);
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)0);
@@ -294,107 +277,10 @@ void renderSphere()
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(3 * sizeof(float)));
         glEnableVertexAttribArray(2);
         glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(5 * sizeof(float)));
-        //glEnableVertexAttribArray(3);
-   /*     glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(8 * sizeof(float)));
-        glEnableVertexAttribArray(4);
-        glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(11 * sizeof(float)));*/
     }
 
     glBindVertexArray(sphereVAO);
     glDrawElements(GL_TRIANGLE_STRIP, indexCount, GL_UNSIGNED_INT, 0);
-}
-
-// RenderQuad() Renders a 1x1 quad in NDC
-GLuint quadVAO = 0;
-GLuint quadVBO;
-void RenderQuad()
-{
-    if (quadVAO == 0)
-    {
-        // positions
-        glm::vec3 pos1(-1.0, 1.0, 0.0);
-        glm::vec3 pos2(-1.0, -1.0, 0.0);
-        glm::vec3 pos3(1.0, -1.0, 0.0);
-        glm::vec3 pos4(1.0, 1.0, 0.0);
-        // texture coordinates
-        glm::vec2 uv1(0.0, 1.0);
-        glm::vec2 uv2(0.0, 0.0);
-        glm::vec2 uv3(1.0, 0.0);
-        glm::vec2 uv4(1.0, 1.0);
-        // normal vector
-        glm::vec3 nm(0.0, 0.0, 1.0);
-
-        // calculate tangent/bitangent vectors of both triangles
-        glm::vec3 tangent1, bitangent1;
-        glm::vec3 tangent2, bitangent2;
-        // - triangle 1
-        glm::vec3 edge1 = pos2 - pos1;
-        glm::vec3 edge2 = pos3 - pos1;
-        glm::vec2 deltaUV1 = uv2 - uv1;
-        glm::vec2 deltaUV2 = uv3 - uv1;
-
-        GLfloat f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
-
-        tangent1.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
-        tangent1.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
-        tangent1.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
-        tangent1 = glm::normalize(tangent1);
-
-        bitangent1.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
-        bitangent1.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
-        bitangent1.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
-        bitangent1 = glm::normalize(bitangent1);
-
-        // - triangle 2
-        edge1 = pos3 - pos1;
-        edge2 = pos4 - pos1;
-        deltaUV1 = uv3 - uv1;
-        deltaUV2 = uv4 - uv1;
-
-        f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
-
-        tangent2.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
-        tangent2.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
-        tangent2.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
-        tangent2 = glm::normalize(tangent2);
-
-
-        bitangent2.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
-        bitangent2.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
-        bitangent2.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
-        bitangent2 = glm::normalize(bitangent2);
-
-
-        GLfloat quadVertices[] = {
-            // Positions            // normal         // TexCoords  // Tangent                          // Bitangent
-            pos1.x, pos1.y, pos1.z, nm.x, nm.y, nm.z, uv1.x, uv1.y, tangent1.x, tangent1.y, tangent1.z, bitangent1.x, bitangent1.y, bitangent1.z,
-            pos2.x, pos2.y, pos2.z, nm.x, nm.y, nm.z, uv2.x, uv2.y, tangent1.x, tangent1.y, tangent1.z, bitangent1.x, bitangent1.y, bitangent1.z,
-            pos3.x, pos3.y, pos3.z, nm.x, nm.y, nm.z, uv3.x, uv3.y, tangent1.x, tangent1.y, tangent1.z, bitangent1.x, bitangent1.y, bitangent1.z,
-
-            pos1.x, pos1.y, pos1.z, nm.x, nm.y, nm.z, uv1.x, uv1.y, tangent2.x, tangent2.y, tangent2.z, bitangent2.x, bitangent2.y, bitangent2.z,
-            pos3.x, pos3.y, pos3.z, nm.x, nm.y, nm.z, uv3.x, uv3.y, tangent2.x, tangent2.y, tangent2.z, bitangent2.x, bitangent2.y, bitangent2.z,
-            pos4.x, pos4.y, pos4.z, nm.x, nm.y, nm.z, uv4.x, uv4.y, tangent2.x, tangent2.y, tangent2.z, bitangent2.x, bitangent2.y, bitangent2.z
-        };
-        // Setup plane VAO
-        glGenVertexArrays(1, &quadVAO);
-        glGenBuffers(1, &quadVBO);
-        glBindVertexArray(quadVAO);
-        glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(GLfloat), (GLvoid*)0);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 14 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
-        glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(GLfloat), (GLvoid*)(8 * sizeof(GLfloat)));
-        glEnableVertexAttribArray(4);
-        glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(GLfloat), (GLvoid*)(11 * sizeof(GLfloat)));
-    }
-    glBindVertexArray(quadVAO);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    glBindVertexArray(0);
 }
 
 // This function loads a texture from file. Note: texture loading functions like these are usually 

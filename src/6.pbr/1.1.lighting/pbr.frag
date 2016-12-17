@@ -3,6 +3,7 @@ out vec4 FragColor;
 in vec2 TexCoords;
 in vec3 WorldPos;
 in vec3 Normal;
+in mat3 TBN;
 
 // material parameters
 uniform vec3 albedo;
@@ -78,6 +79,8 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
 {
 	return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(1.0 - cosTheta, 5.0);
 }
+
+
 
 void main()
 {		

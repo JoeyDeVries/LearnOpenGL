@@ -3,13 +3,14 @@ out vec4 FragColor;
 in vec2 TexCoords;
 in vec3 WorldPos;
 in vec3 Normal;
+in mat3 TBN;
 
 // material parameters
-uniform sampler2D albedo;
-uniform sampler2D normal;
-uniform sampler2D metallic;
-uniform sampler2D roughness;
-uniform sampler2D ao;
+uniform sampler2D albedoMap;
+uniform sampler2D normalMap;
+uniform sampler2D metallicMap;
+uniform sampler2D roughnessMap;
+uniform sampler2D aoMap;
 
 // lights
 uniform vec3 lightPositions[4];
@@ -20,17 +21,20 @@ uniform float exposure;
 
 const float PI    = 3.14159265359;
 
-vec3 getNormal(vec3 worldNormal, vec3 tangentNormal)
+// easy trick to get tangent-normals to world-space to keep PBR code simplified.
+vec3 getNormal()
 {
+    vec3 tangentNormal = texture(normalMap, TexCoords).xyz * 2.0 - 1.0;
+    
     vec3 Q1  = dFdx(WorldPos);
     vec3 Q2  = dFdy(WorldPos);
     vec2 st1 = dFdx(TexCoords);
     vec2 st2 = dFdy(TexCoords);
 
-    vec3 normal   = normalize(worldNormal);
-    vec3 tangent  = normalize(Q1*st2.t - Q2*st1.t);
-    vec3 binormal = -normalize(cross(normal, tangent));
-    mat3 TBN      = mat3(tangent, binormal, normal);
+    vec3 N   = normalize(Normal);
+    vec3 T  = normalize(Q1*st2.t - Q2*st1.t);
+    vec3 B  = -normalize(cross(N, T));
+    mat3 TBN = mat3(T, B, N);
 
     return normalize(TBN * tangentNormal);
 }
@@ -82,13 +86,13 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
 
 void main()
 {		
-    vec3 albedo     = pow(texture(albedo, TexCoords).rgb, vec3(2.2));
-    // vec3 normal     = getWorldNormalFromTangentSpace(texture(normal, TexCoords).rgb);
-    float metallic  = texture(metallic, TexCoords).r;
-    float roughness = texture(roughness, TexCoords).r;
-    float ao        = texture(ao, TexCoords).r;
+    vec3 albedo     = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
+    float metallic  = texture(metallicMap, TexCoords).r;
+    float roughness = texture(roughnessMap, TexCoords).r;
+    float ao        = texture(aoMap, TexCoords).r;
 
-    vec3 N = normalize(Normal);
+    vec3 N = getNormal();
+    // N = normalize(Normal);
 	vec3 V = normalize(camPos - WorldPos);
 	vec3 R = reflect(-V, N); 
 
@@ -113,8 +117,8 @@ void main()
     
     // first do ambient lighting (note that the next IBL tutorial will replace the ambient
     // lighting with environment lighting).
-    vec3 ambient = vec3(0.01) * albedo * ao;    
-    
+    vec3 ambient = vec3(0.03) * albedo * ao;    
+
     // for every light, calculate their contribution to the reflectance equation
    vec3 Lo = vec3(0.0);
     for(int i = 0; i < 4; ++i) 
@@ -147,11 +151,10 @@ void main()
     vec3 color = ambient + Lo;
 	
 	// NOTE(Joey): HDR tonemapping
-	// color = vec3(1.0) - exp(-color * exposure);
 	color = color / (color + vec3(1.0));
 	// NOTE(Joey): gamma correct
 	color = pow(color, vec3(1.0/2.2)); 
     
    
-	FragColor = vec4(color, 0.0, 1.0);
+	FragColor = vec4(color, 1.0);
 }
