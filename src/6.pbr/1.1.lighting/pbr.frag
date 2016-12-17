@@ -86,11 +86,7 @@ void main()
     // multiply kD by the inverse metalness such that only non-metals 
     // have diffuse lighting, or a linear blend if partly metal (pure metals
     // have no diffuse light).
-    kD *= 1.0 - metallic;	
-
-    // first do ambient lighting (note that the next IBL tutorial will replace 
-    // this ambient lighting with environment lighting).
-    vec3 ambient = vec3(0.01) * albedo * ao;
+    kD *= 1.0 - metallic;	  
 
     // reflectance equation
     vec3 Lo = vec3(0.0);
@@ -117,6 +113,11 @@ void main()
         // add to outgoing radiance Lo
         Lo += (kD * albedo / PI + kS * brdf) * radiance * NdotL; 
     }   
+    
+    // ambient lighting (note that the next IBL tutorial will replace 
+    // this ambient lighting with environment lighting).
+    vec3 ambient = vec3(0.01) * albedo * ao;
+
     vec3 color = ambient + Lo;
 
     // HDR tonemapping

@@ -25,7 +25,7 @@ const float PI = 3.14159265359;
 // Don't worry if you don't get what's going on; you generally want to do normal 
 // mapping the usual way for performance anways; I do plan make a note of this 
 // technique somewhere later in the normal mapping tutorial.
-vec3 getNormal()
+vec3 getNormalFromMap()
 {
     vec3 tangentNormal = texture(normalMap, TexCoords).xyz * 2.0 - 1.0;
 
@@ -94,7 +94,7 @@ void main()
     float roughness = texture(roughnessMap, TexCoords).r;
     float ao        = texture(aoMap, TexCoords).r;
 
-    vec3 N = getNormal();
+    vec3 N = getNormalFromMap();
     vec3 V = normalize(camPos - WorldPos);
     vec3 R = reflect(-V, N); 
 
@@ -114,10 +114,6 @@ void main()
     // have diffuse lighting, or a linear blend if partly metal (pure metals
     // have no diffuse light).
     kD *= 1.0 - metallic;	
-
-    // first do ambient lighting (note that the next IBL tutorial will replace 
-    // this ambient lighting with environment lighting).
-    vec3 ambient = vec3(0.01) * albedo * ao;
 
     // reflectance equation
     vec3 Lo = vec3(0.0);
@@ -144,6 +140,11 @@ void main()
         // add to outgoing radiance Lo
         Lo += (kD * albedo / PI + kS * brdf) * radiance * NdotL; 
     }   
+    
+    // ambient lighting (note that the next IBL tutorial will replace 
+    // this ambient lighting with environment lighting).
+    vec3 ambient = vec3(0.01) * albedo * ao;
+    
     vec3 color = ambient + Lo;
 
     // HDR tonemapping
