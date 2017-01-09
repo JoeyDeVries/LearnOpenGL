@@ -101,7 +101,7 @@ int main()
         glm::vec3(0.0, 0.0f, 10.0f),
     };
     glm::vec3 lightColors[] = {
-        glm::vec3(2.5f, 2.5f, 2.5f)
+        glm::vec3(150.0f, 150.0f, 150.0f)
     };
     int nrRows    = 7;
     int nrColumns = 7;

@@ -82,11 +82,6 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
     return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
 }
 // ----------------------------------------------------------------------------
-vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
-{
-    return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(1.0 - cosTheta, 5.0);
-}
-// ----------------------------------------------------------------------------
 void main()
 {		
     vec3 albedo     = pow(texture(albedoMap, TexCoords).rgb, vec3(2.2));
@@ -102,18 +97,6 @@ void main()
     // of 0.04 and if it's a metal, use their albedo color as F0 (metallic workflow)    
     vec3 F0 = vec3(0.04); 
     F0 = mix(F0, albedo, metallic);
-    vec3 F   = fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness); // use modified Fresnel-Schlick approximation to take roughness into account
-
-    // kS is equal to Fresnel
-    vec3 kS = F;
-    // for energy conservation, the diffuse and specular light can't
-    // be above 1.0 (unless the surface emits light); to preserve this
-    // relationship the diffuse component (kD) should equal 1.0 - kS.
-    vec3 kD = vec3(1.0) - kS;
-    // multiply kD by the inverse metalness such that only non-metals 
-    // have diffuse lighting, or a linear blend if partly metal (pure metals
-    // have no diffuse light).
-    kD *= 1.0 - metallic;	
 
     // reflectance equation
     vec3 Lo = vec3(0.0);
@@ -123,12 +106,24 @@ void main()
         vec3 L = normalize(lightPositions[i] - WorldPos);
         vec3 H = normalize(V + L);
         float distance = length(lightPositions[i] - WorldPos);
-        float attenuation = 1.0 / distance * distance;
+        float attenuation = 1.0 / (distance * distance);
         vec3 radiance = lightColors[i] * attenuation;
 
         // Cook-Torrance BRDF
         float NDF = DistributionGGX(N, H, roughness);   
-        float G   = GeometrySmith(N, V, L, roughness);      
+        float G   = GeometrySmith(N, V, L, roughness);    
+        vec3 F = fresnelSchlick(max(dot(H, V), 0.0), F0);        
+        
+         // kS is equal to Fresnel
+        vec3 kS = F;
+        // for energy conservation, the diffuse and specular light can't
+        // be above 1.0 (unless the surface emits light); to preserve this
+        // relationship the diffuse component (kD) should equal 1.0 - kS.
+        vec3 kD = vec3(1.0) - kS;
+        // multiply kD by the inverse metalness such that only non-metals 
+        // have diffuse lighting, or a linear blend if partly metal (pure metals
+        // have no diffuse light).
+        kD *= 1.0 - metallic;	  
                
         vec3 nominator    = NDF * G * F;
         float denominator = 4 * max(dot(V, N), 0.0) * max(dot(L, N), 0.0) + 0.001; // 0.001 to prevent divide by zero.
