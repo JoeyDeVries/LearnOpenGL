@@ -115,7 +115,8 @@ set(5.advanced_lighting
 set(6.pbr
     1.1.lighting
     1.2.lighting_textured
-    # 2.1.ibl_irradiance
+    # 2.1.1.ibl_irradiance_conversion
+    # 2.1.2.ibl_irradiance
     # 2.2.ibl_specular
 )
 
@@ -129,18 +130,24 @@ set(7.in_practice
 configure_file(configuration/root_directory.h.in configuration/root_directory.h)
 include_directories(${CMAKE_BINARY_DIR}/configuration)
 
+# first create relevant static libraries requried for other projects
+add_library(STB_IMAGE "src/stb_image.cpp")
+set(LIBS ${LIBS} STB_IMAGE)
+
+# then create a project file per tutorial
 foreach(CHAPTER ${CHAPTERS})
     foreach(DEMO ${${CHAPTER}})
         file(GLOB SOURCE
             "src/${CHAPTER}/${DEMO}/*.h"
             "src/${CHAPTER}/${DEMO}/*.cpp"
         )
-        add_executable(${DEMO} ${SOURCE})
-        target_link_libraries(${DEMO} ${LIBS})
+        set(NAME "${CHAPTER}_${DEMO}")
+        add_executable(${NAME} ${SOURCE})
+        target_link_libraries(${NAME} ${LIBS})
 		if(WIN32)
-        	set_target_properties(${DEMO} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${CHAPTER}")
+        	set_target_properties(${NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${CHAPTER}")
 		elseif(UNIX)
-			set_target_properties(${DEMO} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin/${CHAPTER}")
+			set_target_properties(${NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin/${CHAPTER}")
 		endif(WIN32)
         # copy shader files to build directory
         file(GLOB SHADERS 
@@ -151,7 +158,7 @@ foreach(CHAPTER ${CHAPTERS})
         foreach(SHADER ${SHADERS})
 			if(WIN32)
             	# configure_file(${SHADER} "test")
-            	add_custom_command(TARGET ${DEMO} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SHADER} $<TARGET_FILE_DIR:${DEMO}>)
+            	add_custom_command(TARGET ${NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SHADER} $<TARGET_FILE_DIR:${NAME}>)
 			elseif(UNIX)
 				file(COPY ${SHADER} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/${CHAPTER})			
 			endif(WIN32)
@@ -159,7 +166,7 @@ foreach(CHAPTER ${CHAPTERS})
         endforeach(SHADER)
       # if compiling for visual studio, also use configure file for each project (specifically to set up working directory)
       if(MSVC)
-          configure_file(${CMAKE_SOURCE_DIR}/configuration/visualstudio.vcxproj.user.in ${CMAKE_CURRENT_BINARY_DIR}/${DEMO}.vcxproj.user @ONLY)
+          configure_file(${CMAKE_SOURCE_DIR}/configuration/visualstudio.vcxproj.user.in ${CMAKE_CURRENT_BINARY_DIR}/${NAME}.vcxproj.user @ONLY)
       endif(MSVC)
     endforeach(DEMO)
 endforeach(CHAPTER)
