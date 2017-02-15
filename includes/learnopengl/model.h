@@ -179,7 +179,7 @@ private:
             GLboolean skip = false;
             for(GLuint j = 0; j < textures_loaded.size(); j++)
             {
-                if(textures_loaded[j].path == str)
+                if(std::strcmp(textures_loaded[j].path.C_Str(), str.C_Str()) == 0)
                 {
                     textures.push_back(textures_loaded[j]);
                     skip = true; // A texture with the same filepath has already been loaded, continue to next one. (optimization)
