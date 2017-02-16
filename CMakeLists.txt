@@ -115,8 +115,8 @@ set(5.advanced_lighting
 set(6.pbr
     1.1.lighting
     1.2.lighting_textured
-    # 2.1.1.ibl_irradiance_conversion
-    # 2.1.2.ibl_irradiance
+    2.1.1.ibl_irradiance_conversion
+    2.1.2.ibl_irradiance
     # 2.2.ibl_specular
 )
 
