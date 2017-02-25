@@ -62,11 +62,6 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
     return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
 }
 // ----------------------------------------------------------------------------
-vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
-{
-    return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(1.0 - cosTheta, 5.0);
-}  
-// ----------------------------------------------------------------------------
 void main()
 {		
     vec3 N = Normal;
@@ -94,6 +89,10 @@ void main()
         float G   = GeometrySmith(N, V, L, roughness);    
         vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);        
         
+        vec3 nominator    = NDF * G * F;
+        float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.001; // 0.001 to prevent divide by zero.
+        vec3 brdf = nominator / denominator;
+        
          // kS is equal to Fresnel
         vec3 kS = F;
         // for energy conservation, the diffuse and specular light can't
@@ -103,11 +102,7 @@ void main()
         // multiply kD by the inverse metalness such that only non-metals 
         // have diffuse lighting, or a linear blend if partly metal (pure metals
         // have no diffuse light).
-        kD *= 1.0 - metallic;	  
-               
-        vec3 nominator    = NDF * G * F;
-        float denominator = 4 * max(dot(V, N), 0.0) * max(dot(L, N), 0.0) + 0.001; // 0.001 to prevent divide by zero.
-        vec3 brdf = nominator / denominator;
+        kD *= 1.0 - metallic;	                
             
         // scale light by NdotL
         float NdotL = max(dot(N, L), 0.0);        
@@ -117,7 +112,7 @@ void main()
     }   
     
     // ambient lighting (we now use IBL as the ambient term)
-    vec3 kS = fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
+    vec3 kS = fresnelSchlick(max(dot(N, V), 0.0), F0);
     vec3 kD = 1.0 - kS;
     kD *= 1.0 - metallic;	  
     vec3 irradiance = texture(irradianceMap, N).rgb;
@@ -132,6 +127,5 @@ void main()
     // gamma correct
     color = pow(color, vec3(1.0/2.2)); 
 
-    FragColor = vec4(color, 1.0);
-    // FragColor = vec4(N * 0.5 + 0.5, 1.0);
+    FragColor = vec4(color , 1.0);
 }

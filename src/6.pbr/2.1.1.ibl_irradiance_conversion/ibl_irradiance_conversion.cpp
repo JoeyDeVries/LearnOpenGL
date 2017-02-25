@@ -50,6 +50,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", nullptr, nullptr); // Windowed
@@ -269,11 +270,11 @@ int main()
         glBindTexture(GL_TEXTURE_CUBE_MAP, envCubemap);
         renderCube();
 
-        //equirectangularToCubemapShader.Use();
-        //glUniformMatrix4fv(glGetUniformLocation(equirectangularToCubemapShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
-        //glActiveTexture(GL_TEXTURE0);
-        //glBindTexture(GL_TEXTURE_2D, hdrTexture);
-        //renderCube();
+    /*    equirectangularToCubemapShader.Use();
+        glUniformMatrix4fv(glGetUniformLocation(equirectangularToCubemapShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, hdrTexture);
+        renderCube();*/
 
 
         // Swap the buffers
