@@ -78,9 +78,9 @@ int main()
     // load and initialize shaders
     // ----------------------
     Shader pbrShader("2.1.2.pbr.vs", "2.1.2.pbr.frag");
-    Shader equirectangularToCubemapShader("2.1.1.cubemap.vs", "2.1.1.equirectangular_to_cubemap.frag");
-    Shader irradianceShader("2.1.1.cubemap.vs", "2.1.2.irradiance_convolution.frag");
-    Shader backgroundShader("2.1.1.background.vs", "2.1.1.background.frag");
+    Shader equirectangularToCubemapShader("2.1.2.cubemap.vs", "2.1.2.equirectangular_to_cubemap.frag");
+    Shader irradianceShader("2.1.2.cubemap.vs", "2.1.2.irradiance_convolution.frag");
+    Shader backgroundShader("2.1.2.background.vs", "2.1.2.background.frag");
 
     pbrShader.Use();
     glUniform1i(glGetUniformLocation(pbrShader.Program, "irradianceMap"), 0);
