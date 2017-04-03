@@ -66,7 +66,7 @@ float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
     return ggx1 * ggx2;
 }
 // ----------------------------------------------------------------------------
-vec2 IntegrateBRDF(float roughness, float NdotV)
+vec2 IntegrateBRDF(float NdotV, float roughness)
 {
     vec3 V;
     V.x = sqrt(1.0 - NdotV*NdotV);
@@ -108,6 +108,6 @@ vec2 IntegrateBRDF(float roughness, float NdotV)
 // ----------------------------------------------------------------------------
 void main() 
 {
-    vec2 integratedBRDF = IntegrateBRDF(TexCoords.y, TexCoords.x);
+    vec2 integratedBRDF = IntegrateBRDF(TexCoords.x, TexCoords.y);
     FragColor = integratedBRDF;
 }
