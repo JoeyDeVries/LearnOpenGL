@@ -124,7 +124,8 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // Load, create texture and generate mipmaps
-    image = SOIL_load_image(FileSystem::getPath("resources/textures/awesomeface.png").c_str(), &width, &height, 0, SOIL_LOAD_RGB);
+    stbi_set_flip_vertically_on_load(true); // Note: FLip Texture in Y - axis while loading
+    image = stbi_load(FileSystem::getPath("resources/textures/awesomeface.png").c_str(), &width, &height, GL_RGB , 0);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
     glGenerateMipmap(GL_TEXTURE_2D);
     SOIL_free_image_data(image);
