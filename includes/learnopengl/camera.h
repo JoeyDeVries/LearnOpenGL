@@ -1,14 +1,11 @@
-#pragma once
+#ifndef CAMERA_H
+#define CAMERA_H
 
-// Std. Includes
-#include <vector>
-
-// GL Includes
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-
+#include <vector>
 
 // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
 enum Camera_Movement {
@@ -21,8 +18,8 @@ enum Camera_Movement {
 // Default camera values
 const GLfloat YAW        = -90.0f;
 const GLfloat PITCH      =  0.0f;
-const GLfloat SPEED      =  3.0f;
-const GLfloat SENSITIVTY =  0.25f;
+const GLfloat SPEED      =  2.5f;
+const GLfloat SENSITIVTY =  0.1f;
 const GLfloat ZOOM       =  45.0f;
 
 
@@ -131,3 +128,4 @@ private:
         this->Up    = glm::normalize(glm::cross(this->Right, this->Front));
     }
 };
+#endif
