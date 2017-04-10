@@ -24,13 +24,13 @@ find_package(GLFW3 REQUIRED)
 message(STATUS "Found GLFW3 in ${GLFW3_INCLUDE_DIR}")
 find_package(ASSIMP REQUIRED)
 message(STATUS "Found ASSIMP in ${ASSIMP_INCLUDE_DIR}")
-find_package(SOIL REQUIRED)
-message(STATUS "Found SOIL in ${SOIL_INCLUDE_DIR}")
-find_package(GLEW REQUIRED)
-message(STATUS "Found GLEW in ${GLEW_INCLUDE_DIR}")
+# find_package(SOIL REQUIRED)
+# message(STATUS "Found SOIL in ${SOIL_INCLUDE_DIR}")
+# find_package(GLEW REQUIRED)
+# message(STATUS "Found GLEW in ${GLEW_INCLUDE_DIR}")
 
 if(WIN32)
-  set(LIBS glfw3 opengl32 glew32s SOIL assimp)
+  set(LIBS glfw3 opengl32 assimp)
 elseif(UNIX AND NOT APPLE)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
   find_package(OpenGL REQUIRED)
@@ -38,7 +38,7 @@ elseif(UNIX AND NOT APPLE)
   find_package(X11 REQUIRED)
   # note that the order is important for setting the libs
   # use pkg-config --libs $(pkg-config --print-requires --print-requires-private glfw3) in a terminal to confirm
-  set(LIBS ${GLFW3_LIBRARY} X11 Xrandr Xinerama Xi Xxf86vm Xcursor GL dl pthread GLEW SOIL assimp)
+  set(LIBS ${GLFW3_LIBRARY} X11 Xrandr Xinerama Xi Xxf86vm Xcursor GL dl pthread assimp)
 elseif(APPLE)
   INCLUDE_DIRECTORIES(/System/Library/Frameworks)
   FIND_LIBRARY(COCOA_LIBRARY Cocoa)
@@ -46,7 +46,7 @@ elseif(APPLE)
   FIND_LIBRARY(IOKit_LIBRARY IOKit)
   MARK_AS_ADVANCED(COCOA_LIBRARY OpenGL_LIBRARY)
   SET(APPLE_LIBS ${COCOA_LIBRARY} ${IOKit_LIBRARY} ${OpenGL_LIBRARY})
-  SET(APPLE_LIBS ${APPLE_LIBS} glfw3 GLEW assimp SOIL)
+  SET(APPLE_LIBS ${APPLE_LIBS} glfw3 assimp)
   set(LIBS ${LIBS} ${APPLE_LIBS})
 else()
   set(LIBS )
@@ -63,21 +63,45 @@ set(CHAPTERS
 )
 
 set(1.getting_started   
-    1.hello_window
-    2.hello_triangle
-    3.shaders
-    4.textures
-    5.transformations
-    6.coordinate_systems
-    7.camera
+    1.1.hello_window
+    1.2.hello_window_clear
+    2.1.hello_triangle
+    2.2.hello_triangle_indexed
+    2.3.hello_triangle_exercise1
+    2.4.hello_triangle_exercise2
+    2.5.hello_triangle_exercise3
+    3.1.shaders_uniform
+    3.2.shaders_interpolation
+    3.3.shaders_class
+    4.1.textures
+    4.2.textures_combined
+    4.3.textures_exercise2
+    4.4.textures_exercise3
+    4.5.textures_exercise4
+    5.1.transformations
+    5.2.transformations_exercise2
+    6.1.coordinate_systems
+    6.2.coordinate_systems_depth
+    6.3.coordinate_systems_multiple_objects
+    7.1.camera_circle
+    7.2.camera_keyboard_dt
+    7.3.camera_mouse_zoom
+    7.4.camera_class
 )
 
 set(2.lighting
     1.colors
-    2.basic_lighting
-    3.materials
-    4.lighting_maps
-    5.light_casters
+    2.1.basic_lighting_diffuse
+    2.2.basic_lighting_specular
+    3.1.materials
+    3.2.materials_exercise1
+    4.1.lighting_maps_diffuse_map
+    4.2.lighting_maps_specular_map
+    4.3.lighting_maps_exercise4
+    5.1.light_casters_directional
+    5.2.light_casters_point
+    5.3.light_casters_spot
+    5.4.light_casters_spot_soft
     6.multiple_lights
 )
 
@@ -135,6 +159,9 @@ include_directories(${CMAKE_BINARY_DIR}/configuration)
 add_library(STB_IMAGE "src/stb_image.cpp")
 set(LIBS ${LIBS} STB_IMAGE)
 
+add_library(GLAD "src/glad.c")
+set(LIBS ${LIBS} GLAD)
+
 # then create a project file per tutorial
 foreach(CHAPTER ${CHAPTERS})
     foreach(DEMO ${${CHAPTER}})
@@ -142,7 +169,7 @@ foreach(CHAPTER ${CHAPTERS})
             "src/${CHAPTER}/${DEMO}/*.h"
             "src/${CHAPTER}/${DEMO}/*.cpp"
         )
-        set(NAME "${CHAPTER}_${DEMO}")
+        set(NAME "${CHAPTER}__${DEMO}")
         add_executable(${NAME} ${SOURCE})
         target_link_libraries(${NAME} ${LIBS})
 		if(WIN32)
@@ -153,7 +180,8 @@ foreach(CHAPTER ${CHAPTERS})
         # copy shader files to build directory
         file(GLOB SHADERS 
                  "src/${CHAPTER}/${DEMO}/*.vs"
-                 "src/${CHAPTER}/${DEMO}/*.frag"
+                 # "src/${CHAPTER}/${DEMO}/*.frag"
+                 "src/${CHAPTER}/${DEMO}/*.fs"
                  "src/${CHAPTER}/${DEMO}/*.gs"
         )
         foreach(SHADER ${SHADERS})
