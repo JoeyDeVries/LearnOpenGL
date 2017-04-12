@@ -65,8 +65,8 @@ int main()
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
 
-    // build and compile our shader zprogram
-    // ------------------------------------
+    // build and compile shaders
+    // -------------------------
     Shader lightingShader("5.1.light_casters.vs", "5.1.light_casters.fs");
     Shader lampShader("1.lamp.vs", "1.lamp.fs");
 
