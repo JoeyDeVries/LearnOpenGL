@@ -1,86 +1,84 @@
-// Std. Includes
-#include <string>
-
-// GLEW
-#define GLEW_STATIC
-#include <GL/glew.h>
-
-// GLFW
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <stb_image.h>
 
-// GL includes
-#include <learnopengl/shader.h>
-#include <learnopengl/camera.h>
-
-// GLM Mathemtics
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-// Other Libs
 #include <learnopengl/filesystem.h>
+#include <learnopengl/shader_m.h>
+#include <learnopengl/camera.h>
+#include <learnopengl/model.h>
 
-#include "stb_image.h"
+#include <iostream>
 
-// Properties
-const GLuint SCR_WIDTH = 1280, SCR_HEIGHT = 720;
-
-// Function prototypes
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-void Do_Movement();
-GLuint loadTexture(GLchar const * path);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+void processInput(GLFWwindow *window);
+unsigned int loadTexture(const char *path);
 void renderSphere();
 void renderCube();
-void RenderQuad();
+void renderQuad();
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+float lastX = 800.0f / 2.0;
+float lastY = 600.0 / 2.0;
+bool firstMouse = true;
 
-// timing
-GLfloat deltaTime = 0.0f;
-GLfloat lastFrame = 0.0f;
+float deltaTime = 0.0f;	
+float lastFrame = 0.0f;
 
-// The MAIN function, from here we start the application and run the Game loop
+// settings
+const unsigned int SCR_WIDTH  = 1280;
+const unsigned int SCR_HEIGHT = 720;
+
 int main()
 {
-    // GLFW Init
-    // ---------
+    // glfw: initialize and configure
+    // ------------------------------
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_SAMPLES, 4);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", nullptr, nullptr); // Windowed
+    // glfw window creation
+    // --------------------
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
     glfwMakeContextCurrent(window);
-
-    // GLFW config
-    // -----------
-    glfwSetKeyCallback(window, key_callback);
+    if (window == NULL)
+    {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
 
+    // tell GLFW to capture our mouse
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    // Initialize GLEW to setup the OpenGL Function pointers
-    // -----------------------------------------------------
-    glewExperimental = GL_TRUE;
-    glewInit();
-    glGetError();
+    // glad: load all OpenGL function pointers
+    // ---------------------------------------
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
 
-    // Setup OpenGL state
-    // ------------------
+    // configure global opengl state
+    // -----------------------------
     glEnable(GL_DEPTH_TEST);
     // set depth function to less than AND equal for skybox depth trick.
     glDepthFunc(GL_LEQUAL);
     // enable seamless cubemap sampling for lower mip levels in the pre-filter map.
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
-    // load and initialize shaders
-    // ---------------------------
+    // build and compile shaders
+    // -------------------------
     Shader pbrShader("2.2.2.pbr.vs", "2.2.2.pbr.frag");
     Shader equirectangularToCubemapShader("2.2.1.cubemap.vs", "2.2.1.equirectangular_to_cubemap.frag");
     Shader irradianceShader("2.2.1.cubemap.vs", "2.2.1.irradiance_convolution.frag");
@@ -88,63 +86,63 @@ int main()
     Shader brdfShader("2.2.1.brdf.vs", "2.2.1.brdf.frag");
     Shader backgroundShader("2.2.1.background.vs", "2.2.1.background.frag");
 
-    pbrShader.Use();
-    glUniform1i(glGetUniformLocation(pbrShader.Program, "irradianceMap"), 0);
-    glUniform1i(glGetUniformLocation(pbrShader.Program, "prefilterMap"),  1);
-    glUniform1i(glGetUniformLocation(pbrShader.Program, "brdfLUT"),       2);
-    glUniform1i(glGetUniformLocation(pbrShader.Program, "albedoMap"),     3);
-    glUniform1i(glGetUniformLocation(pbrShader.Program, "normalMap"),     4);
-    glUniform1i(glGetUniformLocation(pbrShader.Program, "metallicMap"),   5);
-    glUniform1i(glGetUniformLocation(pbrShader.Program, "roughnessMap"),  6);
-    glUniform1i(glGetUniformLocation(pbrShader.Program, "aoMap"),         7);
+    pbrShader.use();
+    pbrShader.setInt("irradianceMap", 0);
+    pbrShader.setInt("prefilterMap", 1);
+    pbrShader.setInt("brdfLUT", 2);
+    pbrShader.setInt("albedoMap", 3);
+    pbrShader.setInt("normalMap", 4);
+    pbrShader.setInt("metallicMap", 5);
+    pbrShader.setInt("roughnessMap", 6);
+    pbrShader.setInt("aoMap", 7);
 
-    backgroundShader.Use();
-    glUniform1i(glGetUniformLocation(backgroundShader.Program, "environmentMap"), 0);
+    backgroundShader.use();
+    backgroundShader.setInt("environmentMap", 0);
 
     // load PBR material textures
     // --------------------------
     // rusted iron
-    unsigned int ironAlbedoMap    = loadTexture(FileSystem::getPath("resources/textures/pbr/rusted_iron/albedo.png").c_str());
-    unsigned int ironNormalMap    = loadTexture(FileSystem::getPath("resources/textures/pbr/rusted_iron/normal.png").c_str());
-    unsigned int ironMetallicMap  = loadTexture(FileSystem::getPath("resources/textures/pbr/rusted_iron/metallic.png").c_str());
+    unsigned int ironAlbedoMap = loadTexture(FileSystem::getPath("resources/textures/pbr/rusted_iron/albedo.png").c_str());
+    unsigned int ironNormalMap = loadTexture(FileSystem::getPath("resources/textures/pbr/rusted_iron/normal.png").c_str());
+    unsigned int ironMetallicMap = loadTexture(FileSystem::getPath("resources/textures/pbr/rusted_iron/metallic.png").c_str());
     unsigned int ironRoughnessMap = loadTexture(FileSystem::getPath("resources/textures/pbr/rusted_iron/roughness.png").c_str());
-    unsigned int ironAOMap        = loadTexture(FileSystem::getPath("resources/textures/pbr/rusted_iron/ao.png").c_str());
+    unsigned int ironAOMap = loadTexture(FileSystem::getPath("resources/textures/pbr/rusted_iron/ao.png").c_str());
 
     // gold
-    unsigned int goldAlbedoMap    = loadTexture(FileSystem::getPath("resources/textures/pbr/gold/albedo.png").c_str());
-    unsigned int goldNormalMap    = loadTexture(FileSystem::getPath("resources/textures/pbr/gold/normal.png").c_str());
-    unsigned int goldMetallicMap  = loadTexture(FileSystem::getPath("resources/textures/pbr/gold/metallic.png").c_str());
+    unsigned int goldAlbedoMap = loadTexture(FileSystem::getPath("resources/textures/pbr/gold/albedo.png").c_str());
+    unsigned int goldNormalMap = loadTexture(FileSystem::getPath("resources/textures/pbr/gold/normal.png").c_str());
+    unsigned int goldMetallicMap = loadTexture(FileSystem::getPath("resources/textures/pbr/gold/metallic.png").c_str());
     unsigned int goldRoughnessMap = loadTexture(FileSystem::getPath("resources/textures/pbr/gold/roughness.png").c_str());
-    unsigned int goldAOMap        = loadTexture(FileSystem::getPath("resources/textures/pbr/gold/ao.png").c_str());
+    unsigned int goldAOMap = loadTexture(FileSystem::getPath("resources/textures/pbr/gold/ao.png").c_str());
 
     // grass
-    unsigned int grassAlbedoMap    = loadTexture(FileSystem::getPath("resources/textures/pbr/grass/albedo.png").c_str());
-    unsigned int grassNormalMap    = loadTexture(FileSystem::getPath("resources/textures/pbr/grass/normal.png").c_str());
-    unsigned int grassMetallicMap  = loadTexture(FileSystem::getPath("resources/textures/pbr/grass/metallic.png").c_str());
+    unsigned int grassAlbedoMap = loadTexture(FileSystem::getPath("resources/textures/pbr/grass/albedo.png").c_str());
+    unsigned int grassNormalMap = loadTexture(FileSystem::getPath("resources/textures/pbr/grass/normal.png").c_str());
+    unsigned int grassMetallicMap = loadTexture(FileSystem::getPath("resources/textures/pbr/grass/metallic.png").c_str());
     unsigned int grassRoughnessMap = loadTexture(FileSystem::getPath("resources/textures/pbr/grass/roughness.png").c_str());
-    unsigned int grassAOMap        = loadTexture(FileSystem::getPath("resources/textures/pbr/grass/ao.png").c_str());
+    unsigned int grassAOMap = loadTexture(FileSystem::getPath("resources/textures/pbr/grass/ao.png").c_str());
 
     // plastic
-    unsigned int plasticAlbedoMap    = loadTexture(FileSystem::getPath("resources/textures/pbr/plastic/albedo.png").c_str());
-    unsigned int plasticNormalMap    = loadTexture(FileSystem::getPath("resources/textures/pbr/plastic/normal.png").c_str());
-    unsigned int plasticMetallicMap  = loadTexture(FileSystem::getPath("resources/textures/pbr/plastic/metallic.png").c_str());
+    unsigned int plasticAlbedoMap = loadTexture(FileSystem::getPath("resources/textures/pbr/plastic/albedo.png").c_str());
+    unsigned int plasticNormalMap = loadTexture(FileSystem::getPath("resources/textures/pbr/plastic/normal.png").c_str());
+    unsigned int plasticMetallicMap = loadTexture(FileSystem::getPath("resources/textures/pbr/plastic/metallic.png").c_str());
     unsigned int plasticRoughnessMap = loadTexture(FileSystem::getPath("resources/textures/pbr/plastic/roughness.png").c_str());
-    unsigned int plasticAOMap        = loadTexture(FileSystem::getPath("resources/textures/pbr/plastic/ao.png").c_str());
+    unsigned int plasticAOMap = loadTexture(FileSystem::getPath("resources/textures/pbr/plastic/ao.png").c_str());
 
     // wall
-    unsigned int wallAlbedoMap    = loadTexture(FileSystem::getPath("resources/textures/pbr/wall/albedo.png").c_str());
-    unsigned int wallNormalMap    = loadTexture(FileSystem::getPath("resources/textures/pbr/wall/normal.png").c_str());
-    unsigned int wallMetallicMap  = loadTexture(FileSystem::getPath("resources/textures/pbr/wall/metallic.png").c_str());
+    unsigned int wallAlbedoMap = loadTexture(FileSystem::getPath("resources/textures/pbr/wall/albedo.png").c_str());
+    unsigned int wallNormalMap = loadTexture(FileSystem::getPath("resources/textures/pbr/wall/normal.png").c_str());
+    unsigned int wallMetallicMap = loadTexture(FileSystem::getPath("resources/textures/pbr/wall/metallic.png").c_str());
     unsigned int wallRoughnessMap = loadTexture(FileSystem::getPath("resources/textures/pbr/wall/roughness.png").c_str());
-    unsigned int wallAOMap        = loadTexture(FileSystem::getPath("resources/textures/pbr/wall/ao.png").c_str());
+    unsigned int wallAOMap = loadTexture(FileSystem::getPath("resources/textures/pbr/wall/ao.png").c_str());
 
     // lights
     // ------
     glm::vec3 lightPositions[] = {
         glm::vec3(-10.0f,  10.0f, 10.0f),
-        glm::vec3( 10.0f,  10.0f, 10.0f),
+        glm::vec3(10.0f,  10.0f, 10.0f),
         glm::vec3(-10.0f, -10.0f, 10.0f),
-        glm::vec3( 10.0f, -10.0f, 10.0f),
+        glm::vec3(10.0f, -10.0f, 10.0f),
     };
     glm::vec3 lightColors[] = {
         glm::vec3(300.0f, 300.0f, 300.0f),
@@ -152,7 +150,7 @@ int main()
         glm::vec3(300.0f, 300.0f, 300.0f),
         glm::vec3(300.0f, 300.0f, 300.0f)
     };
-    int nrRows    = 7;
+    int nrRows = 7;
     int nrColumns = 7;
     float spacing = 2.5;
 
@@ -206,33 +204,33 @@ int main()
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); // enable pre-filter mipmap sampling (combatting visible dots artifact)
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  
+
     // pbr: set up projection and view matrices for capturing data onto the 6 cubemap face directions
     // ----------------------------------------------------------------------------------------------
     glm::mat4 captureProjection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
     glm::mat4 captureViews[] =
     {
-        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3( 1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
         glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
-        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  1.0f,  0.0f), glm::vec3(0.0f,  0.0f,  1.0f)),
-        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f,  0.0f), glm::vec3(0.0f,  0.0f, -1.0f)),
-        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
-        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f))
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec3(0.0f,  0.0f,  1.0f)),
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec3(0.0f,  0.0f, -1.0f)),
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3( 0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+        glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f))
     };
 
     // pbr: convert HDR equirectangular environment map to cubemap equivalent
     // ----------------------------------------------------------------------
-    equirectangularToCubemapShader.Use();
-    glUniform1i(glGetUniformLocation(equirectangularToCubemapShader.Program, "equirectangularMap"), 0);
+    equirectangularToCubemapShader.use();
+    equirectangularToCubemapShader.setInt("equirectangularMap", 0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, hdrTexture);
-    glUniformMatrix4fv(glGetUniformLocation(equirectangularToCubemapShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(captureProjection));
+    equirectangularToCubemapShader.setMat4("projection", captureProjection);
 
     glViewport(0, 0, 512, 512); // don't forget to configure the viewport to the capture dimensions.
     glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
     for (unsigned int i = 0; i < 6; ++i)
     {
-        glUniformMatrix4fv(glGetUniformLocation(equirectangularToCubemapShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(captureViews[i]));
+        equirectangularToCubemapShader.setMat4("view", captureViews[i]);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, envCubemap, 0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -265,17 +263,17 @@ int main()
 
     // pbr: solve diffuse integral by convolution to create an irradiance (cube)map.
     // -----------------------------------------------------------------------------
-    irradianceShader.Use();
-    glUniform1i(glGetUniformLocation(irradianceShader.Program, "environmentMap"), 0);
+    irradianceShader.use();
+    irradianceShader.setInt("environmentMap", 0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, envCubemap);
-    glUniformMatrix4fv(glGetUniformLocation(irradianceShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(captureProjection));
+    irradianceShader.setMat4("projection", captureProjection);
 
     glViewport(0, 0, 32, 32); // don't forget to configure the viewport to the capture dimensions.
     glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
     for (unsigned int i = 0; i < 6; ++i)
     {
-        glUniformMatrix4fv(glGetUniformLocation(irradianceShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(captureViews[i]));
+        irradianceShader.setMat4("view", captureViews[i]);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, irradianceMap, 0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -302,11 +300,11 @@ int main()
 
     // pbr: run a quasi monte-carlo simulation on the environment lighting to create a prefilter (cube)map.
     // ----------------------------------------------------------------------------------------------------
-    prefilterShader.Use();
-    glUniform1i(glGetUniformLocation(prefilterShader.Program, "environmentMap"), 0);
+    prefilterShader.use();
+    prefilterShader.setInt("environmentMap", 0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, envCubemap);
-    glUniformMatrix4fv(glGetUniformLocation(prefilterShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(captureProjection));
+    prefilterShader.setMat4("projection", captureProjection);
 
     glBindFramebuffer(GL_FRAMEBUFFER, captureFBO);
     unsigned int maxMipLevels = 5;
@@ -320,10 +318,10 @@ int main()
         glViewport(0, 0, mipWidth, mipHeight);
 
         float roughness = (float)mip / (float)(maxMipLevels - 1);
-        glUniform1f(glGetUniformLocation(prefilterShader.Program, "roughness"), roughness);
+        prefilterShader.setFloat("roughness", roughness);
         for (unsigned int i = 0; i < 6; ++i)
         {
-            glUniformMatrix4fv(glGetUniformLocation(prefilterShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(captureViews[i]));
+            prefilterShader.setMat4("view", captureViews[i]);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, prefilterMap, mip);
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -353,9 +351,9 @@ int main()
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, brdfLUTTexture, 0);
 
     glViewport(0, 0, 512, 512);
-    brdfShader.Use();
+    brdfShader.use();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    RenderQuad();
+    renderQuad();
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -363,39 +361,40 @@ int main()
     // initialize static shader uniforms before rendering
     // --------------------------------------------------
     glm::mat4 projection = glm::perspective(camera.Zoom, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-    pbrShader.Use();
-    glUniformMatrix4fv(glGetUniformLocation(pbrShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-    backgroundShader.Use();
-    glUniformMatrix4fv(glGetUniformLocation(backgroundShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    pbrShader.use();
+    pbrShader.setMat4("projection", projection);
+    backgroundShader.use();
+    backgroundShader.setMat4("projection", projection);
 
     // then before rendering, configure the viewport to the actual screen dimensions
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 
-    // Game loop
+    // render loop
+    // -----------
     while (!glfwWindowShouldClose(window))
     {
-        // set frame time
-        GLfloat currentFrame = glfwGetTime();
+        // per-frame time logic
+        // --------------------
+        float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        // check and call events
-        glfwPollEvents();
-        Do_Movement();
+        // input
+        // -----
+        processInput(window);
 
-        // clear the colorbuffer
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        // render
+        // ------
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
         // render scene, supplying the convoluted irradiance map to the  final shader.
         // ------------------------------------------------------------------------------------------
-        pbrShader.Use();
+        pbrShader.use();
         glm::mat4 model;
         glm::mat4 view = camera.GetViewMatrix();
-        glUniformMatrix4fv(glGetUniformLocation(pbrShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
-        glUniform3fv(glGetUniformLocation(pbrShader.Program, "camPos"), 1, &camera.Position[0]);
-
+        pbrShader.setMat4("view", view);
+        pbrShader.setVec3("camPos", camera.Position);
 
         // bind pre-computed IBL data
         glActiveTexture(GL_TEXTURE0);
@@ -419,7 +418,7 @@ int main()
 
         model = glm::mat4();
         model = glm::translate(model, glm::vec3(-5.0, 0.0, 2.0));
-        glUniformMatrix4fv(glGetUniformLocation(pbrShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        pbrShader.setMat4("model", model);
         renderSphere();
 
         // gold
@@ -436,7 +435,7 @@ int main()
 
         model = glm::mat4();
         model = glm::translate(model, glm::vec3(-3.0, 0.0, 2.0));
-        glUniformMatrix4fv(glGetUniformLocation(pbrShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        pbrShader.setMat4("model", model);
         renderSphere();
 
         // grass
@@ -453,7 +452,7 @@ int main()
 
         model = glm::mat4();
         model = glm::translate(model, glm::vec3(-1.0, 0.0, 2.0));
-        glUniformMatrix4fv(glGetUniformLocation(pbrShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        pbrShader.setMat4("model", model);
         renderSphere();
 
         // plastic
@@ -470,7 +469,7 @@ int main()
 
         model = glm::mat4();
         model = glm::translate(model, glm::vec3(1.0, 0.0, 2.0));
-        glUniformMatrix4fv(glGetUniformLocation(pbrShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        pbrShader.setMat4("model", model);
         renderSphere();
 
         // wall
@@ -487,9 +486,9 @@ int main()
 
         model = glm::mat4();
         model = glm::translate(model, glm::vec3(3.0, 0.0, 2.0));
-        glUniformMatrix4fv(glGetUniformLocation(pbrShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        pbrShader.setMat4("model", model);
         renderSphere();
- 
+
         // render light source (simply re-render sphere at light positions)
         // this looks a bit off as we use the same shader, but it'll make their positions obvious and 
         // keeps the codeprint small.
@@ -497,20 +496,20 @@ int main()
         {
             glm::vec3 newPos = lightPositions[i] + glm::vec3(sin(glfwGetTime() * 5.0) * 5.0, 0.0, 0.0);
             newPos = lightPositions[i];
-            glUniform3fv(glGetUniformLocation(pbrShader.Program, ("lightPositions[" + std::to_string(i) + "]").c_str()), 1, &newPos[0]); \
-                glUniform3fv(glGetUniformLocation(pbrShader.Program, ("lightColors[" + std::to_string(i) + "]").c_str()), 1, &lightColors[i][0]);
+            pbrShader.setVec3("lightPositions[" + std::to_string(i) + "]", newPos);
+            pbrShader.setVec3("lightColors[" + std::to_string(i) + "]", lightColors[i]);
 
             model = glm::mat4();
             model = glm::translate(model, newPos);
             model = glm::scale(model, glm::vec3(0.5f));
-            glUniformMatrix4fv(glGetUniformLocation(pbrShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+            pbrShader.setMat4("model", model);
             renderSphere();
         }
 
         // render skybox (render as last to prevent overdraw)
-        backgroundShader.Use();
+        backgroundShader.use();
 
-        glUniformMatrix4fv(glGetUniformLocation(backgroundShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+        backgroundShader.setMat4("view", view);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_CUBE_MAP, envCubemap);
         //glBindTexture(GL_TEXTURE_CUBE_MAP, irradianceMap); // display irradiance map
@@ -519,18 +518,78 @@ int main()
 
         // render BRDF map to screen
         //brdfShader.Use();
-        //RenderQuad();
+        //renderQuad();
 
-        // Swap the buffers
+
+        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+        // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
+        glfwPollEvents();
     }
 
+    // glfw: terminate, clearing all previously allocated GLFW resources.
+    // ------------------------------------------------------------------
     glfwTerminate();
     return 0;
 }
 
+// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
+// ---------------------------------------------------------------------------------------------------------
+void processInput(GLFWwindow *window)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
 
+    float cameraSpeed = 2.5 * deltaTime;
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        camera.ProcessKeyboard(FORWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        camera.ProcessKeyboard(BACKWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        camera.ProcessKeyboard(LEFT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        camera.ProcessKeyboard(RIGHT, deltaTime);
+}
+
+// glfw: whenever the window size changed (by OS or user resize) this callback function executes
+// ---------------------------------------------------------------------------------------------
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    // make sure the viewport matches the new window dimensions; note that width and 
+    // height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height);
+}
+
+
+// glfw: whenever the mouse moves, this callback is called
+// -------------------------------------------------------
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+    lastX = xpos;
+    lastY = ypos;
+
+    camera.ProcessMouseMovement(xoffset, yoffset);
+}
+
+// glfw: whenever the mouse scroll wheel scrolls, this callback is called
+// ----------------------------------------------------------------------
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    camera.ProcessMouseScroll(yoffset);
+}
+ 
 // renders (and builds at first invocation) a sphere
+// -------------------------------------------------
 unsigned int sphereVAO = 0;
 unsigned int indexCount;
 void renderSphere()
@@ -615,25 +674,27 @@ void renderSphere()
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
         float stride = (3 + 2 + 3) * sizeof(float);
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(3 * sizeof(float)));
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
         glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(5 * sizeof(float)));
+        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (void*)(5 * sizeof(float)));
     }
 
     glBindVertexArray(sphereVAO);
     glDrawElements(GL_TRIANGLE_STRIP, indexCount, GL_UNSIGNED_INT, 0);
 }
-// RenderCube() Renders a 1x1 3D cube in NDC.
-GLuint cubeVAO = 0;
-GLuint cubeVBO = 0;
+
+// renderCube() renders a 1x1 3D cube in NDC.
+// -------------------------------------------------
+unsigned int cubeVAO = 0;
+unsigned int cubeVBO = 0;
 void renderCube()
 {
-    // Initialize (if necessary)
+    // initialize (if necessary)
     if (cubeVAO == 0)
     {
-        GLfloat vertices[] = {
+        float vertices[] = {
             // Back face
             -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f, // Bottom-left
             1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f, // top-right
@@ -679,64 +740,64 @@ void renderCube()
         };
         glGenVertexArrays(1, &cubeVAO);
         glGenBuffers(1, &cubeVBO);
-        // Fill buffer
+        // fill buffer
         glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-        // Link vertex attributes
+        // link vertex attributes
         glBindVertexArray(cubeVAO);
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
         glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
     }
-    // Render Cube
+    // render Cube
     glBindVertexArray(cubeVAO);
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
 }
 
-// RenderQuad() Renders a 1x1 XY quad in NDC
-GLuint quadVAO = 0;
-GLuint quadVBO;
-void RenderQuad()
+// renderQuad() renders a 1x1 XY quad in NDC
+// -----------------------------------------
+unsigned int quadVAO = 0;
+unsigned int quadVBO;
+void renderQuad()
 {
     if (quadVAO == 0)
     {
-        GLfloat quadVertices[] = {
-            // Positions        // Texture Coords
-            -1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        float quadVertices[] = {
+            // positions        // texture Coords
+            -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
             -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-            1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-            1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+             1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+             1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
         };
-        // Setup plane VAO
+        // setup plane VAO
         glGenVertexArrays(1, &quadVAO);
         glGenBuffers(1, &quadVBO);
         glBindVertexArray(quadVAO);
         glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
         glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     }
     glBindVertexArray(quadVAO);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glBindVertexArray(0);
 }
 
-// This function loads a texture from file. Note: texture loading functions like these are usually 
-// managed by a 'Resource Manager' that manages all resources (like textures, models, audio). 
-// For learning purposes we'll just define it as a utility function.
+// utility function for loading a 2D texture from file
+// ---------------------------------------------------
 unsigned int loadTexture(char const * path)
 {
-    //Generate texture ID and load texture data 
     unsigned int textureID;
     glGenTextures(1, &textureID);
+
     int width, height, nrComponents;
     unsigned char *data = stbi_load(path, &width, &height, &nrComponents, 0);
     if (data)
@@ -753,7 +814,6 @@ unsigned int loadTexture(char const * path)
         glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
 
-        // Parameters
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -769,67 +829,3 @@ unsigned int loadTexture(char const * path)
 
     return textureID;
 }
-
-#pragma region "User input"
-
-bool keys[1024];
-bool keysPressed[1024];
-// Moves/alters the camera positions based on user input
-void Do_Movement()
-{
-    // Camera controls
-    if (keys[GLFW_KEY_W])
-        camera.ProcessKeyboard(FORWARD, deltaTime);
-    if (keys[GLFW_KEY_S])
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
-    if (keys[GLFW_KEY_A])
-        camera.ProcessKeyboard(LEFT, deltaTime);
-    if (keys[GLFW_KEY_D])
-        camera.ProcessKeyboard(RIGHT, deltaTime);
-}
-
-// Is called whenever a key is pressed/released via GLFW
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
-
-    if (key >= 0 && key <= 1024)
-    {
-        if (action == GLFW_PRESS)
-            keys[key] = true;
-        else if (action == GLFW_RELEASE)
-        {
-            keys[key] = false;
-            keysPressed[key] = false;
-        }
-    }
-}
-
-GLfloat lastX = 400, lastY = 300;
-bool firstMouse = true;
-// Moves/alters the camera positions based on user input
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
-{
-    if (firstMouse)
-    {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
-    }
-
-    GLfloat xoffset = xpos - lastX;
-    GLfloat yoffset = lastY - ypos;
-
-    lastX = xpos;
-    lastY = ypos;
-
-    camera.ProcessMouseMovement(xoffset, yoffset);
-}
-
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-    camera.ProcessMouseScroll(yoffset);
-}
-
-#pragma endregion
