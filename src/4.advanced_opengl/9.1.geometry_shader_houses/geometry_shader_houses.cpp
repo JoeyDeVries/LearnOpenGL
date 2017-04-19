@@ -1,101 +1,107 @@
-// GLEW
-#define GLEW_STATIC
-#include <GL/glew.h>
-
-// GLFW
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-// GL includes
+#include <learnopengl/filesystem.h>
 #include <learnopengl/shader.h>
 
-// Properties
-GLuint screenWidth = 800, screenHeight = 600;
+#include <iostream>
 
-bool keys[1024];
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
-// The MAIN function, from here we start our application and run our Game loop
+// settings
+const unsigned int SCR_WIDTH = 1280;
+const unsigned int SCR_HEIGHT = 720;
+
 int main()
 {
-    // Init GLFW
+    // glfw: initialize and configure
+    // ------------------------------
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-    GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "LearnOpenGL", nullptr, nullptr); // Windowed
+    // glfw window creation
+    // --------------------
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
     glfwMakeContextCurrent(window);
+    if (window == NULL)
+    {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
 
-    // Options
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);	
+    // glad: load all OpenGL function pointers
+    // ---------------------------------------
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
 
-    // Set the required callback functions
-    glfwSetKeyCallback(window, key_callback);
+    // configure global opengl state
+    // -----------------------------
+    glEnable(GL_DEPTH_TEST);
 
-    // Initialize GLEW to setup the OpenGL Function pointers
-    glewExperimental = GL_TRUE;
-    glewInit();
+    // build and compile shaders
+    // -------------------------
+    Shader shader("9.1.geometry_shader.vs", "9.1.geometry_shader.fs", "9.1.geometry_shader.gs");
 
-    // Define the viewport dimensions
-    glViewport(0, 0, screenWidth, screenHeight);
-
-    // Setup and compile our shaders
-    Shader shader("geometry_shader.vs", "geometry_shader.frag", "geometry_shader.gs");
-
-    // Vertex data
-    GLfloat points[] = {
-        -0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // Top-left
-         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top-right
-         0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
-        -0.5f, -0.5f, 1.0f, 1.0f, 0.0f  // Bottom-left
+    // set up vertex data (and buffer(s)) and configure vertex attributes
+    // ------------------------------------------------------------------
+    float points[] = {
+        -0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // top-left
+         0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // top-right
+         0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // bottom-right
+        -0.5f, -0.5f, 1.0f, 1.0f, 0.0f  // bottom-left
     };
-    GLuint VBO, VAO;
+    unsigned int VBO, VAO;
     glGenBuffers(1, &VBO);
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(points), &points, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(2 * sizeof(GLfloat)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(2 * sizeof(float)));
     glBindVertexArray(0);
 
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-    // Game loop
-    while(!glfwWindowShouldClose(window))
+    // render loop
+    // -----------
+    while (!glfwWindowShouldClose(window))
     {
-        // Check and call events
-        glfwPollEvents();
-
-        // Clear buffers
+        // render
+        // ------
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // Draw points
-        shader.Use();
+        // draw points
+        shader.use();
         glBindVertexArray(VAO);
         glDrawArrays(GL_POINTS, 0, 4);
-        glBindVertexArray(0);
-        
-        // Swap the buffers
+
+        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+        // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
+        glfwPollEvents();
     }
+
+    // optional: de-allocate all resources once they've outlived their purpose:
+    // ------------------------------------------------------------------------
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
 
     glfwTerminate();
     return 0;
 }
 
-// Is called whenever a key is pressed/released via GLFW
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+// glfw: whenever the window size changed (by OS or user resize) this callback function executes
+// ---------------------------------------------------------------------------------------------
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
-
-    if(action == GLFW_PRESS)
-        keys[key] = true;
-    else if(action == GLFW_RELEASE)
-        keys[key] = false;	
+    // make sure the viewport matches the new window dimensions; note that width and 
+    // height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height);
 }
