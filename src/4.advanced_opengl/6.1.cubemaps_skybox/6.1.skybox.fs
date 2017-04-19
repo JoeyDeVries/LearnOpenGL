@@ -1,10 +1,11 @@
 #version 330 core
+out vec4 FragColor;
+
 in vec3 TexCoords;
-out vec4 color;
 
 uniform samplerCube skybox;
 
 void main()
 {    
-    color = texture(skybox, TexCoords);
+    FragColor = texture(skybox, TexCoords);
 }
