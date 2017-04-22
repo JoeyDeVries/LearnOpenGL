@@ -78,17 +78,17 @@ public:
     }
     // utility uniform functions
     // ------------------------------------------------------------------------
-    void setBool(std::string name, bool value) 
+    void setBool(std::string name, bool value) const
     {         
         glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value); 
     }
     // ------------------------------------------------------------------------
-    void setInt(std::string name, int value) 
+    void setInt(std::string name, int value) const
     { 
         glUniform1i(glGetUniformLocation(ID, name.c_str()), value); 
     }
     // ------------------------------------------------------------------------
-    void setFloat(std::string name, float value) 
+    void setFloat(std::string name, float value) const
     { 
         glUniform1f(glGetUniformLocation(ID, name.c_str()), value); 
     }
