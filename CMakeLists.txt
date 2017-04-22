@@ -132,14 +132,18 @@ set(4.advanced_opengl
 set(5.advanced_lighting
     1.advanced_lighting
     2.gamma_correction
-    3.1.shadow_mapping
-    3.2.point_shadows
-    # 3.3.csm
+    3.1.1.shadow_mapping_depth
+    3.1.2.shadow_mapping_base
+    3.1.3.shadow_mapping
+    3.2.1.point_shadows
+    3.2.2.point_shadows_soft
     4.normal_mapping
-    5.parallax_mapping
+    5.1.parallax_mapping
+    5.2.parallax_occlusion_mapping
     6.hdr
     7.bloom
-    8.deferred_shading
+    8.1.deferred_shading
+    8.2.deferred_shading_volumes
     9.ssao
 )
 
