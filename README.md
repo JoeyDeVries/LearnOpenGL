@@ -3,6 +3,8 @@ Contains code samples for all tutorials of [http://learnopengl.com](http://learn
 
 The CMakeLists.txt is not yet tested/finished for OS X; for more info see http://learnopengl.com/#!Code-repository
 
+THE CODE IS CURRENTLY BEING RE-WORKED FOR GLAD/STB_IMAGE.H AND MAINTAINABILITY, NOT EVERY SAMPLE CURRENTLY COMPILES.
+
 ## Windows building
 All relevant libraries are found in /libs and all DLLs found in /dlls (pre-)compiled for Windows. 
 The CMake script knows where to find the libraries so just run CMake script and generate project of choice.
