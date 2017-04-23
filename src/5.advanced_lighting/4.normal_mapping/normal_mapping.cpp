@@ -145,7 +145,8 @@ int main()
     return 0;
 }
 
-// renderQuad() renders a 1x1 quad in NDC
+// renders a 1x1 quad in NDC with manually calculated tangent vectors
+// ------------------------------------------------------------------
 unsigned int quadVAO = 0;
 unsigned int quadVBO;
 void renderQuad()
