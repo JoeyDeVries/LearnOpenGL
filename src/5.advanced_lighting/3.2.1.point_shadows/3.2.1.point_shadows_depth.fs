@@ -11,6 +11,6 @@ void main()
     // map to [0;1] range by dividing by far_plane
     lightDistance = lightDistance / far_plane;
     
-    // Write this as modified depth
+    // write this as modified depth
     gl_FragDepth = lightDistance;
 }
