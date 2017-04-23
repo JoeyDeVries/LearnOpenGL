@@ -3,11 +3,7 @@ out vec4 FragColor;
 
 in VS_OUT {
     vec3 FragPos;
-    vec3 Normal;
     vec2 TexCoords;
-    vec3 Tangent;
-    vec3 Bitangent;
-    mat3 TBN;
     vec3 TangentLightPos;
     vec3 TangentViewPos;
     vec3 TangentFragPos;
@@ -19,30 +15,22 @@ uniform sampler2D normalMap;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 
-uniform bool normalMapping;
-
 void main()
 {           
-    vec3 normal = fs_in.Normal;
-    mat3 tbn;
-    // Obtain normal from normal map in range [0,1]
-    normal = texture(normalMap, fs_in.TexCoords).rgb;
-    // Transform normal vector to range [-1,1]
-    normal = normalize(normal * 2.0 - 1.0);   
-    // Then transform normal in tangent space to world-space via TBN matrix
-    // tbn = mat3(fs_in.Tangent, fs_in.Bitangent, fs_in.Normal); // TBN calculated in fragment shader
-    // normal = normalize(tbn * normal); // This works!
-    // normal = normalize(fs_in.TBN * normal); // This gives incorrect results
+     // obtain normal from normal map in range [0,1]
+    vec3 normal = texture(normalMap, fs_in.TexCoords).rgb;
+    // transform normal vector to range [-1,1]
+    normal = normalize(normal * 2.0 - 1.0);  // this normal is in tangent space
    
-    // Get diffuse color
+    // get diffuse color
     vec3 color = texture(diffuseMap, fs_in.TexCoords).rgb;
-    // Ambient
+    // ambient
     vec3 ambient = 0.1 * color;
-    // Diffuse
+    // diffuse
     vec3 lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
     float diff = max(dot(lightDir, normal), 0.0);
     vec3 diffuse = diff * color;
-    // Specular
+    // specular
     vec3 viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
     vec3 reflectDir = reflect(-lightDir, normal);
     vec3 halfwayDir = normalize(lightDir + viewDir);  
