@@ -26,7 +26,7 @@ const unsigned int SCR_WIDTH = 1280;
 const unsigned int SCR_HEIGHT = 720;
 bool hdr = true;
 bool hdrKeyPressed = false;
-float exposure = 0.1;
+float exposure = 1.0f;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 5.0f));
@@ -85,13 +85,6 @@ int main()
     // -------------
     unsigned int woodTexture = loadTexture(FileSystem::getPath("resources/textures/wood.png").c_str(), true); // note that we're loading the texture as an SRGB texture
 
-    // shader configuration
-    // --------------------
-    shader.use();
-    shader.setInt("diffuseTexture", 0);
-    hdrShader.use();
-    hdrShader.setInt("hdrBuffer", 0);
-
     // configure floating point framebuffer
     // ------------------------------------
     unsigned int hdrFBO;
@@ -130,6 +123,13 @@ int main()
     lightColors.push_back(glm::vec3(0.1f, 0.0f, 0.0f));
     lightColors.push_back(glm::vec3(0.0f, 0.0f, 0.2f));
     lightColors.push_back(glm::vec3(0.0f, 0.1f, 0.0f));
+
+    // shader configuration
+    // --------------------
+    shader.use();
+    shader.setInt("diffuseTexture", 0);
+    hdrShader.use();
+    hdrShader.setInt("hdrBuffer", 0);
 
     // render loop
     // -----------
@@ -171,7 +171,7 @@ int main()
             // render tunnel
             glm::mat4 model = glm::mat4();
             model = glm::translate(model, glm::vec3(0.0f, 0.0f, 25.0));
-            model = glm::scale(model, glm::vec3(2.5f, 2.5f, 22.5f));
+            model = glm::scale(model, glm::vec3(2.5f, 2.5f, 27.5f));
             shader.setMat4("model", model);
             shader.setInt("inverse_normals", true);
             renderCube();
