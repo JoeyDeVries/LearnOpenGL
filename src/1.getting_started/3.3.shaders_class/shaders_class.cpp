@@ -39,7 +39,7 @@ int main()
     }
 
 
-    // build and compile our shader zprogram
+    // build and compile our shader program
     // ------------------------------------
     Shader ourShader("3.3.shader.vs", "3.3.shader.fs"); // you can name your shader files however you like
 
