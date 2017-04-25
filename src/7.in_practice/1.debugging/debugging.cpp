@@ -1,19 +1,22 @@
-#define GLEW_STATIC
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <stb_image.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <SOIL.h>
 
 #include <learnopengl/filesystem.h>
 #include <learnopengl/shader.h>
 
-// function prototypes
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+#include <iostream>
 
-// properties
-const GLuint SCR_WIDTH = 800, SCR_HEIGHT = 600;
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void processInput(GLFWwindow *window);
+
+// settings
+const unsigned int SCR_WIDTH = 1280;
+const unsigned int SCR_HEIGHT = 720;
 
 
 GLenum glCheckError_(const char *file, int line)
@@ -44,7 +47,7 @@ void APIENTRY glDebugOutput(GLenum source,
                             GLenum severity, 
                             GLsizei length, 
                             const GLchar *message, 
-                            void *userParam)
+                            const void *userParam)
 {
     if(id == 131169 || id == 131185 || id == 131218 || id == 131204) return; // ignore these non-significant error codes
 
@@ -86,24 +89,36 @@ void APIENTRY glDebugOutput(GLenum source,
 
 int main()
 {
-    // GLFW initialization
+    // glfw: initialize and configure
+    // ------------------------------
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE); // comment this line in a release build! 
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", nullptr, nullptr); // Windowed
+
+    // glfw window creation
+    // --------------------
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
     glfwMakeContextCurrent(window);
+    if (window == NULL)
+    {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    // GLFW callback setup
-    glfwSetKeyCallback(window, key_callback);
+    // tell GLFW to capture our mouse
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    // GLEW initialization
-    glewExperimental = GL_TRUE;
-    glewInit();
-    // due to a bug in GLEW the glewInit call always generates an OpenGL error; clear the flag(s) by calling glGetError();
-    glGetError();  
+    // glad: load all OpenGL function pointers
+    // ---------------------------------------
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
 
     // enable OpenGL debug context if context allows for debug context
     GLint flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
@@ -115,13 +130,10 @@ int main()
         glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
     }
 
-    // OpenGL initialization
-    int width, height;
-    glfwGetFramebufferSize(window, &width, &height); // ensures we get proper viewport dimensions on high DPI devices
-    glViewport(0, 0, width, height);
+    // configure global opengl state
+    // -----------------------------
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-
  
     // OpenGL initial state
     Shader shader("debugging.vs", "debugging.frag");
@@ -187,59 +199,112 @@ int main()
     glBindVertexArray(0);
 
     // load cube texture
-    GLuint textureID;
-    glGenTextures(1, &textureID);
-    int texWidth, texHeight;
-    unsigned char *image = SOIL_load_image(FileSystem::getPath("resources/textures/wood.png").c_str(), &texWidth, &texHeight, 0, SOIL_LOAD_RGB);
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    int width, height, nrComponents;
+    unsigned char *data = stbi_load(FileSystem::getPath("resources/textures/wood.png").c_str(), &width, &height, &nrComponents, 0);
+    if (data)
+    {
+        glTexImage2D(GL_FRAMEBUFFER, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
 
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    glTexImage2D(GL_FRAMEBUFFER, 0, GL_RGB, texWidth, texHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    SOIL_free_image_data(image);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
 
     // set up projection matrix
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 10.0f);
-    glUniformMatrix4fv(glGetUniformLocation(shader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-    glUniform1i(glGetUniformLocation(shader.Program, "tex"), 0);
+    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    glUniform1i(glGetUniformLocation(shader.ID, "tex"), 0);
 
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    // render loop
+    // -----------
     while (!glfwWindowShouldClose(window))
     {
-        // check and call events
-        glfwPollEvents();      
+        // input
+        // -----
+        processInput(window);
 
+        // render
+        // ------
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        shader.Use();
+        shader.use();
         GLfloat rotationSpeed = 10.0f;
         GLfloat angle = (float)glfwGetTime() * rotationSpeed;
         glm::mat4 model;
         model = glm::translate(model, glm::vec3(0.0, 0.0f, -2.5));
         model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 1.0f, 1.0f));
-        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
-        glBindTexture(GL_TEXTURE_2D, textureID);
+        glBindTexture(GL_TEXTURE_2D, texture);
         glBindVertexArray(cubeVAO);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
 
-        // swap the buffers
+        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+        // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
+        glfwPollEvents();
     }
 
     glfwTerminate();
     return 0;
 }
 
-// is called whenever a key is pressed/released via GLFW
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+// renderQuad() renders a 1x1 XY quad in NDC
+// -----------------------------------------
+unsigned int quadVAO = 0;
+unsigned int quadVBO;
+void renderQuad()
 {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
+    if (quadVAO == 0)
+    {
+        float quadVertices[] = {
+            // positions        // texture Coords
+            -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+            -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+            1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+            1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+        };
+        // setup plane VAO
+        glGenVertexArrays(1, &quadVAO);
+        glGenBuffers(1, &quadVBO);
+        glBindVertexArray(quadVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    }
+    glBindVertexArray(quadVAO);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glBindVertexArray(0);
+}
+
+// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
+// ---------------------------------------------------------------------------------------------------------
+void processInput(GLFWwindow *window)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+}
+
+// glfw: whenever the window size changed (by OS or user resize) this callback function executes
+// ---------------------------------------------------------------------------------------------
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    // make sure the viewport matches the new window dimensions; note that width and 
+    // height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height);
 }
