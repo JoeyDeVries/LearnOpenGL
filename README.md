@@ -4,6 +4,7 @@ Contains code samples for all tutorials of [http://learnopengl.com](http://learn
 The CMakeLists.txt is not yet tested/finished for OS X; for more info see http://learnopengl.com/#!Code-repository
 
 THE CODE IS CURRENTLY BEING RE-WORKED FOR GLAD/STB_IMAGE.H AND MAINTAINABILITY, NOT EVERY SAMPLE CURRENTLY COMPILES.
+- I tried to fix all code before traveling to Japan, but I couldn't fix everything in time. So the repository is currently in a bit of a buggy state; I'll fix it as soon as I'm back.
 
 ## Windows building
 All relevant libraries are found in /libs and all DLLs found in /dlls (pre-)compiled for Windows. 
