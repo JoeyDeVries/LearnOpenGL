@@ -3,7 +3,6 @@ out vec4 FragColor;
 in vec2 TexCoords;
 in vec3 WorldPos;
 in vec3 Normal;
-in mat3 TBN;
 
 // material parameters
 uniform sampler2D albedoMap;
@@ -93,7 +92,7 @@ void main()
     vec3 V = normalize(camPos - WorldPos);
 
     // calculate reflectance at normal incidence; if dia-electric (like plastic) use F0 
-    // of 0.04 and if it's a metal, use their albedo color as F0 (metallic workflow)    
+    // of 0.04 and if it's a metal, use the albedo color as F0 (metallic workflow)    
     vec3 F0 = vec3(0.04); 
     F0 = mix(F0, albedo, metallic);
 

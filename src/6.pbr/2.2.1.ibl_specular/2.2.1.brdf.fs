@@ -2,7 +2,7 @@
 out vec2 FragColor;
 in vec2 TexCoords;
 
-const float PI = 3.14159265359f;
+const float PI = 3.14159265359;
 // ----------------------------------------------------------------------------
 // http://holger.dammertz.org/stuff/notes_HammersleyOnHemisphere.html
 // efficient VanDerCorpus calculation.
@@ -29,13 +29,13 @@ vec3 ImportanceSampleGGX(vec2 Xi, vec3 N, float roughness)
 	float cosTheta = sqrt((1.0 - Xi.y) / (1.0 + (a*a - 1.0) * Xi.y));
 	float sinTheta = sqrt(1.0 - cosTheta*cosTheta);
 	
-	// NOTE(Joey): from spherical coordinates to cartesian coordinates - halfway vector
+	// from spherical coordinates to cartesian coordinates - halfway vector
 	vec3 H;
 	H.x = cos(phi) * sinTheta;
 	H.y = sin(phi) * sinTheta;
 	H.z = cosTheta;
 	
-	// NOTE(Joey): from tangent-space H vector to world-space sample vector
+	// from tangent-space H vector to world-space sample vector
 	vec3 up          = abs(N.z) < 0.999 ? vec3(0.0, 0.0, 1.0) : vec3(1.0, 0.0, 0.0);
 	vec3 tangent   = normalize(cross(up, N));
 	vec3 bitangent = cross(N, tangent);
@@ -81,7 +81,7 @@ vec2 IntegrateBRDF(float NdotV, float roughness)
     const uint SAMPLE_COUNT = 1024u;
     for(uint i = 0u; i < SAMPLE_COUNT; ++i)
     {
-        // NOTE(Joey): generates a sample vector that's biased towards the
+        // generates a sample vector that's biased towards the
         // preferred alignment direction (importance sampling).
         vec2 Xi = Hammersley(i, SAMPLE_COUNT);
         vec3 H = ImportanceSampleGGX(Xi, N, roughness);

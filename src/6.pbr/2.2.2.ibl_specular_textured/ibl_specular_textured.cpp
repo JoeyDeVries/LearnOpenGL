@@ -80,12 +80,12 @@ int main()
 
     // build and compile shaders
     // -------------------------
-    Shader pbrShader("2.2.2.pbr.vs", "2.2.2.pbr.frag");
-    Shader equirectangularToCubemapShader("2.2.1.cubemap.vs", "2.2.1.equirectangular_to_cubemap.frag");
-    Shader irradianceShader("2.2.1.cubemap.vs", "2.2.1.irradiance_convolution.frag");
-    Shader prefilterShader("2.2.1.cubemap.vs", "2.2.1.prefilter.frag");
-    Shader brdfShader("2.2.1.brdf.vs", "2.2.1.brdf.frag");
-    Shader backgroundShader("2.2.1.background.vs", "2.2.1.background.frag");
+    Shader pbrShader("2.2.2.pbr.vs", "2.2.2.pbr.fs");
+    Shader equirectangularToCubemapShader("2.2.2.cubemap.vs", "2.2.2.equirectangular_to_cubemap.fs");
+    Shader irradianceShader("2.2.2.cubemap.vs", "2.2.2.irradiance_convolution.fs");
+    Shader prefilterShader("2.2.2.cubemap.vs", "2.2.2.prefilter.fs");
+    Shader brdfShader("2.2.2.brdf.vs", "2.2.2.brdf.fs");
+    Shader backgroundShader("2.2.2.background.vs", "2.2.2.background.fs");
 
     pbrShader.use();
     pbrShader.setInt("irradianceMap", 0);
