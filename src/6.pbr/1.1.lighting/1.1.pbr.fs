@@ -15,7 +15,6 @@ uniform vec3 lightPositions[4];
 uniform vec3 lightColors[4];
 
 uniform vec3 camPos;
-uniform float exposure;
 
 const float PI = 3.14159265359;
 // ----------------------------------------------------------------------------
