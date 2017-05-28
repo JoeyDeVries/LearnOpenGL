@@ -59,7 +59,7 @@ public:
         fragment = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragment, 1, &fShaderCode, NULL);
         glCompileShader(fragment);
-		checkCompileErrors(fragment, "FRAGMENT");
+        checkCompileErrors(fragment, "FRAGMENT");
         // shader Program
         ID = glCreateProgram();
         glAttachShader(ID, vertex);
@@ -120,5 +120,4 @@ private:
         }
     }
 };
-
 #endif
