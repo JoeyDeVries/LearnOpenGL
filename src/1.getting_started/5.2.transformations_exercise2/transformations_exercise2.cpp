@@ -50,7 +50,7 @@ int main()
 
     // build and compile our shader zprogram
     // ------------------------------------
-    Shader ourShader("5.1.transform.vs", "5.1.transform.fs");
+    Shader ourShader("5.2.transform.vs", "5.2.transform.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------

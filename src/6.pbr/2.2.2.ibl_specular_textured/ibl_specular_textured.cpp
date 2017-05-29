@@ -22,18 +22,19 @@ void renderSphere();
 void renderCube();
 void renderQuad();
 
+// settings
+const unsigned int SCR_WIDTH = 1280;
+const unsigned int SCR_HEIGHT = 720;
+
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = 800.0f / 2.0;
 float lastY = 600.0 / 2.0;
 bool firstMouse = true;
 
+// timing
 float deltaTime = 0.0f;	
 float lastFrame = 0.0f;
-
-// settings
-const unsigned int SCR_WIDTH  = 1280;
-const unsigned int SCR_HEIGHT = 720;
 
 int main()
 {
