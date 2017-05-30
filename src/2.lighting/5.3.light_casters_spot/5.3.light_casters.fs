@@ -1,5 +1,5 @@
 #version 330 core
-out vec4 fragColor;
+out vec4 FragColor;
 
 struct Material {
     sampler2D diffuse;
@@ -55,18 +55,18 @@ void main()
         
         // attenuation
         float distance    = length(light.position - FragPos);
-        float attenuation = 1.0f / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
+        float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
 
         // ambient  *= attenuation; // remove attenuation from ambient, as otherwise at large distances the light would be darker inside than outside the spotlight due the ambient term in the else branche
         diffuse   *= attenuation;
         specular *= attenuation;   
             
         vec3 result = ambient + diffuse + specular;
-        fragColor = vec4(result, 1.0f);
+        FragColor = vec4(result, 1.0);
     }
     else 
     {
         // else, use ambient light so scene isn't completely dark outside the spotlight.
-        fragColor = vec4(light.ambient * texture(material.diffuse, TexCoords).rgb, 1.0f);
+        FragColor = vec4(light.ambient * texture(material.diffuse, TexCoords).rgb, 1.0);
     }
 } 

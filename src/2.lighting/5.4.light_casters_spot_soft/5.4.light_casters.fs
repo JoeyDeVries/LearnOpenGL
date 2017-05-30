@@ -1,5 +1,5 @@
 #version 330 core
-out vec4 fragColor;
+out vec4 FragColor;
 
 struct Material {
     sampler2D diffuse;
@@ -56,11 +56,11 @@ void main()
     
     // attenuation
     float distance    = length(light.position - FragPos);
-    float attenuation = 1.0f / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
     ambient  *= attenuation; 
     diffuse   *= attenuation;
     specular *= attenuation;   
         
     vec3 result = ambient + diffuse + specular;
-    fragColor = vec4(result, 1.0f);
+    FragColor = vec4(result, 1.0);
 } 

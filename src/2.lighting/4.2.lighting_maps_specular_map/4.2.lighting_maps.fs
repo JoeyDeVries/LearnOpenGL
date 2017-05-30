@@ -1,5 +1,5 @@
 #version 330 core
-out vec4 fragColor;
+out vec4 FragColor;
 
 struct Material {
     sampler2D diffuse;
@@ -41,5 +41,5 @@ void main()
     vec3 specular = light.specular * spec * texture(material.specular, TexCoords).rgb;  
         
     vec3 result = ambient + diffuse + specular;
-    fragColor = vec4(result, 1.0f);
+    FragColor = vec4(result, 1.0);
 } 
