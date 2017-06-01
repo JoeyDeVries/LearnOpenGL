@@ -72,8 +72,8 @@ int main()
 
     // build and compile shaders
     // -------------------------
-    Shader shader("11.1.anti_aliasing.vs", "11.1.anti_aliasing.fs");
-    Shader screenShader("11.2.aa_post.vs", "11.2.aa_post.fs");
+    Shader shader("11.anti_aliasing.vs", "11.anti_aliasing.fs");
+    Shader screenShader("11.aa_post.vs", "11.aa_post.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------

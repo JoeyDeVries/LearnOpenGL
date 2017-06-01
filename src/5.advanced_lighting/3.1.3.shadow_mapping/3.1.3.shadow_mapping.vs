@@ -23,5 +23,5 @@ void main()
     vs_out.Normal = transpose(inverse(mat3(model))) * aNormal;
     vs_out.TexCoords = aTexCoords;
     vs_out.FragPosLightSpace = lightSpaceMatrix * vec4(vs_out.FragPos, 1.0);
-    gl_Position = projection * view * model * vec4(aPos, 1.0f);
+    gl_Position = projection * view * model * vec4(aPos, 1.0);
 }

@@ -19,7 +19,7 @@ void GenerateLine(int index)
 
 void main()
 {
-    GenerateLine(0); // First vertex normal
-    GenerateLine(1); // Second vertex normal
-    GenerateLine(2); // Third vertex normal
+    GenerateLine(0); // first vertex normal
+    GenerateLine(1); // second vertex normal
+    GenerateLine(2); // third vertex normal
 }
