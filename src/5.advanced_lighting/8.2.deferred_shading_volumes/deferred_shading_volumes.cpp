@@ -46,13 +46,13 @@ int main()
     // glfw window creation
     // --------------------
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
-    glfwMakeContextCurrent(window);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
+    glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
@@ -74,9 +74,9 @@ int main()
 
     // build and compile shaders
     // -------------------------
-    Shader shaderGeometryPass("8.1.g_buffer.vs", "8.1.g_buffer.fs");
+    Shader shaderGeometryPass("8.2.g_buffer.vs", "8.2.g_buffer.fs");
     Shader shaderLightingPass("8.2.deferred_shading.vs", "8.2.deferred_shading.fs");
-    Shader shaderLightBox("8.1.deferred_light_box.vs", "8.1.deferred_light_box.fs");
+    Shader shaderLightBox("8.2.deferred_light_box.vs", "8.2.deferred_light_box.fs");
 
     // load models
     // -----------
@@ -380,7 +380,6 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    float cameraSpeed = 2.5 * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -399,7 +398,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
 }
-
 
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
