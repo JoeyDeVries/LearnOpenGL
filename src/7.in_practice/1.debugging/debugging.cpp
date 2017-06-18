@@ -96,6 +96,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE); // comment this line in a release build! 
+    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
 
     // glfw window creation
     // --------------------
@@ -136,7 +137,7 @@ int main()
     glEnable(GL_CULL_FACE);
  
     // OpenGL initial state
-    Shader shader("debugging.vs", "debugging.frag");
+    Shader shader("debugging.vs", "debugging.fs");
 
     // configure 3D cube
     GLuint cubeVAO, cubeVBO;
