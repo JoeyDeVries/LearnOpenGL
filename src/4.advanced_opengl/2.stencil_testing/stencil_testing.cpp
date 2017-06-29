@@ -170,7 +170,7 @@ int main()
     // shader configuration
     // --------------------
     shader.use();
-    shader.setInt("ourTexture", 0);
+    shader.setInt("texture1", 0);
 
     // render loop
     // -----------
@@ -243,12 +243,12 @@ int main()
         model = glm::mat4();
         model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
         model = glm::scale(model, glm::vec3(scale, scale, scale));
-        shader.setMat4("model", model);
+        shaderSingleColor.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         model = glm::mat4();
         model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(scale, scale, scale));
-        shader.setMat4("model", model);
+        shaderSingleColor.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
         glStencilMask(0xFF);
