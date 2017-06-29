@@ -166,7 +166,7 @@ int main()
     // shader configuration
     // --------------------
     shader.use();
-    shader.setInt("ourTexture", 0);
+    shader.setInt("texture1", 0);
 
     // render loop
     // -----------
