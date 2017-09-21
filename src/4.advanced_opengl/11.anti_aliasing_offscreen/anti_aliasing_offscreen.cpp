@@ -230,7 +230,7 @@ int main()
 
         // set transformation matrices		
         shader.use();
-        glm::mat4 projection = glm::perspective(camera.Zoom, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
         shader.setMat4("projection", projection);
         shader.setMat4("view", camera.GetViewMatrix());
         shader.setMat4("model", glm::mat4());
