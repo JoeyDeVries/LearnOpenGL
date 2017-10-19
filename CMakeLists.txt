@@ -63,7 +63,7 @@ set(CHAPTERS
     7.in_practice
 )
 
-set(1.getting_started   
+set(1.getting_started
     1.1.hello_window
     1.2.hello_window_clear
     2.1.hello_triangle
@@ -191,7 +191,7 @@ foreach(CHAPTER ${CHAPTERS})
 			set_target_properties(${NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin/${CHAPTER}")
 		endif(WIN32)
         # copy shader files to build directory
-        file(GLOB SHADERS 
+        file(GLOB SHADERS
                  "src/${CHAPTER}/${DEMO}/*.vs"
                  # "src/${CHAPTER}/${DEMO}/*.frag"
                  "src/${CHAPTER}/${DEMO}/*.fs"
@@ -202,7 +202,7 @@ foreach(CHAPTER ${CHAPTERS})
             	# configure_file(${SHADER} "test")
             	add_custom_command(TARGET ${NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SHADER} $<TARGET_FILE_DIR:${NAME}>)
 			elseif(UNIX)
-				file(COPY ${SHADER} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/${CHAPTER})			
+				file(COPY ${SHADER} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/${CHAPTER}/${CMAKE_BUILD_TYPE})
 			endif(WIN32)
 
         endforeach(SHADER)
