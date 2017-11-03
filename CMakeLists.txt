@@ -202,7 +202,7 @@ foreach(CHAPTER ${CHAPTERS})
             	# configure_file(${SHADER} "test")
             	add_custom_command(TARGET ${NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SHADER} $<TARGET_FILE_DIR:${NAME}>)
 			elseif(UNIX)
-				file(COPY ${SHADER} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/${CHAPTER}/${CMAKE_BUILD_TYPE})
+				file(COPY ${SHADER} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/${CHAPTER})
 			endif(WIN32)
 
         endforeach(SHADER)
