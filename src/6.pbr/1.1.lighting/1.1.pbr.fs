@@ -29,7 +29,7 @@ float DistributionGGX(vec3 N, vec3 H, float roughness)
     float denom = (NdotH2 * (a2 - 1.0) + 1.0);
     denom = PI * denom * denom;
 
-    return nom / denom;
+    return nom / max(denom, 0.001); // prevent divide by zero for roughness=0.0 and NdotH=1.0
 }
 // ----------------------------------------------------------------------------
 float GeometrySchlickGGX(float NdotV, float roughness)
@@ -85,8 +85,8 @@ void main()
         vec3 F    = fresnelSchlick(clamp(dot(H, V), 0.0, 1.0), F0);
            
         vec3 nominator    = NDF * G * F; 
-        float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.001; // 0.001 to prevent divide by zero.
-        vec3 specular = nominator / denominator;
+        float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0);
+        vec3 specular = nominator / max(denominator, 0.001); // prevent divide by zero for NdotV=0.0 or NdotL=0.0
         
         // kS is equal to Fresnel
         vec3 kS = F;
