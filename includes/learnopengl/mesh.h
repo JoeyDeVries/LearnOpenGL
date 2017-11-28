@@ -3,8 +3,6 @@
 
 #include <glad/glad.h> // holds all OpenGL type declarations
 
-#include <assimp/Importer.hpp>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -33,7 +31,7 @@ struct Vertex {
 struct Texture {
     unsigned int id;
     string type;
-    aiString path;
+    string path;
 };
 
 class Mesh {
