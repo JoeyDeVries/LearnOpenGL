@@ -201,8 +201,8 @@ int main()
         FileSystem::getPath("resources/textures/skybox/left.jpg"),
         FileSystem::getPath("resources/textures/skybox/top.jpg"),
         FileSystem::getPath("resources/textures/skybox/bottom.jpg"),
+        FileSystem::getPath("resources/textures/skybox/front.jpg"),
         FileSystem::getPath("resources/textures/skybox/back.jpg"),
-        FileSystem::getPath("resources/textures/skybox/front.jpg")
     };
     unsigned int cubemapTexture = loadCubemap(faces);
 
