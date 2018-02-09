@@ -1,14 +1,12 @@
 # learnopengl.com code repository
-Contains code samples for all tutorials of [http://learnopengl.com](http://learnopengl.com). 
-
-The CMakeLists.txt is not yet tested/finished for OS X; for more info see http://learnopengl.com/#!Code-repository
+Contains code samples for all tutorials of [https://learnopengl.com](https://learnopengl.com). 
 
 ## Windows building
 All relevant libraries are found in /libs and all DLLs found in /dlls (pre-)compiled for Windows. 
 The CMake script knows where to find the libraries so just run CMake script and generate project of choice.
 Note that you still have to manually copy the required .DLL files from the /dlls folder to your binary folder for the binaries to run.
 
-Keep in mind the supplied libraries were generated with a specific compiler version which may or may not work on your system (generating la large batch of link errors). In that case it's advised to build the libraries yourself from the source.
+Keep in mind the supplied libraries were generated with a specific compiler version which may or may not work on your system (generating a large batch of link errors). In that case it's advised to build the libraries yourself from the source.
 
 ## Linux building
 First make sure you have CMake, Git, and GCC by typing as root (sudo) `apt-get install g++ cmake git` and then get the required packages:
@@ -22,15 +20,14 @@ Note that CodeBlocks or other IDEs may have issues running the programs due to p
 Running `ls $LOGL_ROOT_PATH` should list, among other things, this README file and the resources direcory.
 
 ## Mac OS X building
-Thanks to Stéphane le Boeuf, a Github fork was set up that successfully compiles on Mac OSX (and Linux as well); current CMake hasn't been adapted for Mac OSX yet.  The following command lines build the projects on Mac OSX:
+Building on Mac OS X is fairly simple (thanks [@hpyerknot](https://github.com/hyperknot)):
 ```
-git clone --recursive https://github.com/stephane-lb/LearnOpenGL.git
-cd LearnOpenGL
 mkdir build
 cd build
 cmake ../.
 make -j8
 ```
+And additionally install Assimp with `brew install assimp`
 
 ## Glitter
 Polytonic created a project called [Glitter](https://github.com/Polytonic/Glitter) that is a dead-simple boilerplate for OpenGL. 
