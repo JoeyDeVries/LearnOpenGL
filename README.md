@@ -20,14 +20,14 @@ Note that CodeBlocks or other IDEs may have issues running the programs due to p
 Running `ls $LOGL_ROOT_PATH` should list, among other things, this README file and the resources direcory.
 
 ## Mac OS X building
-Building on Mac OS X is fairly simple (thanks [@hpyerknot](https://github.com/hyperknot)):
+Building on Mac OS X is fairly simple (thanks [@hyperknot](https://github.com/hyperknot)):
 ```
+brew install cmake assimp glm glfw
 mkdir build
 cd build
 cmake ../.
 make -j8
 ```
-And additionally install Assimp with `brew install assimp`
 
 ## Glitter
 Polytonic created a project called [Glitter](https://github.com/Polytonic/Glitter) that is a dead-simple boilerplate for OpenGL. 
