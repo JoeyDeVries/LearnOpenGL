@@ -38,7 +38,7 @@ elseif(UNIX AND NOT APPLE)
   find_package(X11 REQUIRED)
   # note that the order is important for setting the libs
   # use pkg-config --libs $(pkg-config --print-requires --print-requires-private glfw3) in a terminal to confirm
-  set(LIBS ${GLFW3_LIBRARY} X11 Xrandr Xinerama Xi Xxf86vm Xcursor GL dl pthread assimp)
+  set(LIBS ${GLFW3_LIBRARY} X11 Xrandr Xinerama Xi Xxf86vm Xcursor GL dl pthread ${ASSIMP_LIBRARY})
 elseif(APPLE)
   INCLUDE_DIRECTORIES(/System/Library/Frameworks)
   FIND_LIBRARY(COCOA_LIBRARY Cocoa)
