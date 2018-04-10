@@ -146,8 +146,8 @@ int main()
                 
                 model = glm::mat4();
                 model = glm::translate(model, glm::vec3(
-                    (float)(col - (nrColumns / 2)) * spacing, 
-                    (float)(row - (nrRows / 2)) * spacing, 
+                    (col - (nrColumns / 2.)) * spacing, 
+                    (row - (nrRows / 2.)) * spacing, 
                     0.0f
                 ));
                 shader.setMat4("model", model);
