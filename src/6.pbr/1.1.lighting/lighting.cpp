@@ -132,10 +132,10 @@ int main()
 
         // render rows*column number of spheres with varying metallic/roughness values scaled by rows and columns respectively
         glm::mat4 model;
-        for (unsigned int row = 0; row < nrRows; ++row) 
+        for (int row = 0; row < nrRows; ++row) 
         {
             shader.setFloat("metallic", (float)row / (float)nrRows);
-            for (unsigned int col = 0; col < nrColumns; ++col) 
+            for (int col = 0; col < nrColumns; ++col) 
             {
                 // we clamp the roughness to 0.025 - 1.0 as perfectly smooth surfaces (roughness of 0.0) tend to look a bit off
                 // on direct lighting.
@@ -143,8 +143,8 @@ int main()
                 
                 model = glm::mat4();
                 model = glm::translate(model, glm::vec3(
-                    (col - (nrColumns / 2.)) * spacing, 
-                    (row - (nrRows / 2.)) * spacing, 
+                    (col - (nrColumns / 2)) * spacing, 
+                    (row - (nrRows / 2)) * spacing, 
                     0.0f
                 ));
                 shader.setMat4("model", model);
