@@ -43,10 +43,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
-#endif
+    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
 
     // glfw window creation
     // --------------------
@@ -105,7 +102,7 @@ int main()
 
     // initialize static shader uniforms before rendering
     // --------------------------------------------------
-    glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+    glm::mat4 projection = glm::perspective(camera.Zoom, (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
     shader.use();
     shader.setMat4("projection", projection);
 
@@ -146,8 +143,8 @@ int main()
                 
                 model = glm::mat4();
                 model = glm::translate(model, glm::vec3(
-                    (col - (nrColumns / 2.)) * spacing, 
-                    (row - (nrRows / 2.)) * spacing, 
+                    (float)(col - (nrColumns / 2)) * spacing, 
+                    (float)(row - (nrRows / 2)) * spacing, 
                     0.0f
                 ));
                 shader.setMat4("model", model);
