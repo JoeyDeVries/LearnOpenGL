@@ -148,9 +148,9 @@ int main()
 
         // render rows*column number of spheres with material properties defined by textures (they all have the same material properties)
         glm::mat4 model;
-        for (unsigned int row = 0; row < nrRows; ++row)
+        for (int row = 0; row < nrRows; ++row)
         {
-            for (unsigned int col = 0; col < nrColumns; ++col)
+            for (int col = 0; col < nrColumns; ++col)
             {
                 model = glm::mat4();
                 model = glm::translate(model, glm::vec3(
