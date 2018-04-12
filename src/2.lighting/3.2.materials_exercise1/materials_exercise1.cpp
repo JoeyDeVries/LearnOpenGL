@@ -77,8 +77,8 @@ int main()
 
     // build and compile our shader zprogram
     // ------------------------------------
-    Shader lightingShader("3.1.materials.vs", "3.1.materials.fs");
-    Shader lampShader("3.1.lamp.vs", "3.1.lamp.fs");
+    Shader lightingShader("3.2.materials.vs", "3.2.materials.fs");
+    Shader lampShader("3.2.lamp.vs", "3.2.lamp.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
