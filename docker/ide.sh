@@ -1,7 +1,7 @@
 #!/bin/bash
 
 [ -n "$(which x11docker)" ] \
-    || { echo "x11docker is required"; exit 1; }
+    || { echo "x11docker is required https://github.com/mviereck/x11docker"; exit 1; }
 
 SCRIPT_DIR=$(dirname $(readlink -f "$0"))
 PROJECT_DIR=$(dirname ${SCRIPT_DIR})
@@ -15,7 +15,14 @@ IMAGE=learnopengl
 [ -n "$(docker images -q --filter=reference="${IMAGE}")" ] \
     || docker build -t ${IMAGE} ${SCRIPT_DIR}
 
-x11docker --hostdisplay --homedir ${HOME} --clipboard --stdout --stderr \
+echo "Info about --gpu https://github.com/mviereck/x11docker#dependencies"
+
+x11docker \
+    --gpu \
+    --hostdisplay \
+    --homedir ${HOME} \
+    --clipboard \
+    --stdout --stderr \
     --cap-default \
     --no-init \
     --workdir ${PROJECT_DIR} \
