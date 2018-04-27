@@ -15,8 +15,6 @@ IMAGE=learnopengl
 [ -n "$(docker images -q --filter=reference="${IMAGE}")" ] \
     || docker build -t ${IMAGE} ${SCRIPT_DIR}
 
-echo "Info about --gpu https://github.com/mviereck/x11docker#dependencies"
-
 x11docker \
     --gpu \
     --hostdisplay \
