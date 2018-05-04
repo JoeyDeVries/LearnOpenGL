@@ -7,7 +7,8 @@ RUN apt-get update \
         libgtk2.0-0 libcanberra-gtk-module libxext-dev libxrender-dev libxtst-dev libxslt-dev dmz-cursor-theme \
         build-essential cmake git \
         libglfw3-dev libassimp-dev libxinerama-dev libxcursor-dev mesa-utils mesa-utils-extra kmod \
-        wget htop zip unzip nano
+        wget htop zip unzip nano \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ADD https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
