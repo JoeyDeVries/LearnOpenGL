@@ -22,7 +22,6 @@ x11docker \
     --clipboard \
     --stdout --stderr \
     --cap-default \
-    --no-init \
     --workdir ${PROJECT_DIR} \
     -- "--cap-add=SYS_PTRACE" \
     ${IMAGE} \
