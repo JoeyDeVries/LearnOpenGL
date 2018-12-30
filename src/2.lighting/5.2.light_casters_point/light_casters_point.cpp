@@ -221,7 +221,7 @@ int main()
         lightingShader.setMat4("view", view);
 
         // world transformation
-        glm::mat4 model;
+        glm::mat4 model = glm::mat4(1.0f);
         lightingShader.setMat4("model", model);
 
         // bind diffuse map
@@ -236,7 +236,7 @@ int main()
         for (unsigned int i = 0; i < 10; i++)
         {
             // calculate the model matrix for each object and pass it to shader before drawing
-            glm::mat4 model;
+            glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, cubePositions[i]);
             float angle = 20.0f * i;
             model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
@@ -250,7 +250,7 @@ int main()
          lampShader.use();
          lampShader.setMat4("projection", projection);
          lampShader.setMat4("view", view);
-         model = glm::mat4();
+         model = glm::mat4(1.0f);
          model = glm::translate(model, lightPos);
          model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
          lampShader.setMat4("model", model);

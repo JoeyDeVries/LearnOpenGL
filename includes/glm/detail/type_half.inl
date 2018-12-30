@@ -1,39 +1,3 @@
-///////////////////////////////////////////////////////////////////////////////////
-/// OpenGL Mathematics (glm.g-truc.net)
-///
-/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
-///
-/// This half implementation is based on OpenEXR which is Copyright (c) 2002, 
-/// Industrial Light & Magic, a division of Lucas Digital Ltd. LLC
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy
-/// of this software and associated documentation files (the "Software"), to deal
-/// in the Software without restriction, including without limitation the rights
-/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-/// copies of the Software, and to permit persons to whom the Software is
-/// furnished to do so, subject to the following conditions:
-/// 
-/// The above copyright notice and this permission notice shall be included in
-/// all copies or substantial portions of the Software.
-/// 
-/// Restrictions:
-///		By making use of the Software for military purposes, you choose to make
-///		a Bunny unhappy.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-/// THE SOFTWARE.
-///
-/// @ref core
-/// @file glm/detail/type_half.inl
-/// @date 2008-08-17 / 2011-06-15
-/// @author Christophe Riccio
-///////////////////////////////////////////////////////////////////////////////////
-
 namespace glm{
 namespace detail
 {
@@ -41,7 +5,7 @@ namespace detail
 	{
 		volatile float f = 1e10;
 
-		for(int i = 0; i < 10; ++i)	
+		for(int i = 0; i < 10; ++i)
 			f *= f; // this will overflow before the for loop terminates
 		return f;
 	}
@@ -56,12 +20,12 @@ namespace detail
 			f(f_)
 		{}
 
-		GLM_FUNC_QUALIFIER uif32(uint32 i_) :
+		GLM_FUNC_QUALIFIER uif32(unsigned int i_) :
 			i(i_)
 		{}
 
 		float f;
-		uint32 i;
+		unsigned int i;
 	};
 
 	GLM_FUNC_QUALIFIER float toFloat32(hdata value)
@@ -79,7 +43,7 @@ namespace detail
 				//
 
 				detail::uif32 result;
-				result.i = (unsigned int)(s << 31);
+				result.i = static_cast<unsigned int>(s << 31);
 				return result.f;
 			}
 			else
@@ -107,7 +71,7 @@ namespace detail
 				//
 
 				uif32 result;
-				result.i = (unsigned int)((s << 31) | 0x7f800000);
+				result.i = static_cast<unsigned int>((s << 31) | 0x7f800000);
 				return result.f;
 			}
 			else
@@ -117,7 +81,7 @@ namespace detail
 				//
 
 				uif32 result;
-				result.i = (unsigned int)((s << 31) | 0x7f800000 | (m << 13));
+				result.i = static_cast<unsigned int>((s << 31) | 0x7f800000 | (m << 13));
 				return result.f;
 			}
 		}
@@ -134,15 +98,15 @@ namespace detail
 		//
 
 		uif32 Result;
-		Result.i = (unsigned int)((s << 31) | (e << 23) | m);
+		Result.i = static_cast<unsigned int>((s << 31) | (e << 23) | m);
 		return Result.f;
 	}
 
-	GLM_FUNC_QUALIFIER hdata toFloat16(float const & f)
+	GLM_FUNC_QUALIFIER hdata toFloat16(float const& f)
 	{
 		uif32 Entry;
 		Entry.f = f;
-		int i = (int)Entry.i;
+		int i = static_cast<int>(Entry.i);
 
 		//
 		// Our floating point number, f, is represented by the bit
@@ -182,7 +146,7 @@ namespace detail
 			// whose magnitude is less than __half_NRM_MIN.
 			//
 			// We convert f to a denormalized half.
-			// 
+			//
 
 			m = (m | 0x00800000) >> (1 - e);
 
@@ -193,9 +157,9 @@ namespace detail
 			// our number normalized.  Because of the way a half's bits
 			// are laid out, we don't have to treat this case separately;
 			// the code below will handle it correctly.
-			// 
+			//
 
-			if(m & 0x00001000) 
+			if(m & 0x00001000)
 				m += 0x00002000;
 
 			//
@@ -221,7 +185,7 @@ namespace detail
 				// F is a NAN; we produce a half NAN that preserves
 				// the sign bit and the 10 leftmost bits of the
 				// significand of f, with one exception: If the 10
-				// leftmost bits are all zero, the NAN would turn 
+				// leftmost bits are all zero, the NAN would turn
 				// into an infinity, so we have to set at least one
 				// bit in the significand.
 				//

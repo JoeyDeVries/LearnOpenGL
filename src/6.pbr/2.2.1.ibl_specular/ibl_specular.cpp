@@ -372,7 +372,7 @@ int main()
         glBindTexture(GL_TEXTURE_2D, brdfLUTTexture);
 
         // render rows*column number of spheres with material properties defined by textures (they all have the same material properties)
-        glm::mat4 model;
+        glm::mat4 model = glm::mat4(1.0f);
         for (int row = 0; row < nrRows; ++row)
         {
             pbrShader.setFloat("metallic", (float)row / (float)nrRows);
@@ -382,7 +382,7 @@ int main()
                 // on direct lighting.
                 pbrShader.setFloat("roughness", glm::clamp((float)col / (float)nrColumns, 0.05f, 1.0f));
 
-                model = glm::mat4();
+                model = glm::mat4(1.0f);
                 model = glm::translate(model, glm::vec3(
                     (float)(col - (nrColumns / 2)) * spacing,
                     (float)(row - (nrRows / 2)) * spacing,
@@ -404,7 +404,7 @@ int main()
             pbrShader.setVec3("lightPositions[" + std::to_string(i) + "]", newPos);
             pbrShader.setVec3("lightColors[" + std::to_string(i) + "]", lightColors[i]);
 
-            model = glm::mat4();
+            model = glm::mat4(1.0f);
             model = glm::translate(model, newPos);
             model = glm::scale(model, glm::vec3(0.5f));
             pbrShader.setMat4("model", model);

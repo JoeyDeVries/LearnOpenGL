@@ -245,7 +245,7 @@ int main()
         shader.use();
         GLfloat rotationSpeed = 10.0f;
         GLfloat angle = (float)glfwGetTime() * rotationSpeed;
-        glm::mat4 model;
+        glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0, 0.0f, -2.5));
         model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 1.0f, 1.0f));
         glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));

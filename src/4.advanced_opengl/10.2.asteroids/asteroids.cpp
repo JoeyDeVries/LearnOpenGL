@@ -93,7 +93,7 @@ int main()
     float offset = 2.5f;
     for (unsigned int i = 0; i < amount; i++)
     {
-        glm::mat4 model;
+        glm::mat4 model = glm::mat4(1.0f);
         // 1. translation: displace along circle with 'radius' in range [-offset, offset]
         float angle = (float)i / (float)amount * 360.0f;
         float displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
@@ -143,7 +143,7 @@ int main()
         shader.setMat4("view", view);
 
         // draw planet
-        glm::mat4 model;
+        glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, -3.0f, 0.0f));
         model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
         shader.setMat4("model", model);

@@ -190,13 +190,13 @@ int main()
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
             glm::mat4 view = camera.GetViewMatrix();
-            glm::mat4 model;
+            glm::mat4 model = glm::mat4(1.0f);
             shaderGeometryPass.use();
             shaderGeometryPass.setMat4("projection", projection);
             shaderGeometryPass.setMat4("view", view);
             for (unsigned int i = 0; i < objectPositions.size(); i++)
             {
-                model = glm::mat4();
+                model = glm::mat4(1.0f);
                 model = glm::translate(model, objectPositions[i]);
                 model = glm::scale(model, glm::vec3(0.25f));
                 shaderGeometryPass.setMat4("model", model);
@@ -247,7 +247,7 @@ int main()
         shaderLightBox.setMat4("view", view);
         for (unsigned int i = 0; i < lightPositions.size(); i++)
         {
-            model = glm::mat4();
+            model = glm::mat4(1.0f);
             model = glm::translate(model, lightPositions[i]);
             model = glm::scale(model, glm::vec3(0.125f));
             shaderLightBox.setMat4("model", model);

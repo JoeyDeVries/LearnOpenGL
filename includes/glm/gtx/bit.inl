@@ -1,41 +1,11 @@
-///////////////////////////////////////////////////////////////////////////////////
-/// OpenGL Mathematics (glm.g-truc.net)
-///
-/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
-/// Permission is hereby granted, free of charge, to any person obtaining a copy
-/// of this software and associated documentation files (the "Software"), to deal
-/// in the Software without restriction, including without limitation the rights
-/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-/// copies of the Software, and to permit persons to whom the Software is
-/// furnished to do so, subject to the following conditions:
-/// 
-/// The above copyright notice and this permission notice shall be included in
-/// all copies or substantial portions of the Software.
-/// 
-/// Restrictions:
-///		By making use of the Software for military purposes, you choose to make
-///		a Bunny unhappy.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-/// THE SOFTWARE.
-///
 /// @ref gtx_bit
-/// @file glm/gtx/bit.inl
-/// @date 2014-11-25 / 2014-11-25
-/// @author Christophe Riccio
-///////////////////////////////////////////////////////////////////////////////////
 
 namespace glm
 {
 	///////////////////
 	// highestBitValue
 
-	template <typename genIUType>
+	template<typename genIUType>
 	GLM_FUNC_QUALIFIER genIUType highestBitValue(genIUType Value)
 	{
 		genIUType tmp = Value;
@@ -48,46 +18,61 @@ namespace glm
 		return result;
 	}
 
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER vecType<T, P> highestBitValue(vecType<T, P> const & v)
+	template<length_t L, typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<L, T, Q> highestBitValue(vec<L, T, Q> const& v)
 	{
-		return detail::functor1<T, T, P, vecType>::call(highestBitValue, v);
+		return detail::functor1<vec, L, T, T, Q>::call(highestBitValue, v);
+	}
+
+	///////////////////
+	// lowestBitValue
+
+	template<typename genIUType>
+	GLM_FUNC_QUALIFIER genIUType lowestBitValue(genIUType Value)
+	{
+		return (Value & (~Value + 1));
+	}
+
+	template<length_t L, typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<L, T, Q> lowestBitValue(vec<L, T, Q> const& v)
+	{
+		return detail::functor1<vec, L, T, T, Q>::call(lowestBitValue, v);
 	}
 
 	///////////////////
 	// powerOfTwoAbove
 
-	template <typename genType>
+	template<typename genType>
 	GLM_FUNC_QUALIFIER genType powerOfTwoAbove(genType value)
 	{
 		return isPowerOfTwo(value) ? value : highestBitValue(value) << 1;
 	}
 
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER vecType<T, P> powerOfTwoAbove(vecType<T, P> const & v)
+	template<length_t L, typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<L, T, Q> powerOfTwoAbove(vec<L, T, Q> const& v)
 	{
-		return detail::functor1<T, T, P, vecType>::call(powerOfTwoAbove, v);
+		return detail::functor1<vec, L, T, T, Q>::call(powerOfTwoAbove, v);
 	}
 
 	///////////////////
 	// powerOfTwoBelow
 
-	template <typename genType>
+	template<typename genType>
 	GLM_FUNC_QUALIFIER genType powerOfTwoBelow(genType value)
 	{
 		return isPowerOfTwo(value) ? value : highestBitValue(value);
 	}
 
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER vecType<T, P> powerOfTwoBelow(vecType<T, P> const & v)
+	template<length_t L, typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<L, T, Q> powerOfTwoBelow(vec<L, T, Q> const& v)
 	{
-		return detail::functor1<T, T, P, vecType>::call(powerOfTwoBelow, v);
+		return detail::functor1<vec, L, T, T, Q>::call(powerOfTwoBelow, v);
 	}
 
 	/////////////////////
 	// powerOfTwoNearest
 
-	template <typename genType>
+	template<typename genType>
 	GLM_FUNC_QUALIFIER genType powerOfTwoNearest(genType value)
 	{
 		if(isPowerOfTwo(value))
@@ -98,10 +83,10 @@ namespace glm
 		return (next - value) < (value - prev) ? next : prev;
 	}
 
-	template <typename T, precision P, template <typename, precision> class vecType>
-	GLM_FUNC_QUALIFIER vecType<T, P> powerOfTwoNearest(vecType<T, P> const & v)
+	template<length_t L, typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<L, T, Q> powerOfTwoNearest(vec<L, T, Q> const& v)
 	{
-		return detail::functor1<T, T, P, vecType>::call(powerOfTwoNearest, v);
+		return detail::functor1<vec, L, T, T, Q>::call(powerOfTwoNearest, v);
 	}
 
 }//namespace glm

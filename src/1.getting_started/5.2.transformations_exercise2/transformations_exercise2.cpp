@@ -167,7 +167,7 @@ int main()
         glBindTexture(GL_TEXTURE_2D, texture2);
 
 
-        glm::mat4 transform;
+        glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
         // first container
         // ---------------
         transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
@@ -182,7 +182,7 @@ int main()
 
         // second transformation
         // ---------------------
-        transform = glm::mat4(); // reset it to an identity matrix
+        transform = glm::mat4(1.0f); // reset it to identity matrix
         transform = glm::translate(transform, glm::vec3(-0.5f, 0.5f, 0.0f));
         float scaleAmount = sin(glfwGetTime());
         transform = glm::scale(transform, glm::vec3(scaleAmount, scaleAmount, scaleAmount));

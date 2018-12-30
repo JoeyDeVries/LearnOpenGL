@@ -1,48 +1,21 @@
-///////////////////////////////////////////////////////////////////////////////////
-/// OpenGL Mathematics (glm.g-truc.net)
-///
-/// Copyright (c) 2005 - 2013 G-Truc Creation (www.g-truc.net)
-/// Permission is hereby granted, free of charge, to any person obtaining a copy
-/// of this software and associated documentation files (the "Software"), to deal
-/// in the Software without restriction, including without limitation the rights
-/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-/// copies of the Software, and to permit persons to whom the Software is
-/// furnished to do so, subject to the following conditions:
-/// 
-/// The above copyright notice and this permission notice shall be included in
-/// all copies or substantial portions of the Software.
-/// 
-/// Restrictions:
-///		By making use of the Software for military purposes, you choose to make
-///		a Bunny unhappy.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-/// THE SOFTWARE.
-///
 /// @ref gtx_io
 /// @file glm/gtx/io.hpp
-/// @date 2013-11-22 / 2014-11-25
 /// @author Jan P Springer (regnirpsj@gmail.com)
 ///
 /// @see core (dependence)
+/// @see gtc_matrix_access (dependence)
 /// @see gtc_quaternion (dependence)
 ///
 /// @defgroup gtx_io GLM_GTX_io
 /// @ingroup gtx
-/// 
-/// @brief std::[w]ostream support for glm types
 ///
-///        std::[w]ostream support for glm types + precision/width/etc. manipulators
-///        based on howard hinnant's std::chrono io proposal
-///        [http://home.roadrunner.com/~hinnant/bloomington/chrono_io.html]
+/// Include <glm/gtx/io.hpp> to use the features of this extension.
 ///
-/// <glm/gtx/io.hpp> needs to be included to use these functionalities.
-///////////////////////////////////////////////////////////////////////////////////
+/// std::[w]ostream support for glm types
+///
+/// std::[w]ostream support for glm types + qualifier/width/etc. manipulators
+/// based on howard hinnant's std::chrono io proposal
+/// [http://home.roadrunner.com/~hinnant/bloomington/chrono_io.html]
 
 #pragma once
 
@@ -50,7 +23,11 @@
 #include "../glm.hpp"
 #include "../gtx/quaternion.hpp"
 
-#if(defined(GLM_MESSAGES) && !defined(glm_ext))
+#ifndef GLM_ENABLE_EXPERIMENTAL
+#	error "GLM: GLM_GTX_io is an experimental extension and may change in the future. Use #define GLM_ENABLE_EXPERIMENTAL before including it, if you really want to use it."
+#endif
+
+#if GLM_MESSAGES == GLM_ENABLE && !defined(GLM_EXT_INCLUDED)
 # pragma message("GLM: GLM_GTX_io extension included")
 #endif
 
@@ -67,7 +44,7 @@ namespace glm
 	{
 		enum order_type { column_major, row_major};
 
-		template <typename CTy>
+		template<typename CTy>
 		class format_punct : public std::locale::facet
 		{
 			typedef CTy char_type;
@@ -86,17 +63,17 @@ namespace glm
 			char_type  newline;
 			order_type order;
 
-			explicit format_punct(size_t a = 0);
-			explicit format_punct(format_punct const&);
+			GLM_FUNC_DECL explicit format_punct(size_t a = 0);
+			GLM_FUNC_DECL explicit format_punct(format_punct const&);
 		};
 
-		template <typename CTy, typename CTr = std::char_traits<CTy> >
+		template<typename CTy, typename CTr = std::char_traits<CTy> >
 		class basic_state_saver {
 
 		public:
 
-			explicit basic_state_saver(std::basic_ios<CTy,CTr>&);
-					~basic_state_saver();
+			GLM_FUNC_DECL explicit basic_state_saver(std::basic_ios<CTy,CTr>&);
+			GLM_FUNC_DECL ~basic_state_saver();
 
 		private:
 
@@ -113,25 +90,25 @@ namespace glm
 			char_type       fill_;
 			locale_type     locale_;
 
-			basic_state_saver& operator=(basic_state_saver const&);
+			GLM_FUNC_DECL basic_state_saver& operator=(basic_state_saver const&);
 		};
 
 		typedef basic_state_saver<char>     state_saver;
 		typedef basic_state_saver<wchar_t> wstate_saver;
 
-		template <typename CTy, typename CTr = std::char_traits<CTy> >
+		template<typename CTy, typename CTr = std::char_traits<CTy> >
 		class basic_format_saver
 		{
 		public:
 
-			explicit basic_format_saver(std::basic_ios<CTy,CTr>&);
-					~basic_format_saver();
+			GLM_FUNC_DECL explicit basic_format_saver(std::basic_ios<CTy,CTr>&);
+			GLM_FUNC_DECL ~basic_format_saver();
 
 		private:
 
 			basic_state_saver<CTy> const bss_;
 
-			basic_format_saver& operator=(basic_format_saver const&);
+			GLM_FUNC_DECL basic_format_saver& operator=(basic_format_saver const&);
 		};
 
 		typedef basic_format_saver<char>     format_saver;
@@ -141,90 +118,82 @@ namespace glm
 		{
 			unsigned value;
 
-			explicit precision(unsigned);
+			GLM_FUNC_DECL explicit precision(unsigned);
 		};
 
 		struct width
 		{
 			unsigned value;
 
-			explicit width(unsigned);
+			GLM_FUNC_DECL explicit width(unsigned);
 		};
 
-		template <typename CTy>
+		template<typename CTy>
 		struct delimeter
 		{
 			CTy value[3];
 
-			explicit delimeter(CTy /* left */, CTy /* right */, CTy /* separator */ = ',');
+			GLM_FUNC_DECL explicit delimeter(CTy /* left */, CTy /* right */, CTy /* separator */ = ',');
 		};
 
 		struct order
 		{
 			order_type value;
 
-			explicit order(order_type);
+			GLM_FUNC_DECL explicit order(order_type);
 		};
 
 		// functions, inlined (inline)
 
-		template <typename FTy, typename CTy, typename CTr>
+		template<typename FTy, typename CTy, typename CTr>
 		FTy const& get_facet(std::basic_ios<CTy,CTr>&);
-		template <typename FTy, typename CTy, typename CTr>
+		template<typename FTy, typename CTy, typename CTr>
 		std::basic_ios<CTy,CTr>& formatted(std::basic_ios<CTy,CTr>&);
-		template <typename FTy, typename CTy, typename CTr>
+		template<typename FTy, typename CTy, typename CTr>
 		std::basic_ios<CTy,CTr>& unformattet(std::basic_ios<CTy,CTr>&);
 
-		template <typename CTy, typename CTr>
+		template<typename CTy, typename CTr>
 		std::basic_ostream<CTy, CTr>& operator<<(std::basic_ostream<CTy, CTr>&, precision const&);
-		template <typename CTy, typename CTr>
+		template<typename CTy, typename CTr>
 		std::basic_ostream<CTy, CTr>& operator<<(std::basic_ostream<CTy, CTr>&, width const&);
-		template <typename CTy, typename CTr>
+		template<typename CTy, typename CTr>
 		std::basic_ostream<CTy, CTr>& operator<<(std::basic_ostream<CTy, CTr>&, delimeter<CTy> const&);
-		template <typename CTy, typename CTr>
+		template<typename CTy, typename CTr>
 		std::basic_ostream<CTy, CTr>& operator<<(std::basic_ostream<CTy, CTr>&, order const&);
 	}//namespace io
 
-	template <typename CTy, typename CTr, typename T, precision P>
-	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, tquat<T,P> const&);
-	template <typename CTy, typename CTr, typename T, precision P>
-	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, tvec1<T,P> const&);
-	template <typename CTy, typename CTr, typename T, precision P>
-	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, tvec2<T,P> const&);
-	template <typename CTy, typename CTr, typename T, precision P>
-	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, tvec3<T,P> const&);
-	template <typename CTy, typename CTr, typename T, precision P>
-	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, tvec4<T,P> const&);
-	template <typename CTy, typename CTr, typename T, precision P>
-	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, tmat2x2<T,P> const&);
-	template <typename CTy, typename CTr, typename T, precision P>
-	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, tmat2x3<T,P> const&);
-	template <typename CTy, typename CTr, typename T, precision P>
-	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, tmat2x4<T,P> const&);
-	template <typename CTy, typename CTr, typename T, precision P>
-	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, tmat3x2<T,P> const&);
-	template <typename CTy, typename CTr, typename T, precision P>
-	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, tmat3x3<T,P> const&);
-	template <typename CTy, typename CTr, typename T, precision P>
-	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, tmat3x4<T,P> const&);
-	template <typename CTy, typename CTr, typename T, precision P>
-	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, tmat4x2<T,P> const&);
-	template <typename CTy, typename CTr, typename T, precision P>
-	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, tmat4x3<T,P> const&);
-	template <typename CTy, typename CTr, typename T, precision P>
-	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, tmat4x4<T,P> const&);
+	template<typename CTy, typename CTr, typename T, qualifier Q>
+	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, qua<T, Q> const&);
+	template<typename CTy, typename CTr, typename T, qualifier Q>
+	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, vec<1, T, Q> const&);
+	template<typename CTy, typename CTr, typename T, qualifier Q>
+	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, vec<2, T, Q> const&);
+	template<typename CTy, typename CTr, typename T, qualifier Q>
+	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, vec<3, T, Q> const&);
+	template<typename CTy, typename CTr, typename T, qualifier Q>
+	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, vec<4, T, Q> const&);
+	template<typename CTy, typename CTr, typename T, qualifier Q>
+	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, mat<2, 2, T, Q> const&);
+	template<typename CTy, typename CTr, typename T, qualifier Q>
+	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, mat<2, 3, T, Q> const&);
+	template<typename CTy, typename CTr, typename T, qualifier Q>
+	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, mat<2, 4, T, Q> const&);
+	template<typename CTy, typename CTr, typename T, qualifier Q>
+	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, mat<3, 2, T, Q> const&);
+	template<typename CTy, typename CTr, typename T, qualifier Q>
+	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, mat<3, 3, T, Q> const&);
+	template<typename CTy, typename CTr, typename T, qualifier Q>
+	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, mat<3, 4, T, Q> const&);
+	template<typename CTy, typename CTr, typename T, qualifier Q>
+	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, mat<4, 2, T, Q> const&);
+	template<typename CTy, typename CTr, typename T, qualifier Q>
+	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, mat<4, 3, T, Q> const&);
+	template<typename CTy, typename CTr, typename T, qualifier Q>
+	GLM_FUNC_DECL std::basic_ostream<CTy,CTr>& operator<<(std::basic_ostream<CTy,CTr>&, mat<4, 4, T, Q> const&);
 
-	template <typename CTy, typename CTr, typename T, precision P>
-	GLM_FUNC_DECL std::basic_ostream<CTy,CTr> & operator<<(
-		std::basic_ostream<CTy,CTr> &,
-		std::pair<tmat4x4<T,P> const,
-		tmat4x4<T,P> const> const &);
-
-	template <typename CTy, typename CTr, typename T, precision P>
-	GLM_FUNC_DECL std::basic_ostream<CTy,CTr> & operator<<(
-		std::basic_ostream<CTy,CTr> &,
-		std::pair<tmat4x4<T,P>,
-		tmat4x4<T,P> > const &);
+  template<typename CTy, typename CTr, typename T, qualifier Q>
+	GLM_FUNC_DECL std::basic_ostream<CTy,CTr> & operator<<(std::basic_ostream<CTy,CTr> &,
+                                                         std::pair<mat<4, 4, T, Q> const, mat<4, 4, T, Q> const> const&);
 
 	/// @}
 }//namespace glm

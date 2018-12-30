@@ -241,12 +241,12 @@ int main()
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 50.0f);
             glm::mat4 view = camera.GetViewMatrix();
-            glm::mat4 model;
+            glm::mat4 model = glm::mat4(1.0f);
             shaderGeometryPass.use();
             shaderGeometryPass.setMat4("projection", projection);
             shaderGeometryPass.setMat4("view", view);
             // room cube
-            model = glm::mat4();
+            model = glm::mat4(1.0f);
             model = glm::translate(model, glm::vec3(0.0, 7.0f, 0.0f));
             model = glm::scale(model, glm::vec3(7.5f, 7.5f, 7.5f));
             shaderGeometryPass.setMat4("model", model);
@@ -254,7 +254,7 @@ int main()
             renderCube();
             shaderGeometryPass.setInt("invertedNormals", 0); 
             // nanosuit model on the floor
-            model = glm::mat4();
+            model = glm::mat4(1.0f);
             model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.0));
             model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0, 0.0, 0.0));
             model = glm::scale(model, glm::vec3(0.5f));

@@ -127,7 +127,7 @@ int main()
         shader.setMat4("projection", projection);
         shader.setMat4("view", view);
         // render parallax-mapped quad
-        glm::mat4 model;
+        glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(model, glm::radians((float)glfwGetTime() * -10.0f), glm::normalize(glm::vec3(1.0, 0.0, 1.0))); // rotate the quad to show parallax mapping from multiple directions
         shader.setMat4("model", model);
         shader.setVec3("viewPos", camera.Position);
@@ -143,7 +143,7 @@ int main()
         renderQuad();
 
         // render light source (simply re-renders a smaller plane at the light's position for debugging/visualization)
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, lightPos);
         model = glm::scale(model, glm::vec3(0.1f));
         shader.setMat4("model", model);

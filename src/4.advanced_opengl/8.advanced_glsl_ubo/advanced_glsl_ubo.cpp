@@ -191,25 +191,25 @@ int main()
         // RED
         glBindVertexArray(cubeVAO);
         shaderRed.use();
-        glm::mat4 model;
+        glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(-0.75f, 0.75f, 0.0f)); // move top-left
         shaderRed.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         // GREEN
         shaderGreen.use();
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.75f, 0.75f, 0.0f)); // move top-right
         shaderGreen.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         // YELLOW
         shaderYellow.use();
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(-0.75f, -0.75f, 0.0f)); // move bottom-left
         shaderYellow.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         // BLUE
         shaderBlue.use();
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.75f, -0.75f, 0.0f)); // move bottom-right
         shaderBlue.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 36);

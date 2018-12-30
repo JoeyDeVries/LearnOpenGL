@@ -233,7 +233,7 @@ int main()
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
         shader.setMat4("projection", projection);
         shader.setMat4("view", camera.GetViewMatrix());
-        shader.setMat4("model", glm::mat4());
+        shader.setMat4("model", glm::mat4(1.0f));
 
         glBindVertexArray(cubeVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);

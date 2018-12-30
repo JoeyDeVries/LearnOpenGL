@@ -205,7 +205,7 @@ int main()
         lightingShader.setMat4("view", view);
 
         // world transformation
-        glm::mat4 model;
+        glm::mat4 model = glm::mat4(1.0f);
         lightingShader.setMat4("model", model);
 
         // bind diffuse map
@@ -224,7 +224,7 @@ int main()
         lampShader.use();
         lampShader.setMat4("projection", projection);
         lampShader.setMat4("view", view);
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, lightPos);
         model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
         lampShader.setMat4("model", model);

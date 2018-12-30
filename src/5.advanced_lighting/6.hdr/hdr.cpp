@@ -173,7 +173,7 @@ int main()
             }
             shader.setVec3("viewPos", camera.Position);
             // render tunnel
-            glm::mat4 model = glm::mat4();
+            glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, glm::vec3(0.0f, 0.0f, 25.0));
             model = glm::scale(model, glm::vec3(2.5f, 2.5f, 27.5f));
             shader.setMat4("model", model);

@@ -134,7 +134,7 @@ int main()
         shader.setVec3("camPos", camera.Position);
 
         // render rows*column number of spheres with varying metallic/roughness values scaled by rows and columns respectively
-        glm::mat4 model;
+        glm::mat4 model = glm::mat4(1.0f);
         for (int row = 0; row < nrRows; ++row) 
         {
             shader.setFloat("metallic", (float)row / (float)nrRows);
@@ -144,7 +144,7 @@ int main()
                 // on direct lighting.
                 shader.setFloat("roughness", glm::clamp((float)col / (float)nrColumns, 0.05f, 1.0f));
                 
-                model = glm::mat4();
+                model = glm::mat4(1.0f);
                 model = glm::translate(model, glm::vec3(
                     (col - (nrColumns / 2)) * spacing, 
                     (row - (nrRows / 2)) * spacing, 
@@ -165,7 +165,7 @@ int main()
             shader.setVec3("lightPositions[" + std::to_string(i) + "]", newPos);
             shader.setVec3("lightColors[" + std::to_string(i) + "]", lightColors[i]);
 
-            model = glm::mat4();
+            model = glm::mat4(1.0f);
             model = glm::translate(model, newPos);
             model = glm::scale(model, glm::vec3(0.5f));
             shader.setMat4("model", model);

@@ -1,42 +1,14 @@
-///////////////////////////////////////////////////////////////////////////////////
-/// OpenGL Mathematics (glm.g-truc.net)
-///
-/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
-/// Permission is hereby granted, free of charge, to any person obtaining a copy
-/// of this software and associated documentation files (the "Software"), to deal
-/// in the Software without restriction, including without limitation the rights
-/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-/// copies of the Software, and to permit persons to whom the Software is
-/// furnished to do so, subject to the following conditions:
-/// 
-/// The above copyright notice and this permission notice shall be included in
-/// all copies or substantial portions of the Software.
-/// 
-/// Restrictions:
-///		By making use of the Software for military purposes, you choose to make
-///		a Bunny unhappy.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-/// THE SOFTWARE.
-///
 /// @ref gtc_matrix_integer
 /// @file glm/gtc/matrix_integer.hpp
-/// @date 2011-01-20 / 2011-06-05
-/// @author Christophe Riccio
 ///
 /// @see core (dependence)
 ///
 /// @defgroup gtc_matrix_integer GLM_GTC_matrix_integer
 /// @ingroup gtc
-/// 
+///
+/// Include <glm/gtc/matrix_integer.hpp> to use the features of this extension.
+///
 /// Defines a number of matrices with integer types.
-/// <glm/gtc/matrix_integer.hpp> need to be included to use these functionalities.
-///////////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
@@ -51,7 +23,7 @@
 #include "../mat4x3.hpp"
 #include "../mat4x4.hpp"
 
-#if(defined(GLM_MESSAGES) && !defined(GLM_EXT_INCLUDED))
+#if GLM_MESSAGES == GLM_ENABLE && !defined(GLM_EXT_INCLUDED)
 #	pragma message("GLM: GLM_GTC_matrix_integer extension included")
 #endif
 
@@ -60,302 +32,302 @@ namespace glm
 	/// @addtogroup gtc_matrix_integer
 	/// @{
 
-	/// High-precision signed integer 2x2 matrix.
+	/// High-qualifier signed integer 2x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x2<int, highp>				highp_imat2;
+	typedef mat<2, 2, int, highp>				highp_imat2;
 
-	/// High-precision signed integer 3x3 matrix.
+	/// High-qualifier signed integer 3x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x3<int, highp>				highp_imat3;
+	typedef mat<3, 3, int, highp>				highp_imat3;
 
-	/// High-precision signed integer 4x4 matrix.
+	/// High-qualifier signed integer 4x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x4<int, highp>				highp_imat4;
+	typedef mat<4, 4, int, highp>				highp_imat4;
 
-	/// High-precision signed integer 2x2 matrix.
+	/// High-qualifier signed integer 2x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x2<int, highp>				highp_imat2x2;
+	typedef mat<2, 2, int, highp>				highp_imat2x2;
 
-	/// High-precision signed integer 2x3 matrix.
+	/// High-qualifier signed integer 2x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x3<int, highp>				highp_imat2x3;
+	typedef mat<2, 3, int, highp>				highp_imat2x3;
 
-	/// High-precision signed integer 2x4 matrix.
+	/// High-qualifier signed integer 2x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x4<int, highp>				highp_imat2x4;
+	typedef mat<2, 4, int, highp>				highp_imat2x4;
 
-	/// High-precision signed integer 3x2 matrix.
+	/// High-qualifier signed integer 3x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x2<int, highp>				highp_imat3x2;
+	typedef mat<3, 2, int, highp>				highp_imat3x2;
 
-	/// High-precision signed integer 3x3 matrix.
+	/// High-qualifier signed integer 3x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x3<int, highp>				highp_imat3x3;
+	typedef mat<3, 3, int, highp>				highp_imat3x3;
 
-	/// High-precision signed integer 3x4 matrix.
+	/// High-qualifier signed integer 3x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x4<int, highp>				highp_imat3x4;
+	typedef mat<3, 4, int, highp>				highp_imat3x4;
 
-	/// High-precision signed integer 4x2 matrix.
+	/// High-qualifier signed integer 4x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x2<int, highp>				highp_imat4x2;
+	typedef mat<4, 2, int, highp>				highp_imat4x2;
 
-	/// High-precision signed integer 4x3 matrix.
+	/// High-qualifier signed integer 4x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x3<int, highp>				highp_imat4x3;
+	typedef mat<4, 3, int, highp>				highp_imat4x3;
 
-	/// High-precision signed integer 4x4 matrix.
+	/// High-qualifier signed integer 4x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x4<int, highp>				highp_imat4x4;
+	typedef mat<4, 4, int, highp>				highp_imat4x4;
 
 
-	/// Medium-precision signed integer 2x2 matrix.
+	/// Medium-qualifier signed integer 2x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x2<int, mediump>			mediump_imat2;
+	typedef mat<2, 2, int, mediump>			mediump_imat2;
 
-	/// Medium-precision signed integer 3x3 matrix.
+	/// Medium-qualifier signed integer 3x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x3<int, mediump>			mediump_imat3;
+	typedef mat<3, 3, int, mediump>			mediump_imat3;
 
-	/// Medium-precision signed integer 4x4 matrix.
+	/// Medium-qualifier signed integer 4x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x4<int, mediump>			mediump_imat4;
+	typedef mat<4, 4, int, mediump>			mediump_imat4;
 
 
-	/// Medium-precision signed integer 2x2 matrix.
+	/// Medium-qualifier signed integer 2x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x2<int, mediump>			mediump_imat2x2;
+	typedef mat<2, 2, int, mediump>			mediump_imat2x2;
 
-	/// Medium-precision signed integer 2x3 matrix.
+	/// Medium-qualifier signed integer 2x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x3<int, mediump>			mediump_imat2x3;
+	typedef mat<2, 3, int, mediump>			mediump_imat2x3;
 
-	/// Medium-precision signed integer 2x4 matrix.
+	/// Medium-qualifier signed integer 2x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x4<int, mediump>			mediump_imat2x4;
+	typedef mat<2, 4, int, mediump>			mediump_imat2x4;
 
-	/// Medium-precision signed integer 3x2 matrix.
+	/// Medium-qualifier signed integer 3x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x2<int, mediump>			mediump_imat3x2;
+	typedef mat<3, 2, int, mediump>			mediump_imat3x2;
 
-	/// Medium-precision signed integer 3x3 matrix.
+	/// Medium-qualifier signed integer 3x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x3<int, mediump>			mediump_imat3x3;
+	typedef mat<3, 3, int, mediump>			mediump_imat3x3;
 
-	/// Medium-precision signed integer 3x4 matrix.
+	/// Medium-qualifier signed integer 3x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x4<int, mediump>			mediump_imat3x4;
+	typedef mat<3, 4, int, mediump>			mediump_imat3x4;
 
-	/// Medium-precision signed integer 4x2 matrix.
+	/// Medium-qualifier signed integer 4x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x2<int, mediump>			mediump_imat4x2;
+	typedef mat<4, 2, int, mediump>			mediump_imat4x2;
 
-	/// Medium-precision signed integer 4x3 matrix.
+	/// Medium-qualifier signed integer 4x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x3<int, mediump>			mediump_imat4x3;
+	typedef mat<4, 3, int, mediump>			mediump_imat4x3;
 
-	/// Medium-precision signed integer 4x4 matrix.
+	/// Medium-qualifier signed integer 4x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x4<int, mediump>			mediump_imat4x4;
+	typedef mat<4, 4, int, mediump>			mediump_imat4x4;
 
 
-	/// Low-precision signed integer 2x2 matrix.
+	/// Low-qualifier signed integer 2x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x2<int, lowp>				lowp_imat2;
-	
-	/// Low-precision signed integer 3x3 matrix.
+	typedef mat<2, 2, int, lowp>				lowp_imat2;
+
+	/// Low-qualifier signed integer 3x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x3<int, lowp>				lowp_imat3;
+	typedef mat<3, 3, int, lowp>				lowp_imat3;
 
-	/// Low-precision signed integer 4x4 matrix.
+	/// Low-qualifier signed integer 4x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x4<int, lowp>				lowp_imat4;
+	typedef mat<4, 4, int, lowp>				lowp_imat4;
 
 
-	/// Low-precision signed integer 2x2 matrix.
+	/// Low-qualifier signed integer 2x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x2<int, lowp>				lowp_imat2x2;
+	typedef mat<2, 2, int, lowp>				lowp_imat2x2;
 
-	/// Low-precision signed integer 2x3 matrix.
+	/// Low-qualifier signed integer 2x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x3<int, lowp>				lowp_imat2x3;
+	typedef mat<2, 3, int, lowp>				lowp_imat2x3;
 
-	/// Low-precision signed integer 2x4 matrix.
+	/// Low-qualifier signed integer 2x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x4<int, lowp>				lowp_imat2x4;
+	typedef mat<2, 4, int, lowp>				lowp_imat2x4;
 
-	/// Low-precision signed integer 3x2 matrix.
+	/// Low-qualifier signed integer 3x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x2<int, lowp>				lowp_imat3x2;
+	typedef mat<3, 2, int, lowp>				lowp_imat3x2;
 
-	/// Low-precision signed integer 3x3 matrix.
+	/// Low-qualifier signed integer 3x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x3<int, lowp>				lowp_imat3x3;
+	typedef mat<3, 3, int, lowp>				lowp_imat3x3;
 
-	/// Low-precision signed integer 3x4 matrix.
+	/// Low-qualifier signed integer 3x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x4<int, lowp>				lowp_imat3x4;
+	typedef mat<3, 4, int, lowp>				lowp_imat3x4;
 
-	/// Low-precision signed integer 4x2 matrix.
+	/// Low-qualifier signed integer 4x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x2<int, lowp>				lowp_imat4x2;
+	typedef mat<4, 2, int, lowp>				lowp_imat4x2;
 
-	/// Low-precision signed integer 4x3 matrix.
+	/// Low-qualifier signed integer 4x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x3<int, lowp>				lowp_imat4x3;
+	typedef mat<4, 3, int, lowp>				lowp_imat4x3;
 
-	/// Low-precision signed integer 4x4 matrix.
+	/// Low-qualifier signed integer 4x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x4<int, lowp>				lowp_imat4x4;
+	typedef mat<4, 4, int, lowp>				lowp_imat4x4;
 
 
-	/// High-precision unsigned integer 2x2 matrix.
+	/// High-qualifier unsigned integer 2x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x2<uint, highp>				highp_umat2;	
+	typedef mat<2, 2, uint, highp>				highp_umat2;
 
-	/// High-precision unsigned integer 3x3 matrix.
+	/// High-qualifier unsigned integer 3x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x3<uint, highp>				highp_umat3;
+	typedef mat<3, 3, uint, highp>				highp_umat3;
 
-	/// High-precision unsigned integer 4x4 matrix.
+	/// High-qualifier unsigned integer 4x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x4<uint, highp>				highp_umat4;
+	typedef mat<4, 4, uint, highp>				highp_umat4;
 
-	/// High-precision unsigned integer 2x2 matrix.
+	/// High-qualifier unsigned integer 2x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x2<uint, highp>				highp_umat2x2;
+	typedef mat<2, 2, uint, highp>				highp_umat2x2;
 
-	/// High-precision unsigned integer 2x3 matrix.
+	/// High-qualifier unsigned integer 2x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x3<uint, highp>				highp_umat2x3;
+	typedef mat<2, 3, uint, highp>				highp_umat2x3;
 
-	/// High-precision unsigned integer 2x4 matrix.
+	/// High-qualifier unsigned integer 2x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x4<uint, highp>				highp_umat2x4;
+	typedef mat<2, 4, uint, highp>				highp_umat2x4;
 
-	/// High-precision unsigned integer 3x2 matrix.
+	/// High-qualifier unsigned integer 3x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x2<uint, highp>				highp_umat3x2;
+	typedef mat<3, 2, uint, highp>				highp_umat3x2;
 
-	/// High-precision unsigned integer 3x3 matrix.
+	/// High-qualifier unsigned integer 3x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x3<uint, highp>				highp_umat3x3;
+	typedef mat<3, 3, uint, highp>				highp_umat3x3;
 
-	/// High-precision unsigned integer 3x4 matrix.
+	/// High-qualifier unsigned integer 3x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x4<uint, highp>				highp_umat3x4;
+	typedef mat<3, 4, uint, highp>				highp_umat3x4;
 
-	/// High-precision unsigned integer 4x2 matrix.
+	/// High-qualifier unsigned integer 4x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x2<uint, highp>				highp_umat4x2;
+	typedef mat<4, 2, uint, highp>				highp_umat4x2;
 
-	/// High-precision unsigned integer 4x3 matrix.
+	/// High-qualifier unsigned integer 4x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x3<uint, highp>				highp_umat4x3;
+	typedef mat<4, 3, uint, highp>				highp_umat4x3;
 
-	/// High-precision unsigned integer 4x4 matrix.
+	/// High-qualifier unsigned integer 4x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x4<uint, highp>				highp_umat4x4;
+	typedef mat<4, 4, uint, highp>				highp_umat4x4;
 
 
-	/// Medium-precision unsigned integer 2x2 matrix.
+	/// Medium-qualifier unsigned integer 2x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x2<uint, mediump>			mediump_umat2;
+	typedef mat<2, 2, uint, mediump>			mediump_umat2;
 
-	/// Medium-precision unsigned integer 3x3 matrix.
+	/// Medium-qualifier unsigned integer 3x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x3<uint, mediump>			mediump_umat3;
+	typedef mat<3, 3, uint, mediump>			mediump_umat3;
 
-	/// Medium-precision unsigned integer 4x4 matrix.
+	/// Medium-qualifier unsigned integer 4x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x4<uint, mediump>			mediump_umat4;
+	typedef mat<4, 4, uint, mediump>			mediump_umat4;
 
 
-	/// Medium-precision unsigned integer 2x2 matrix.
+	/// Medium-qualifier unsigned integer 2x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x2<uint, mediump>			mediump_umat2x2;
+	typedef mat<2, 2, uint, mediump>			mediump_umat2x2;
 
-	/// Medium-precision unsigned integer 2x3 matrix.
+	/// Medium-qualifier unsigned integer 2x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x3<uint, mediump>			mediump_umat2x3;
+	typedef mat<2, 3, uint, mediump>			mediump_umat2x3;
 
-	/// Medium-precision unsigned integer 2x4 matrix.
+	/// Medium-qualifier unsigned integer 2x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x4<uint, mediump>			mediump_umat2x4;
+	typedef mat<2, 4, uint, mediump>			mediump_umat2x4;
 
-	/// Medium-precision unsigned integer 3x2 matrix.
+	/// Medium-qualifier unsigned integer 3x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x2<uint, mediump>			mediump_umat3x2;
+	typedef mat<3, 2, uint, mediump>			mediump_umat3x2;
 
-	/// Medium-precision unsigned integer 3x3 matrix.
+	/// Medium-qualifier unsigned integer 3x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x3<uint, mediump>			mediump_umat3x3;
+	typedef mat<3, 3, uint, mediump>			mediump_umat3x3;
 
-	/// Medium-precision unsigned integer 3x4 matrix.
+	/// Medium-qualifier unsigned integer 3x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x4<uint, mediump>			mediump_umat3x4;
+	typedef mat<3, 4, uint, mediump>			mediump_umat3x4;
 
-	/// Medium-precision unsigned integer 4x2 matrix.
+	/// Medium-qualifier unsigned integer 4x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x2<uint, mediump>			mediump_umat4x2;
+	typedef mat<4, 2, uint, mediump>			mediump_umat4x2;
 
-	/// Medium-precision unsigned integer 4x3 matrix.
+	/// Medium-qualifier unsigned integer 4x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x3<uint, mediump>			mediump_umat4x3;
+	typedef mat<4, 3, uint, mediump>			mediump_umat4x3;
 
-	/// Medium-precision unsigned integer 4x4 matrix.
+	/// Medium-qualifier unsigned integer 4x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x4<uint, mediump>			mediump_umat4x4;
+	typedef mat<4, 4, uint, mediump>			mediump_umat4x4;
 
 
-	/// Low-precision unsigned integer 2x2 matrix.
+	/// Low-qualifier unsigned integer 2x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x2<uint, lowp>				lowp_umat2;
-	
-	/// Low-precision unsigned integer 3x3 matrix.
+	typedef mat<2, 2, uint, lowp>				lowp_umat2;
+
+	/// Low-qualifier unsigned integer 3x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x3<uint, lowp>				lowp_umat3;
+	typedef mat<3, 3, uint, lowp>				lowp_umat3;
 
-	/// Low-precision unsigned integer 4x4 matrix.
+	/// Low-qualifier unsigned integer 4x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x4<uint, lowp>				lowp_umat4;
+	typedef mat<4, 4, uint, lowp>				lowp_umat4;
 
 
-	/// Low-precision unsigned integer 2x2 matrix.
+	/// Low-qualifier unsigned integer 2x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x2<uint, lowp>				lowp_umat2x2;
+	typedef mat<2, 2, uint, lowp>				lowp_umat2x2;
 
-	/// Low-precision unsigned integer 2x3 matrix.
+	/// Low-qualifier unsigned integer 2x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x3<uint, lowp>				lowp_umat2x3;
+	typedef mat<2, 3, uint, lowp>				lowp_umat2x3;
 
-	/// Low-precision unsigned integer 2x4 matrix.
+	/// Low-qualifier unsigned integer 2x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat2x4<uint, lowp>				lowp_umat2x4;
+	typedef mat<2, 4, uint, lowp>				lowp_umat2x4;
 
-	/// Low-precision unsigned integer 3x2 matrix.
+	/// Low-qualifier unsigned integer 3x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x2<uint, lowp>				lowp_umat3x2;
+	typedef mat<3, 2, uint, lowp>				lowp_umat3x2;
 
-	/// Low-precision unsigned integer 3x3 matrix.
+	/// Low-qualifier unsigned integer 3x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x3<uint, lowp>				lowp_umat3x3;
+	typedef mat<3, 3, uint, lowp>				lowp_umat3x3;
 
-	/// Low-precision unsigned integer 3x4 matrix.
+	/// Low-qualifier unsigned integer 3x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat3x4<uint, lowp>				lowp_umat3x4;
+	typedef mat<3, 4, uint, lowp>				lowp_umat3x4;
 
-	/// Low-precision unsigned integer 4x2 matrix.
+	/// Low-qualifier unsigned integer 4x2 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x2<uint, lowp>				lowp_umat4x2;
+	typedef mat<4, 2, uint, lowp>				lowp_umat4x2;
 
-	/// Low-precision unsigned integer 4x3 matrix.
+	/// Low-qualifier unsigned integer 4x3 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x3<uint, lowp>				lowp_umat4x3;
+	typedef mat<4, 3, uint, lowp>				lowp_umat4x3;
 
-	/// Low-precision unsigned integer 4x4 matrix.
+	/// Low-qualifier unsigned integer 4x4 matrix.
 	/// @see gtc_matrix_integer
-	typedef tmat4x4<uint, lowp>				lowp_umat4x4;
+	typedef mat<4, 4, uint, lowp>				lowp_umat4x4;
 
 #if(defined(GLM_PRECISION_HIGHP_INT))
 	typedef highp_imat2								imat2;
@@ -461,7 +433,7 @@ namespace glm
 	typedef lowp_umat4x3							umat4x3;
 	typedef lowp_umat4x4							umat4x4;
 #else //if(defined(GLM_PRECISION_MEDIUMP_UINT))
-	
+
 	/// Unsigned integer 2x2 matrix.
 	/// @see gtc_matrix_integer
 	typedef mediump_umat2							umat2;

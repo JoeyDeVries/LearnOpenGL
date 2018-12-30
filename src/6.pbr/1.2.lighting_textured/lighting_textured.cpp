@@ -150,12 +150,12 @@ int main()
         glBindTexture(GL_TEXTURE_2D, ao);
 
         // render rows*column number of spheres with material properties defined by textures (they all have the same material properties)
-        glm::mat4 model;
+        glm::mat4 model = glm::mat4(1.0f);
         for (int row = 0; row < nrRows; ++row)
         {
             for (int col = 0; col < nrColumns; ++col)
             {
-                model = glm::mat4();
+                model = glm::mat4(1.0f);
                 model = glm::translate(model, glm::vec3(
                     (float)(col - (nrColumns / 2)) * spacing,
                     (float)(row - (nrRows / 2)) * spacing,
@@ -176,7 +176,7 @@ int main()
             shader.setVec3("lightPositions[" + std::to_string(i) + "]", newPos);
             shader.setVec3("lightColors[" + std::to_string(i) + "]", lightColors[i]);
 
-            model = glm::mat4();
+            model = glm::mat4(1.0f);
             model = glm::translate(model, newPos);
             model = glm::scale(model, glm::vec3(0.5f));
             shader.setMat4("model", model);

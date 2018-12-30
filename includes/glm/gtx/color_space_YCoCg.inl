@@ -1,101 +1,71 @@
-///////////////////////////////////////////////////////////////////////////////////
-/// OpenGL Mathematics (glm.g-truc.net)
-///
-/// Copyright (c) 2005 - 2015 G-Truc Creation (www.g-truc.net)
-/// Permission is hereby granted, free of charge, to any person obtaining a copy
-/// of this software and associated documentation files (the "Software"), to deal
-/// in the Software without restriction, including without limitation the rights
-/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-/// copies of the Software, and to permit persons to whom the Software is
-/// furnished to do so, subject to the following conditions:
-/// 
-/// The above copyright notice and this permission notice shall be included in
-/// all copies or substantial portions of the Software.
-/// 
-/// Restrictions:
-///		By making use of the Software for military purposes, you choose to make
-///		a Bunny unhappy.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-/// THE SOFTWARE.
-///
 /// @ref gtx_color_space_YCoCg
-/// @file glm/gtx/color_space_YCoCg.inl
-/// @date 2008-10-28 / 2011-06-07
-/// @author Christophe Riccio
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace glm
 {
-	template <typename T, precision P>
-	GLM_FUNC_QUALIFIER tvec3<T, P> rgb2YCoCg
+	template<typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<3, T, Q> rgb2YCoCg
 	(
-		tvec3<T, P> const & rgbColor
+		vec<3, T, Q> const& rgbColor
 	)
 	{
-		tvec3<T, P> result;
+		vec<3, T, Q> result;
 		result.x/*Y */ =   rgbColor.r / T(4) + rgbColor.g / T(2) + rgbColor.b / T(4);
 		result.y/*Co*/ =   rgbColor.r / T(2) + rgbColor.g * T(0) - rgbColor.b / T(2);
 		result.z/*Cg*/ = - rgbColor.r / T(4) + rgbColor.g / T(2) - rgbColor.b / T(4);
 		return result;
 	}
 
-	template <typename T, precision P>
-	GLM_FUNC_QUALIFIER tvec3<T, P> YCoCg2rgb
+	template<typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<3, T, Q> YCoCg2rgb
 	(
-		tvec3<T, P> const & YCoCgColor
+		vec<3, T, Q> const& YCoCgColor
 	)
 	{
-		tvec3<T, P> result;
+		vec<3, T, Q> result;
 		result.r = YCoCgColor.x + YCoCgColor.y - YCoCgColor.z;
 		result.g = YCoCgColor.x				   + YCoCgColor.z;
 		result.b = YCoCgColor.x - YCoCgColor.y - YCoCgColor.z;
 		return result;
 	}
 
-	template <typename T, precision P, bool isInteger>
+	template<typename T, qualifier Q, bool isInteger>
 	class compute_YCoCgR {
 	public:
-		static GLM_FUNC_QUALIFIER tvec3<T, P> rgb2YCoCgR
+		static GLM_FUNC_QUALIFIER vec<3, T, Q> rgb2YCoCgR
 		(
-			tvec3<T, P> const & rgbColor
+			vec<3, T, Q> const& rgbColor
 		)
 		{
-			tvec3<T, P> result;
-			result.x/*Y */ = rgbColor.g / T(2) + (rgbColor.r + rgbColor.b) / T(4);
+			vec<3, T, Q> result;
+			result.x/*Y */ = rgbColor.g * static_cast<T>(0.5) + (rgbColor.r + rgbColor.b) * static_cast<T>(0.25);
 			result.y/*Co*/ = rgbColor.r - rgbColor.b;
-			result.z/*Cg*/ = rgbColor.g - (rgbColor.r + rgbColor.b) / T(2);
+			result.z/*Cg*/ = rgbColor.g - (rgbColor.r + rgbColor.b) * static_cast<T>(0.5);
 			return result;
 		}
 
-		static GLM_FUNC_QUALIFIER tvec3<T, P> YCoCgR2rgb
+		static GLM_FUNC_QUALIFIER vec<3, T, Q> YCoCgR2rgb
 		(
-			tvec3<T, P> const & YCoCgRColor
+			vec<3, T, Q> const& YCoCgRColor
 		)
 		{
-			tvec3<T, P> result;
-			T tmp = YCoCgRColor.x - (YCoCgRColor.z / T(2));
+			vec<3, T, Q> result;
+			T tmp = YCoCgRColor.x - (YCoCgRColor.z * static_cast<T>(0.5));
 			result.g = YCoCgRColor.z + tmp;
-			result.b = tmp - (YCoCgRColor.y / T(2));
+			result.b = tmp - (YCoCgRColor.y * static_cast<T>(0.5));
 			result.r = result.b + YCoCgRColor.y;
 			return result;
 		}
 	};
 
-	template <typename T, precision P>
-	class compute_YCoCgR<T, P, true> {
+	template<typename T, qualifier Q>
+	class compute_YCoCgR<T, Q, true> {
 	public:
-		static GLM_FUNC_QUALIFIER tvec3<T, P> rgb2YCoCgR
+		static GLM_FUNC_QUALIFIER vec<3, T, Q> rgb2YCoCgR
 		(
-			tvec3<T, P> const & rgbColor
+			vec<3, T, Q> const& rgbColor
 		)
 		{
-			tvec3<T, P> result;
+			vec<3, T, Q> result;
 			result.y/*Co*/ = rgbColor.r - rgbColor.b;
 			T tmp = rgbColor.b + (result.y >> 1);
 			result.z/*Cg*/ = rgbColor.g - tmp;
@@ -103,12 +73,12 @@ namespace glm
 			return result;
 		}
 
-		static GLM_FUNC_QUALIFIER tvec3<T, P> YCoCgR2rgb
+		static GLM_FUNC_QUALIFIER vec<3, T, Q> YCoCgR2rgb
 		(
-			tvec3<T, P> const & YCoCgRColor
+			vec<3, T, Q> const& YCoCgRColor
 		)
 		{
-			tvec3<T, P> result;
+			vec<3, T, Q> result;
 			T tmp = YCoCgRColor.x - (YCoCgRColor.z >> 1);
 			result.g = YCoCgRColor.z + tmp;
 			result.b = tmp - (YCoCgRColor.y >> 1);
@@ -117,21 +87,21 @@ namespace glm
 		}
 	};
 
-	template <typename T, precision P>
-	GLM_FUNC_QUALIFIER tvec3<T, P> rgb2YCoCgR
+	template<typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<3, T, Q> rgb2YCoCgR
 	(
-		tvec3<T, P> const & rgbColor
+		vec<3, T, Q> const& rgbColor
 	)
 	{
-		return compute_YCoCgR<T, P, std::numeric_limits<T>::is_integer>::rgb2YCoCgR(rgbColor);
+		return compute_YCoCgR<T, Q, std::numeric_limits<T>::is_integer>::rgb2YCoCgR(rgbColor);
 	}
 
-	template <typename T, precision P>
-	GLM_FUNC_QUALIFIER tvec3<T, P> YCoCgR2rgb
+	template<typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER vec<3, T, Q> YCoCgR2rgb
 	(
-		tvec3<T, P> const & YCoCgRColor
+		vec<3, T, Q> const& YCoCgRColor
 	)
 	{
-		return compute_YCoCgR<T, P, std::numeric_limits<T>::is_integer>::YCoCgR2rgb(YCoCgRColor);
+		return compute_YCoCgR<T, Q, std::numeric_limits<T>::is_integer>::YCoCgR2rgb(YCoCgRColor);
 	}
 }//namespace glm

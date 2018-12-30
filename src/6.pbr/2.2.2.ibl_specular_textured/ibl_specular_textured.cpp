@@ -399,7 +399,7 @@ int main()
         // render scene, supplying the convoluted irradiance map to the final shader.
         // ------------------------------------------------------------------------------------------
         pbrShader.use();
-        glm::mat4 model;
+        glm::mat4 model = glm::mat4(1.0f);
         glm::mat4 view = camera.GetViewMatrix();
         pbrShader.setMat4("view", view);
         pbrShader.setVec3("camPos", camera.Position);
@@ -424,7 +424,7 @@ int main()
         glActiveTexture(GL_TEXTURE7);
         glBindTexture(GL_TEXTURE_2D, ironAOMap);
 
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(-5.0, 0.0, 2.0));
         pbrShader.setMat4("model", model);
         renderSphere();
@@ -441,7 +441,7 @@ int main()
         glActiveTexture(GL_TEXTURE7);
         glBindTexture(GL_TEXTURE_2D, goldAOMap);
 
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(-3.0, 0.0, 2.0));
         pbrShader.setMat4("model", model);
         renderSphere();
@@ -458,7 +458,7 @@ int main()
         glActiveTexture(GL_TEXTURE7);
         glBindTexture(GL_TEXTURE_2D, grassAOMap);
 
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(-1.0, 0.0, 2.0));
         pbrShader.setMat4("model", model);
         renderSphere();
@@ -475,7 +475,7 @@ int main()
         glActiveTexture(GL_TEXTURE7);
         glBindTexture(GL_TEXTURE_2D, plasticAOMap);
 
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(1.0, 0.0, 2.0));
         pbrShader.setMat4("model", model);
         renderSphere();
@@ -492,7 +492,7 @@ int main()
         glActiveTexture(GL_TEXTURE7);
         glBindTexture(GL_TEXTURE_2D, wallAOMap);
 
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(3.0, 0.0, 2.0));
         pbrShader.setMat4("model", model);
         renderSphere();
@@ -507,7 +507,7 @@ int main()
             pbrShader.setVec3("lightPositions[" + std::to_string(i) + "]", newPos);
             pbrShader.setVec3("lightColors[" + std::to_string(i) + "]", lightColors[i]);
 
-            model = glm::mat4();
+            model = glm::mat4(1.0f);
             model = glm::translate(model, newPos);
             model = glm::scale(model, glm::vec3(0.5f));
             pbrShader.setMat4("model", model);

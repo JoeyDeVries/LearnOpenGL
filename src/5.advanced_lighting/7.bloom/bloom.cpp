@@ -196,7 +196,7 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
-        glm::mat4 model;
+        glm::mat4 model = glm::mat4(1.0f);
         shader.use();
         shader.setMat4("projection", projection);
         shader.setMat4("view", view);
@@ -210,7 +210,7 @@ int main()
         }
         shader.setVec3("viewPos", camera.Position);
         // create one large cube that acts as the floor
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0));
         model = glm::scale(model, glm::vec3(12.5f, 0.5f, 12.5f));
         shader.setMat4("model", model);
@@ -218,38 +218,38 @@ int main()
         renderCube();
         // then create multiple cubes as the scenery
         glBindTexture(GL_TEXTURE_2D, containerTexture);
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, 1.5f, 0.0));
         model = glm::scale(model, glm::vec3(0.5f));
         shader.setMat4("model", model);
         renderCube();
 
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(2.0f, 0.0f, 1.0));
         model = glm::scale(model, glm::vec3(0.5f));
         shader.setMat4("model", model);
         renderCube();
 
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(-1.0f, -1.0f, 2.0));
         model = glm::rotate(model, glm::radians(60.0f), glm::normalize(glm::vec3(1.0, 0.0, 1.0)));
         shader.setMat4("model", model);
         renderCube();
 
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, 2.7f, 4.0));
         model = glm::rotate(model, glm::radians(23.0f), glm::normalize(glm::vec3(1.0, 0.0, 1.0)));
         model = glm::scale(model, glm::vec3(1.25));
         shader.setMat4("model", model);
         renderCube();
 
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(-2.0f, 1.0f, -3.0));
         model = glm::rotate(model, glm::radians(124.0f), glm::normalize(glm::vec3(1.0, 0.0, 1.0)));
         shader.setMat4("model", model);
         renderCube();
 
-        model = glm::mat4();
+        model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(-3.0f, 0.0f, 0.0));
         model = glm::scale(model, glm::vec3(0.5f));
         shader.setMat4("model", model);
@@ -262,7 +262,7 @@ int main()
 
         for (unsigned int i = 0; i < lightPositions.size(); i++)
         {
-            model = glm::mat4();
+            model = glm::mat4(1.0f);
             model = glm::translate(model, glm::vec3(lightPositions[i]));
             model = glm::scale(model, glm::vec3(0.25f));
             shaderLight.setMat4("model", model);
