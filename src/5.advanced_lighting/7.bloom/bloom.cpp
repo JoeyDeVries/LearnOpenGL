@@ -155,10 +155,10 @@ int main()
     lightPositions.push_back(glm::vec3(-.8f,  2.4f, -1.0f));
     // colors
     std::vector<glm::vec3> lightColors;
-    lightColors.push_back(glm::vec3(2.0f, 2.0f, 2.0f));
-    lightColors.push_back(glm::vec3(1.5f, 0.0f, 0.0f));
-    lightColors.push_back(glm::vec3(0.0f, 0.0f, 1.5f));
-    lightColors.push_back(glm::vec3(0.0f, 1.5f, 0.0f));
+    lightColors.push_back(glm::vec3(5.0f,   5.0f,  5.0f));
+    lightColors.push_back(glm::vec3(10.0f,  0.0f,  0.0f));
+    lightColors.push_back(glm::vec3(0.0f,   0.0f,  15.0f));
+    lightColors.push_back(glm::vec3(0.0f,   5.0f,  0.0f));
 
 
     // shader configuration
