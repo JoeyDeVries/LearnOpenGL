@@ -214,7 +214,7 @@ foreach(CHAPTER ${CHAPTERS})
                 # configure_file(${SHADER} "test")
                 add_custom_command(TARGET ${NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SHADER} $<TARGET_FILE_DIR:${NAME}>)
             elseif(UNIX AND NOT APPLE)
-                file(COPY ${SHADER} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/${CHAPTER})
+                configure_file(${SHADER} ${CMAKE_CURRENT_BINARY_DIR}/bin/${CHAPTER} COPYONLY)
             elseif(APPLE)
                 # create symbolic link for *.vs *.fs *.gs
                 get_filename_component(SHADERNAME ${SHADER} NAME)
