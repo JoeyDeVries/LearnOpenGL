@@ -360,7 +360,7 @@ unsigned int loadTexture(char const * path)
     {
         GLenum format;
         if (nrComponents == 1)
-            format = GL_RED;
+            format = GL_LUMINANCE;
         else if (nrComponents == 3)
             format = GL_RGB;
         else if (nrComponents == 4)
