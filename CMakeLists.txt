@@ -182,6 +182,7 @@ endmacro()
 
 # then create a project file per tutorial
 foreach(CHAPTER ${CHAPTERS})
+    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin/${CHAPTER})
     foreach(DEMO ${${CHAPTER}})
         file(GLOB SOURCE
             "src/${CHAPTER}/${DEMO}/*.h"
