@@ -161,7 +161,7 @@ set(6.pbr
 
 set(7.in_practice
     1.debugging
-    # 2.text_rendering
+    2.text_rendering
 )
 
 
@@ -174,7 +174,9 @@ add_library(STB_IMAGE "src/stb_image.cpp")
 set(LIBS ${LIBS} STB_IMAGE)
 
 add_library(GLAD "src/glad.c")
-set(LIBS ${LIBS} GLAD)
+set(LIBS ${LIBS} GLAD freetype)
+#https://www.freetype.org/download.html
+link_directories(/home/max/opensource/freetype-2.10.0/objs/.libs/)
 
 macro(makeLink src dest target)
   add_custom_command(TARGET ${target} POST_BUILD COMMAND ${CMAKE_COMMAND} -E create_symlink ${src} ${dest}  DEPENDS  ${dest} COMMENT "mklink ${src} -> ${dest}")
@@ -190,6 +192,7 @@ foreach(CHAPTER ${CHAPTERS})
             "src/${CHAPTER}/${DEMO}/*.vs"
             "src/${CHAPTER}/${DEMO}/*.fs"
             "src/${CHAPTER}/${DEMO}/*.gs"
+
         )
         set(NAME "${CHAPTER}__${DEMO}")
         add_executable(${NAME} ${SOURCE})
@@ -209,6 +212,7 @@ foreach(CHAPTER ${CHAPTERS})
                  # "src/${CHAPTER}/${DEMO}/*.frag"
                  "src/${CHAPTER}/${DEMO}/*.fs"
                  "src/${CHAPTER}/${DEMO}/*.gs"
+                 "src/${CHAPTER}/${DEMO}/*.ttf"
         )
         foreach(SHADER ${SHADERS})
             if(WIN32)
@@ -230,3 +234,4 @@ foreach(CHAPTER ${CHAPTERS})
 endforeach(CHAPTER)
 
 include_directories(${CMAKE_SOURCE_DIR}/includes)
+include_directories(/home/max/opensource/freetype-2.10.0/include)
