@@ -1,3 +1,10 @@
 # ignores following folders
 bin/
 build/
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+configuration/root_directory.h
+libGLAD.a
+libSTB_IMAGE.a
