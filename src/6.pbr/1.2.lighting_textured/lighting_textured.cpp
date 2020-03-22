@@ -202,7 +202,6 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    float cameraSpeed = 2.5 * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -289,11 +288,11 @@ void renderSphere()
         }
 
         bool oddRow = false;
-        for (int y = 0; y < Y_SEGMENTS; ++y)
+        for (unsigned int y = 0; y < Y_SEGMENTS; ++y)
         {
             if (!oddRow) // even rows: y == 0, y == 2; and so on
             {
-                for (int x = 0; x <= X_SEGMENTS; ++x)
+                for (unsigned int x = 0; x <= X_SEGMENTS; ++x)
                 {
                     indices.push_back(y       * (X_SEGMENTS + 1) + x);
                     indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
@@ -301,7 +300,7 @@ void renderSphere()
             }
             else
             {
-                for (int x = X_SEGMENTS; x >= 0; --x)
+                for (unsigned int x = X_SEGMENTS; x >= 0; --x)
                 {
                     indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
                     indices.push_back(y       * (X_SEGMENTS + 1) + x);
@@ -312,7 +311,7 @@ void renderSphere()
         indexCount = indices.size();
 
         std::vector<float> data;
-        for (int i = 0; i < positions.size(); ++i)
+        for (std::size_t i = 0; i < positions.size(); ++i)
         {
             data.push_back(positions[i].x);
             data.push_back(positions[i].y);
