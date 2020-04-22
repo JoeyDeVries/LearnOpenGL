@@ -289,7 +289,7 @@ void renderSphere()
             }
             else
             {
-                for (unsigned int x = X_SEGMENTS; x >= 0; --x)
+                for (int x = X_SEGMENTS; x >= 0; --x)
                 {
                     indices.push_back((y + 1) * (X_SEGMENTS + 1) + x);
                     indices.push_back(y       * (X_SEGMENTS + 1) + x);
