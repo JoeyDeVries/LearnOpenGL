@@ -161,7 +161,9 @@ set(6.pbr
 
 set(7.in_practice
     1.debugging
+    # due to trickier build setups (other libs rarely used everywhere else) these examples won't compile through CMake, but source code is available.
     # 2.text_rendering
+    # 3.2d_game
 )
 
 
