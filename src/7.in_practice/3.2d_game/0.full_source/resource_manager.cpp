@@ -105,15 +105,11 @@ Texture2D ResourceManager::loadTextureFromFile(const char *file, bool alpha)
         texture.Image_Format = GL_RGBA;
     }
     // load image
-    //int width, height;
-    //unsigned char* image = SOIL_load_image(file, &width, &height, 0, texture.Image_Format == GL_RGBA ? SOIL_LOAD_RGBA : SOIL_LOAD_RGB);
-
     int width, height, nrChannels;
     unsigned char* data = stbi_load(file, &width, &height, &nrChannels, 0);
     // now generate texture
     texture.Generate(width, height, data);
     // and finally free image data
-    //SOIL_free_image_data(image);
     stbi_image_free(data);
     return texture;
 }

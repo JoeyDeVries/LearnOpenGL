@@ -15,6 +15,7 @@
 #include <iostream>
 
 // GLFW function declerations
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 // The Width of the screen
@@ -30,6 +31,9 @@ int main(int argc, char *argv[])
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
+#endif
     glfwWindowHint(GLFW_RESIZABLE, false);
 
     GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Breakout", nullptr, nullptr);
@@ -44,11 +48,11 @@ int main(int argc, char *argv[])
     }
 
     glfwSetKeyCallback(window, key_callback);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // OpenGL configuration
     // --------------------
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-    glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -114,4 +118,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             Breakout.KeysProcessed[key] = false;
         }
     }
+}
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    // make sure the viewport matches the new window dimensions; note that width and 
+    // height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height);
 }
