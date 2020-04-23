@@ -179,7 +179,7 @@ void Game::ProcessInput(float dt)
         // move playerboard
         if (this->Keys[GLFW_KEY_A])
         {
-            if (Player->Position.x >= 0)
+            if (Player->Position.x >= 0.0f)
             {
                 Player->Position.x -= velocity;
                 if (Ball->Stuck)
