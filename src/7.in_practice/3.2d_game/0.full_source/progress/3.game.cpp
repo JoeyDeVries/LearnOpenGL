@@ -23,7 +23,7 @@ Game::Game(unsigned int width, unsigned int height)
 
 Game::~Game()
 {
-    
+    delete Renderer;
 }
 
 void Game::Init()
