@@ -11,6 +11,7 @@
 #include "sprite_renderer.h"
 #include "game_object.h"
 #include "ball_object.h"
+#include "particle_generator.h"
 
 // Game-related State data
 SpriteRenderer    *Renderer;
