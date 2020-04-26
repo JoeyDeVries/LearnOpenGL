@@ -54,9 +54,9 @@ PostProcessor::PostProcessor(Shader shader, unsigned int width, unsigned int hei
     };
     glUniform1iv(glGetUniformLocation(this->PostProcessingShader.ID, "edge_kernel"), 9, edge_kernel);
     float blur_kernel[9] = {
-        1.0 / 16, 2.0 / 16, 1.0 / 16,
-        2.0 / 16, 4.0 / 16, 2.0 / 16,
-        1.0 / 16, 2.0 / 16, 1.0 / 16
+        1.0f / 16.0f, 2.0f / 16.0f, 1.0f / 16.0f,
+        2.0f / 16.0f, 4.0f / 16.0f, 2.0f / 16.0f,
+        1.0f / 16.0f, 2.0f / 16.0f, 1.0f / 16.0f
     };
     glUniform1fv(glGetUniformLocation(this->PostProcessingShader.ID, "blur_kernel"), 9, blur_kernel);    
 }
@@ -114,7 +114,7 @@ void PostProcessor::initRenderData()
 
     glBindVertexArray(this->VAO);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GL_FLOAT), (void*)0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
