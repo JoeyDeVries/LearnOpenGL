@@ -13,6 +13,9 @@ uniform bool shake;
 
 void main()
 {
+    // zero out memory since an out variable is initialized with undefined values by default 
+    color = vec4(0.0f);
+
     vec3 sample[9];
     // sample from texture offsets if using convolution matrix
     if(chaos || shake)
