@@ -29,7 +29,7 @@ const glm::vec2 VELOCITY(0.0f, 150.0f);
 class PowerUp : public GameObject 
 {
 public:
-    // power-up state
+    // powerup state
     std::string Type;
     float       Duration;	
     bool        Activated;
