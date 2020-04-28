@@ -29,8 +29,9 @@ BallObject        *Ball;
 ParticleGenerator *Particles;
 PostProcessor     *Effects;
 ISoundEngine      *SoundEngine = createIrrKlangDevice();
-float            ShakeTime = 0.0f;
 TextRenderer      *Text;
+
+float ShakeTime = 0.0f;
 
 
 Game::Game(unsigned int width, unsigned int height) 
@@ -204,7 +205,7 @@ void Game::Render()
 {
     if (this->State == GAME_ACTIVE || this->State == GAME_MENU || this->State == GAME_WIN)
     {
-        // begin rendering to postprocessing quad
+        // begin rendering to postprocessing framebuffer
         Effects->BeginRender();
             // draw background
             Renderer->DrawSprite(ResourceManager::GetTexture("background"), glm::vec2(0.0f, 0.0f), glm::vec2(this->Width, this->Height), 0.0f);
@@ -220,7 +221,7 @@ void Game::Render()
             Particles->Draw();
             // draw ball
             Ball->Draw(*Renderer);            
-        // end rendering to postprocessing quad
+        // end rendering to postprocessing framebuffer
         Effects->EndRender();
         // render postprocessing quad
         Effects->Render(glfwGetTime());
@@ -269,7 +270,7 @@ void Game::ResetPlayer()
 }
 
 
-// power-ups
+// powerups
 bool IsOtherPowerUpActive(std::vector<PowerUp> &powerUps, std::string type);
 
 void Game::UpdatePowerUps(float dt)
@@ -349,7 +350,6 @@ void Game::SpawnPowerUps(GameObject &block)
 
 void ActivatePowerUp(PowerUp &powerUp)
 {
-    // initiate a powerup based type of powerup
     if (powerUp.Type == "speed")
     {
         Ball->Velocity *= 1.2;
@@ -424,7 +424,7 @@ void Game::DoCollisions()
                 // collision resolution
                 Direction dir = std::get<1>(collision);
                 glm::vec2 diff_vector = std::get<2>(collision);
-                if (!(Ball->PassThrough && !box.IsSolid)) // don't do collision resolution on non-solid bricks if pass-through activated
+                if (!(Ball->PassThrough && !box.IsSolid)) // don't do collision resolution on non-solid bricks if pass-through is activated
                 {
                     if (dir == LEFT || dir == RIGHT) // horizontal collision
                     {
@@ -524,17 +524,17 @@ Collision CheckCollision(BallObject &one, GameObject &two) // AABB - Circle coll
     if (glm::length(difference) < one.Radius) // not <= since in that case a collision also occurs when object one exactly touches object two, which they are at the end of each collision resolution stage.
         return std::make_tuple(true, VectorDirection(difference), difference);
     else
-        return std::make_tuple(false, UP, glm::vec2(0, 0));
+        return std::make_tuple(false, UP, glm::vec2(0.0f, 0.0f));
 }
 
 // calculates which direction a vector is facing (N,E,S or W)
 Direction VectorDirection(glm::vec2 target)
 {
     glm::vec2 compass[] = {
-        glm::vec2(0.0f, 1.0f),	// north
-        glm::vec2(1.0f, 0.0f),	// east
-        glm::vec2(0.0f, -1.0f),	// south
-        glm::vec2(-1.0f, 0.0f)	// west
+        glm::vec2(0.0f, 1.0f),	// up
+        glm::vec2(1.0f, 0.0f),	// right
+        glm::vec2(0.0f, -1.0f),	// down
+        glm::vec2(-1.0f, 0.0f)	// left
     };
     float max = 0.0f;
     unsigned int best_match = -1;

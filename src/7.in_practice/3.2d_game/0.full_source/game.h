@@ -14,7 +14,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "game_object.h"
 #include "game_level.h"
 #include "power_up.h"
 
@@ -72,7 +71,7 @@ public:
     // reset
     void ResetLevel();
     void ResetPlayer();
-    // power-ups
+    // powerups
     void SpawnPowerUps(GameObject &block);
     void UpdatePowerUps(float dt);
 };
