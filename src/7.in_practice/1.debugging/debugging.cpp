@@ -43,10 +43,10 @@ GLenum glCheckError_(const char *file, int line)
 
 void APIENTRY glDebugOutput(GLenum source, 
                             GLenum type, 
-                            GLuint id, 
+                            unsigned int id, 
                             GLenum severity, 
                             GLsizei length, 
-                            const GLchar *message, 
+                            const char *message, 
                             const void *userParam)
 {
     if(id == 131169 || id == 131185 || id == 131218 || id == 131204) return; // ignore these non-significant error codes
@@ -95,7 +95,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE); // comment this line in a release build! 
+    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true); // comment this line in a release build! 
 
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -125,7 +125,7 @@ int main()
     }
 
     // enable OpenGL debug context if context allows for debug context
-    GLint flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+    int flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
     if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
     {
         glEnable(GL_DEBUG_OUTPUT);
@@ -143,10 +143,10 @@ int main()
     Shader shader("debugging.vs", "debugging.fs");
 
     // configure 3D cube
-    GLuint cubeVAO, cubeVBO;
-    GLfloat vertices[] = {
+    unsigned int cubeVAO, cubeVBO;
+    float vertices[] = {
          // back face
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, // Bottom-left
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, // bottom-left
          0.5f,  0.5f, -0.5f,  1.0f,  1.0f, // top-right
          0.5f, -0.5f, -0.5f,  1.0f,  0.0f, // bottom-right         
          0.5f,  0.5f, -0.5f,  1.0f,  1.0f, // top-right
@@ -196,9 +196,9 @@ int main()
     // link vertex attributes
     glBindVertexArray(cubeVAO);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
@@ -243,8 +243,8 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader.use();
-        GLfloat rotationSpeed = 10.0f;
-        GLfloat angle = (float)glfwGetTime() * rotationSpeed;
+        float rotationSpeed = 10.0f;
+        float angle = (float)glfwGetTime() * rotationSpeed;
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0, 0.0f, -2.5));
         model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -277,8 +277,8 @@ void renderQuad()
             // positions        // texture Coords
             -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
             -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-            1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-            1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+             1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+             1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
         };
         // setup plane VAO
         glGenVertexArrays(1, &quadVAO);
