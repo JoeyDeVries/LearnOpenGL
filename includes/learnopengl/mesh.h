@@ -9,9 +9,6 @@
 #include <learnopengl/shader.h>
 
 #include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 #include <vector>
 using namespace std;
 
@@ -36,13 +33,12 @@ struct Texture {
 
 class Mesh {
 public:
-    /*  Mesh Data  */
-    vector<Vertex> vertices;
+    // mesh Data
+    vector<Vertex>       vertices;
     vector<unsigned int> indices;
-    vector<Texture> textures;
+    vector<Texture>      textures;
     unsigned int VAO;
 
-    /*  Functions  */
     // constructor
     Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures)
     {
@@ -93,10 +89,9 @@ public:
     }
 
 private:
-    /*  Render data  */
+    // render data 
     unsigned int VBO, EBO;
 
-    /*  Functions    */
     // initializes all the buffer objects/arrays
     void setupMesh()
     {
