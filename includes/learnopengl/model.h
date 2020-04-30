@@ -26,13 +26,12 @@ unsigned int TextureFromFile(const char *path, const string &directory, bool gam
 class Model 
 {
 public:
-    /*  Model Data */
+    // model data 
     vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
-    vector<Mesh> meshes;
+    vector<Mesh>    meshes;
     string directory;
     bool gammaCorrection;
 
-    /*  Functions   */
     // constructor, expects a filepath to a 3D model.
     Model(string const &path, bool gamma = false) : gammaCorrection(gamma)
     {
@@ -47,7 +46,6 @@ public:
     }
     
 private:
-    /*  Functions   */
     // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
     void loadModel(string const &path)
     {
@@ -93,7 +91,7 @@ private:
         vector<unsigned int> indices;
         vector<Texture> textures;
 
-        // Walk through each of the mesh's vertices
+        // walk through each of the mesh's vertices
         for(unsigned int i = 0; i < mesh->mNumVertices; i++)
         {
             Vertex vertex;
