@@ -19,8 +19,8 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
 
 // settings
-const unsigned int SCR_WIDTH = 1280;
-const unsigned int SCR_HEIGHT = 720;
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -81,7 +81,8 @@ int main()
 
     // load models
     // -----------
-    Model nanosuit(FileSystem::getPath("resources/objects/nanosuit/nanosuit.obj"));
+    stbi_set_flip_vertically_on_load(true);
+    Model backpack(FileSystem::getPath("resources/objects/backpack/backpack.obj"));
 
     // render loop
     // -----------
@@ -112,7 +113,7 @@ int main()
         shader.setMat4("model", model);
 
         // draw model as usual
-        nanosuit.Draw(shader);
+        backpack.Draw(shader);
 
         // then draw model with normal visualizing geometry shader
         normalShader.use();
@@ -120,7 +121,7 @@ int main()
         normalShader.setMat4("view", view);
         normalShader.setMat4("model", model);
 
-        nanosuit.Draw(normalShader);
+        backpack.Draw(normalShader);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

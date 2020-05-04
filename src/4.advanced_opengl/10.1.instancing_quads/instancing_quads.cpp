@@ -9,8 +9,8 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 // settings
-const unsigned int SCR_WIDTH = 1280;
-const unsigned int SCR_HEIGHT = 720;
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
 
 int main()
 {

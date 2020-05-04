@@ -20,8 +20,8 @@ void processInput(GLFWwindow *window);
 unsigned int loadTexture(const char *path);
 
 // settings
-const unsigned int SCR_WIDTH = 1280;
-const unsigned int SCR_HEIGHT = 720;
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -248,7 +248,7 @@ int main()
         // vegetation
         glBindVertexArray(transparentVAO);
         glBindTexture(GL_TEXTURE_2D, transparentTexture);
-        for (GLuint i = 0; i < vegetation.size(); i++)
+        for (unsigned int i = 0; i < vegetation.size(); i++)
         {
             model = glm::mat4(1.0f);
             model = glm::translate(model, vegetation[i]);

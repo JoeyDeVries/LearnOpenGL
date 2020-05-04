@@ -22,8 +22,8 @@ void renderQuad();
 void renderCube();
 
 // settings
-const unsigned int SCR_WIDTH = 1280;
-const unsigned int SCR_HEIGHT = 720;
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
 bool bloom = true;
 bool bloomKeyPressed = false;
 float exposure = 1.0f;

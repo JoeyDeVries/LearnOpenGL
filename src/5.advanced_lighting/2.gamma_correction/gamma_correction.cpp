@@ -20,8 +20,8 @@ void processInput(GLFWwindow *window);
 unsigned int loadTexture(const char *path, bool gammaCorrection);
 
 // settings
-const unsigned int SCR_WIDTH = 1280;
-const unsigned int SCR_HEIGHT = 720;
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
 bool gammaEnabled = false;
 bool gammaKeyPressed = false;
 

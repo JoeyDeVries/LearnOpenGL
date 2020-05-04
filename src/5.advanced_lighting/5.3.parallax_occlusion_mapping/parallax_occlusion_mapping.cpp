@@ -21,8 +21,8 @@ unsigned int loadTexture(const char *path);
 void renderQuad();
 
 // settings
-const unsigned int SCR_WIDTH = 1280;
-const unsigned int SCR_HEIGHT = 720;
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
 float heightScale = 0.1;
 
 // camera
