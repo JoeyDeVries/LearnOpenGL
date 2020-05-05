@@ -22,8 +22,8 @@ void renderQuad();
 void renderCube();
 
 // settings
-const unsigned int SCR_WIDTH = 1280;
-const unsigned int SCR_HEIGHT = 720;
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 5.0f));
@@ -91,7 +91,7 @@ int main()
 
     // load models
     // -----------
-    Model nanosuit(FileSystem::getPath("resources/objects/nanosuit/nanosuit.obj"));
+    Model backpack(FileSystem::getPath("resources/objects/backpack/backpack.obj"));
 
     // configure g-buffer framebuffer
     // ------------------------------
@@ -253,13 +253,13 @@ int main()
             shaderGeometryPass.setInt("invertedNormals", 1); // invert normals as we're inside the cube
             renderCube();
             shaderGeometryPass.setInt("invertedNormals", 0); 
-            // nanosuit model on the floor
+            // backpack model on the floor
             model = glm::mat4(1.0f);
-            model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.0));
+            model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0));
             model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0, 0.0, 0.0));
-            model = glm::scale(model, glm::vec3(0.5f));
+            model = glm::scale(model, glm::vec3(1.0f));
             shaderGeometryPass.setMat4("model", model);
-            nanosuit.Draw(shaderGeometryPass);
+            backpack.Draw(shaderGeometryPass);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 

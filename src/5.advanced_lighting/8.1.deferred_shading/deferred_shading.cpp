@@ -21,7 +21,7 @@ void renderQuad();
 void renderCube();
 
 // settings
-const unsigned int SCR_WIDTH = 880;
+const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 // camera
@@ -87,17 +87,17 @@ int main()
 
     // load models
     // -----------
-    Model nanosuit(FileSystem::getPath("resources/objects/backpack/backpack.obj"));
+    Model backpack(FileSystem::getPath("resources/objects/backpack/backpack.obj"));
     std::vector<glm::vec3> objectPositions;
-    objectPositions.push_back(glm::vec3(-3.0,  -3.0, -3.0));
-    objectPositions.push_back(glm::vec3( 0.0,  -3.0, -3.0));
-    objectPositions.push_back(glm::vec3( 3.0,  -3.0, -3.0));
-    objectPositions.push_back(glm::vec3(-3.0,  -3.0,  0.0));
-    objectPositions.push_back(glm::vec3( 0.0,  -3.0,  0.0));
-    objectPositions.push_back(glm::vec3( 3.0,  -3.0,  0.0));
-    objectPositions.push_back(glm::vec3(-3.0,  -3.0,  3.0));
-    objectPositions.push_back(glm::vec3( 0.0,  -3.0,  3.0));
-    objectPositions.push_back(glm::vec3( 3.0,  -3.0,  3.0));
+    objectPositions.push_back(glm::vec3(-3.0,  -0.5, -3.0));
+    objectPositions.push_back(glm::vec3( 0.0,  -0.5, -3.0));
+    objectPositions.push_back(glm::vec3( 3.0,  -0.5, -3.0));
+    objectPositions.push_back(glm::vec3(-3.0,  -0.5,  0.0));
+    objectPositions.push_back(glm::vec3( 0.0,  -0.5,  0.0));
+    objectPositions.push_back(glm::vec3( 3.0,  -0.5,  0.0));
+    objectPositions.push_back(glm::vec3(-3.0,  -0.5,  3.0));
+    objectPositions.push_back(glm::vec3( 0.0,  -0.5,  3.0));
+    objectPositions.push_back(glm::vec3( 3.0,  -0.5,  3.0));
 
 
     // configure g-buffer framebuffer
@@ -201,9 +201,9 @@ int main()
             {
                 model = glm::mat4(1.0f);
                 model = glm::translate(model, objectPositions[i]);
-                model = glm::scale(model, glm::vec3(0.25f));
+                model = glm::scale(model, glm::vec3(0.5f));
                 shaderGeometryPass.setMat4("model", model);
-                nanosuit.Draw(shaderGeometryPass);
+                backpack.Draw(shaderGeometryPass);
             }
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
