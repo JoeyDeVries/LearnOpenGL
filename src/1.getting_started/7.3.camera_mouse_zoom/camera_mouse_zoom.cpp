@@ -349,10 +349,9 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 // ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    if (fov >= 1.0f && fov <= 45.0f)
-        fov -= yoffset;
-    if (fov <= 1.0f)
+    fov -= (float)yoffset;
+    if (fov < 1.0f)
         fov = 1.0f;
-    if (fov >= 45.0f)
+    if (fov > 45.0f)
         fov = 45.0f;
 }
