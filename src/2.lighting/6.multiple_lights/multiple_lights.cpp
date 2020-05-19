@@ -80,7 +80,7 @@ int main()
     // build and compile our shader zprogram
     // ------------------------------------
     Shader lightingShader("6.multiple_lights.vs", "6.multiple_lights.fs");
-    Shader lampShader("6.lamp.vs", "6.lamp.fs");
+    Shader lightCubeShader("6.light_cube.vs", "6.light_cube.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
@@ -165,9 +165,9 @@ int main()
     glEnableVertexAttribArray(2);
 
     // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
-    unsigned int lightVAO;
-    glGenVertexArrays(1, &lightVAO);
-    glBindVertexArray(lightVAO);
+    unsigned int lightCubeVAO;
+    glGenVertexArrays(1, &lightCubeVAO);
+    glBindVertexArray(lightCubeVAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     // note that we update the lamp's position attribute's stride to reflect the updated buffer data
@@ -297,18 +297,18 @@ int main()
         }
 
          // also draw the lamp object(s)
-         lampShader.use();
-         lampShader.setMat4("projection", projection);
-         lampShader.setMat4("view", view);
+         lightCubeShader.use();
+         lightCubeShader.setMat4("projection", projection);
+         lightCubeShader.setMat4("view", view);
     
          // we now draw as many light bulbs as we have point lights.
-         glBindVertexArray(lightVAO);
+         glBindVertexArray(lightCubeVAO);
          for (unsigned int i = 0; i < 4; i++)
          {
              model = glm::mat4(1.0f);
              model = glm::translate(model, pointLightPositions[i]);
              model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
-             lampShader.setMat4("model", model);
+             lightCubeShader.setMat4("model", model);
              glDrawArrays(GL_TRIANGLES, 0, 36);
          }
 
@@ -322,7 +322,7 @@ int main()
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
     glDeleteVertexArrays(1, &cubeVAO);
-    glDeleteVertexArrays(1, &lightVAO);
+    glDeleteVertexArrays(1, &lightCubeVAO);
     glDeleteBuffers(1, &VBO);
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
