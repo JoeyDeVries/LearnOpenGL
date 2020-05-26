@@ -180,17 +180,15 @@ void renderQuad()
         glm::vec2 deltaUV1 = uv2 - uv1;
         glm::vec2 deltaUV2 = uv3 - uv1;
 
-        GLfloat f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+        float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
 
         tangent1.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
         tangent1.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
         tangent1.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
-        tangent1 = glm::normalize(tangent1);
 
         bitangent1.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
         bitangent1.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
         bitangent1.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
-        bitangent1 = glm::normalize(bitangent1);
 
         // triangle 2
         // ----------
@@ -204,13 +202,11 @@ void renderQuad()
         tangent2.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
         tangent2.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
         tangent2.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
-        tangent2 = glm::normalize(tangent2);
 
 
         bitangent2.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
         bitangent2.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
         bitangent2.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
-        bitangent2 = glm::normalize(bitangent2);
 
 
         float quadVertices[] = {
