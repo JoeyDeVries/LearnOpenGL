@@ -26,7 +26,7 @@ PostProcessor     *Effects;
 float ShakeTime = 0.0f;
 
 Game::Game(unsigned int width, unsigned int height) 
-    : State(GAME_MENU), Keys(), Width(width), Height(height)
+    : State(GAME_ACTIVE), Keys(), Width(width), Height(height)
 { 
 
 }
@@ -95,6 +95,8 @@ void Game::Update(float dt)
     this->DoCollisions();
     // update particles
     Particles->Update(dt, *Ball, 2, glm::vec2(Ball->Radius / 2.0f));
+    // update PowerUps
+    this->UpdatePowerUps(dt);
     // reduce shake time
     if (ShakeTime > 0.0f)
     {
