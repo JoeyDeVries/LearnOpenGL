@@ -39,7 +39,7 @@ public:
     }
 
     // draws the model, and thus all its meshes
-    void Draw(Shader shader)
+    void Draw(Shader &shader)
     {
         for(unsigned int i = 0; i < meshes.size(); i++)
             meshes[i].Draw(shader);
