@@ -1,5 +1,5 @@
 # learnopengl.com code repository
-Contains code samples for all tutorials of [https://learnopengl.com](https://learnopengl.com). 
+Contains code samples for all chapters of Learn OpenGL and [https://learnopengl.com](https://learnopengl.com). 
 
 ## Windows building
 All relevant libraries are found in /libs and all DLLs found in /dlls (pre-)compiled for Windows. 
@@ -38,4 +38,4 @@ make -j8
 ## Glitter
 Polytonic created a project called [Glitter](https://github.com/Polytonic/Glitter) that is a dead-simple boilerplate for OpenGL. 
 Everything you need to run a single LearnOpenGL Project (including all libraries) and just that; nothing more. 
-Perfect if you want to follow along with the tutorials, without the hassle of having to manually compile and link all third party libraries!
+Perfect if you want to follow along with the chapters, without the hassle of having to manually compile and link all third party libraries!
