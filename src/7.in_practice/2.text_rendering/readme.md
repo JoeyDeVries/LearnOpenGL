@@ -42,7 +42,9 @@ Now, try again to build the project '7.in_practice__2.text_rendering'
 
 You will get linking errors this time, such as "bin\7.in_practice\Release\7.in_practice__2.text_rendering.exe : fatal error LNK1120: 6 unresolved externals"
 
-We have to add 'freetype.lib' to the project '7.in_practice__2.text_rendering', right click on the project for the menu, select 'Properties', then select 'Linker', 'Input', and 'Additional Dependencies'.  Edit the 'Additional Dependencies', and type into the list in the upper box, 'freetype.lib'.
+To fix the linking errors, we have to add 'freetype.lib' to the project.  The best way to add the library is to edit CMakeLists.txt again, this time, on line 3, add freetype to the 'set (LIBS...' entry list. It should look like this 'set(LIBS glfw3 opengl32 assimp freetype)' 
+
+Rerun cmake.
 
 Build the project '7.in_practice__2.text_rendering' again, this time it should succeed and will create '7.in_practice__2.text_rendering.exe' under the 'bin' folder.
 
