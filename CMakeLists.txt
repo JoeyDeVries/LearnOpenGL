@@ -30,7 +30,7 @@ message(STATUS "Found ASSIMP in ${ASSIMP_INCLUDE_DIR}")
 # message(STATUS "Found GLEW in ${GLEW_INCLUDE_DIR}")
 
 if(WIN32)
-  set(LIBS glfw3 opengl32 assimp freetype)
+  set(LIBS glfw3 opengl32 assimp freetype irrKlang)
 elseif(UNIX AND NOT APPLE)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
   find_package(OpenGL REQUIRED)
@@ -162,9 +162,8 @@ set(6.pbr
 
 set(7.in_practice
     1.debugging
-    # due to trickier build setups (other libs rarely used everywhere else) these examples won't compile through CMake, but source code is available.
     2.text_rendering
-    # 3.2d_game
+    3.2d_game
 )
 
 
