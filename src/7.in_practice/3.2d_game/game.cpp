@@ -8,6 +8,9 @@
 ******************************************************************/
 #include <algorithm>
 #include <sstream>
+#include <iostream>
+
+#include <learnopengl/filesystem.h>
 
 #include <irrklang/irrKlang.h>
 using namespace irrklang;
@@ -54,9 +57,9 @@ Game::~Game()
 void Game::Init()
 {
     // load shaders
-    ResourceManager::LoadShader("shaders/sprite.vs", "shaders/sprite.frag", nullptr, "sprite");
-    ResourceManager::LoadShader("shaders/particle.vs", "shaders/particle.frag", nullptr, "particle");
-    ResourceManager::LoadShader("shaders/post_processing.vs", "shaders/post_processing.frag", nullptr, "postprocessing");
+    ResourceManager::LoadShader("sprite.vs", "sprite.fs", nullptr, "sprite");
+    ResourceManager::LoadShader("particle.vs", "particle.fs", nullptr, "particle");
+    ResourceManager::LoadShader("post_processing.vs", "post_processing.fs", nullptr, "postprocessing");
     // configure shaders
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(this->Width), static_cast<float>(this->Height), 0.0f, -1.0f, 1.0f);
     ResourceManager::GetShader("sprite").Use().SetInteger("sprite", 0);
@@ -64,29 +67,29 @@ void Game::Init()
     ResourceManager::GetShader("particle").Use().SetInteger("sprite", 0);
     ResourceManager::GetShader("particle").SetMatrix4("projection", projection);
     // load textures
-    ResourceManager::LoadTexture("textures/background.jpg", false, "background");
-    ResourceManager::LoadTexture("textures/awesomeface.png", true, "face");
-    ResourceManager::LoadTexture("textures/block.png", false, "block");
-    ResourceManager::LoadTexture("textures/block_solid.png", false, "block_solid");
-    ResourceManager::LoadTexture("textures/paddle.png", true, "paddle");
-    ResourceManager::LoadTexture("textures/particle.png", true, "particle");
-    ResourceManager::LoadTexture("textures/powerup_speed.png", true, "powerup_speed");
-    ResourceManager::LoadTexture("textures/powerup_sticky.png", true, "powerup_sticky");
-    ResourceManager::LoadTexture("textures/powerup_increase.png", true, "powerup_increase");
-    ResourceManager::LoadTexture("textures/powerup_confuse.png", true, "powerup_confuse");
-    ResourceManager::LoadTexture("textures/powerup_chaos.png", true, "powerup_chaos");
-    ResourceManager::LoadTexture("textures/powerup_passthrough.png", true, "powerup_passthrough");
+    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/background.jpg").c_str(), false, "background");
+    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/awesomeface.png").c_str(), true, "face");
+    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/block.png").c_str(), false, "block");
+    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/block_solid.png").c_str(), false, "block_solid");
+    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/paddle.png").c_str(), true, "paddle");
+    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/particle.png").c_str(), true, "particle");
+    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/powerup_speed.png").c_str(), true, "powerup_speed");
+    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/powerup_sticky.png").c_str(), true, "powerup_sticky");
+    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/powerup_increase.png").c_str(), true, "powerup_increase");
+    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/powerup_confuse.png").c_str(), true, "powerup_confuse");
+    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/powerup_chaos.png").c_str(), true, "powerup_chaos");
+    ResourceManager::LoadTexture(FileSystem::getPath("resources/textures/powerup_passthrough.png").c_str(), true, "powerup_passthrough");
     // set render-specific controls
     Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
     Particles = new ParticleGenerator(ResourceManager::GetShader("particle"), ResourceManager::GetTexture("particle"), 500);
     Effects = new PostProcessor(ResourceManager::GetShader("postprocessing"), this->Width, this->Height);
     Text = new TextRenderer(this->Width, this->Height);
-    Text->Load("fonts/OCRAEXT.TTF", 24);
+    Text->Load(FileSystem::getPath("resources/fonts/OCRAEXT.TTF").c_str(), 24);
     // load levels
-    GameLevel one; one.Load("levels/one.lvl", this->Width, this->Height / 2);
-    GameLevel two; two.Load("levels/two.lvl", this->Width, this->Height /2 );
-    GameLevel three; three.Load("levels/three.lvl", this->Width, this->Height / 2);
-    GameLevel four; four.Load("levels/four.lvl", this->Width, this->Height / 2);
+    GameLevel one; one.Load(FileSystem::getPath("resources/levels/one.lvl").c_str(), this->Width, this->Height / 2);
+    GameLevel two; two.Load(FileSystem::getPath("resources/levels/two.lvl").c_str(), this->Width, this->Height /2 );
+    GameLevel three; three.Load(FileSystem::getPath("resources/levels/three.lvl").c_str(), this->Width, this->Height / 2);
+    GameLevel four; four.Load(FileSystem::getPath("resources/levels/four.lvl").c_str(), this->Width, this->Height / 2);
     this->Levels.push_back(one);
     this->Levels.push_back(two);
     this->Levels.push_back(three);
@@ -98,7 +101,7 @@ void Game::Init()
     glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
     Ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetTexture("face"));
     // audio
-    SoundEngine->play2D("audio/breakout.mp3", true);
+    SoundEngine->play2D(FileSystem::getPath("resources/audio/breakout.mp3").c_str(), true);
 }
 
 void Game::Update(float dt)
@@ -413,13 +416,13 @@ void Game::DoCollisions()
                 {
                     box.Destroyed = true;
                     this->SpawnPowerUps(box);
-                    SoundEngine->play2D("audio/bleep.mp3", false);
+                    SoundEngine->play2D(FileSystem::getPath("resources/audio/bleep.mp3").c_str(), false);
                 }
                 else
                 {   // if block is solid, enable shake effect
                     ShakeTime = 0.05f;
                     Effects->Shake = true;
-                    SoundEngine->play2D("audio/solid.wav", false);
+                    SoundEngine->play2D(FileSystem::getPath("resources/audio/bleep.mp3").c_str(), false);
                 }
                 // collision resolution
                 Direction dir = std::get<1>(collision);
@@ -465,7 +468,7 @@ void Game::DoCollisions()
                 ActivatePowerUp(powerUp);
                 powerUp.Destroyed = true;
                 powerUp.Activated = true;
-                SoundEngine->play2D("audio/powerup.wav", false);
+                SoundEngine->play2D(FileSystem::getPath("resources/audio/powerup.wav").c_str(), false);
             }
         }
     }
@@ -490,7 +493,7 @@ void Game::DoCollisions()
         // if Sticky powerup is activated, also stick ball to paddle once new velocity vectors were calculated
         Ball->Stuck = Ball->Sticky;
 
-        SoundEngine->play2D("audio/bleep.wav", false);
+        SoundEngine->play2D(FileSystem::getPath("resources/audio/bleep.wav").c_str(), false);
     }
 }
 
