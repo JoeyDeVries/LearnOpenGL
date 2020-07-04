@@ -143,9 +143,9 @@ int main()
             Characters.insert(std::pair<char, Character>(c, character));
         }
         glBindTexture(GL_TEXTURE_2D, 0);
+        FT_Done_Face(face);
     }
     // destroy FreeType once we're finished
-    FT_Done_Face(face);
     FT_Done_FreeType(ft);
 
     
