@@ -85,17 +85,24 @@ int main()
     FT_Library ft;
     // All functions return a value different than 0 whenever an error occurred
     if (FT_Init_FreeType(&ft))
+    {
         std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+        return -1;
+    }
 
 	// find path to font
 	const char *font_name = FileSystem::getPath("resources/fonts/Antonio-Bold.ttf").c_str();
     if(!font_name)
+    {
         std::cout << "ERROR::FREETYPE: Failed to load font_name: " << font_name << std::endl;
+        return -1;
+    }
 	
 	// load font as face
     FT_Face face;
     if (FT_New_Face(ft, font_name, 0, &face)) {
         std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+        return -1;
     }
     else {
         // set size to load glyphs as
