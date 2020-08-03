@@ -114,6 +114,9 @@ int main()
     shader.use();
     shader.setMat4("projection", projection);
 
+	const int lightsNumber = sizeof(lightPositions) / sizeof(lightPositions[0]);
+	shader.setInt("lightsNumber", lightsNumber);
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -167,9 +170,9 @@ int main()
         }
 
         // render light source (simply re-render sphere at light positions)
-        // this looks a bit off as we use the same shader, but it'll make their positions obvious and 
+        // this looks a bit off as we use the same shader, but it'll make their positions obvious and
         // keeps the codeprint small.
-        for (unsigned int i = 0; i < sizeof(lightPositions) / sizeof(lightPositions[0]); ++i)
+        for (unsigned int i = 0; i < lightsNumber; ++i)
         {
             glm::vec3 newPos = lightPositions[i] + glm::vec3(sin(glfwGetTime() * 5.0) * 5.0, 0.0, 0.0);
             newPos = lightPositions[i];
@@ -216,7 +219,7 @@ void processInput(GLFWwindow *window)
 // ---------------------------------------------------------------------------------------------
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    // make sure the viewport matches the new window dimensions; note that width and 
+    // make sure the viewport matches the new window dimensions; note that width and
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
 }
