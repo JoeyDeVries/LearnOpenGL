@@ -91,16 +91,16 @@ int main()
     }
 
 	// find path to font
-	const char *font_name = FileSystem::getPath("resources/fonts/Antonio-Bold.ttf").c_str();
-    if(!font_name)
+    std::string font_name = FileSystem::getPath("resources/fonts/Antonio-Bold.ttf");
+    if (font_name.empty())
     {
-        std::cout << "ERROR::FREETYPE: Failed to load font_name: " << font_name << std::endl;
+        std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;
         return -1;
     }
 	
 	// load font as face
     FT_Face face;
-    if (FT_New_Face(ft, font_name, 0, &face)) {
+    if (FT_New_Face(ft, font_name.c_str(), 0, &face)) {
         std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
         return -1;
     }
