@@ -1,4 +1,4 @@
-# learnopengl.com code repository
+# learnopengl.com code repository - An Amazing Project
 Contains code samples for all chapters of Learn OpenGL and [https://learnopengl.com](https://learnopengl.com). 
 
 ## Windows building
