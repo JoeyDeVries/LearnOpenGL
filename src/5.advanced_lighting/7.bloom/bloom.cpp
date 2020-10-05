@@ -214,7 +214,6 @@ int main()
         model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0));
         model = glm::scale(model, glm::vec3(12.5f, 0.5f, 12.5f));
         shader.setMat4("model", model);
-        shader.setMat4("model", model);
         renderCube();
         // then create multiple cubes as the scenery
         glBindTexture(GL_TEXTURE_2D, containerTexture);
