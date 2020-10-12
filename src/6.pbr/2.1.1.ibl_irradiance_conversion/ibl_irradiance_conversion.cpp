@@ -234,7 +234,7 @@ int main()
         pbrShader.setMat4("view", view);
         pbrShader.setVec3("camPos", camera.Position);
 
-        // render rows*column number of spheres with material properties defined by textures (they all have the same material properties)
+        // render rows*column number of spheres with varying metallic/roughness values scaled by rows and columns respectively
         glm::mat4 model = glm::mat4(1.0f);
         for (int row = 0; row < nrRows; ++row)
         {
