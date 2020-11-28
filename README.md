@@ -28,7 +28,7 @@ Using [this project](https://github.com/01e9/docker-ide) you can start IDE in do
 ## Mac OS X building
 Building on Mac OS X is fairly simple (thanks [@hyperknot](https://github.com/hyperknot)):
 ```
-brew install cmake assimp glm glfw
+brew install cmake assimp glm glfw freetype
 mkdir build
 cd build
 cmake ../.
