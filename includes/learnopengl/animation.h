@@ -7,7 +7,7 @@
 #include <learnopengl/bone.h>
 #include <functional>
 #include <learnopengl/animdata.h>
-#include <learnopengl/model.h>
+#include <learnopengl/model_animation.h>
 
 struct AssimpNodeData
 {
