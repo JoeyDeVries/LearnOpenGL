@@ -54,6 +54,8 @@ else()
   set(LIBS )
 endif(WIN32)
 
+set(CMAKE_CXX_STANDARD 14)
+
 set(CHAPTERS
     1.getting_started
     2.lighting
@@ -62,6 +64,7 @@ set(CHAPTERS
     5.advanced_lighting
     6.pbr
     7.in_practice
+    8.guest
 )
 
 set(1.getting_started
@@ -164,6 +167,10 @@ set(7.in_practice
     1.debugging
     2.text_rendering
     #3.2d_game
+)
+
+set(8.guest
+    skeletal_animation
 )
 
 
