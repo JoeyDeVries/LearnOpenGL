@@ -85,9 +85,9 @@ void main()
         float G   = GeometrySmith(N, V, L, roughness);      
         vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);
            
-        vec3 nominator    = NDF * G * F; 
+        vec3 numerator    = NDF * G * F; 
         float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.001; // 0.001 to prevent divide by zero.
-        vec3 specular = nominator / denominator;
+        vec3 specular = numerator / denominator;
         
         // kS is equal to Fresnel
         vec3 kS = F;
