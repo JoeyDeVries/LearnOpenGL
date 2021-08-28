@@ -62,6 +62,7 @@ set(CHAPTERS
     5.advanced_lighting
     6.pbr
     7.in_practice
+    9.frustum_culling
 )
 
 set(1.getting_started
@@ -164,6 +165,11 @@ set(7.in_practice
     1.debugging
     2.text_rendering
     #3.2d_game
+)
+
+set(9.frustum_culling
+    1.scene_graph
+    2.frustum_culling
 )
 
 
