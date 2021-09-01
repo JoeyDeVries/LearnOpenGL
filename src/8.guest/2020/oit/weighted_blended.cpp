@@ -273,7 +273,7 @@ int main(int argc, char* argv[])
 		// -----
 
 		// set render states
-		glDisable(GL_DEPTH);
+		glDisable(GL_DEPTH_TEST);
 		glDepthMask(GL_TRUE); // enable depth writes so glClear won't ignore clearing the depth buffer
 		glDisable(GL_BLEND);
 
