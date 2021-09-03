@@ -97,7 +97,7 @@ private:
 
 	void SetVertexBoneDataToDefault(Vertex& vertex)
 	{
-		for (int i = 0; i < MAX_BONE_WEIGHTS; i++)
+		for (int i = 0; i < AI_MAX_BONE_WEIGHTS; i++)
 		{
 			vertex.m_BoneIDs[i] = -1;
 			vertex.m_Weights[i] = 0.0f;
@@ -154,7 +154,7 @@ private:
 
 	void SetVertexBoneData(Vertex& vertex, int boneID, float weight)
 	{
-		for (int i = 0; i < MAX_BONE_WEIGHTS; ++i)
+		for (int i = 0; i < AI_MAX_BONE_WEIGHTS; ++i)
 		{
 			if (vertex.m_BoneIDs[i] < 0)
 			{

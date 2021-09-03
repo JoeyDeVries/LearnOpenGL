@@ -11,7 +11,7 @@
 class Animator
 {	
 public:
-	Animator::Animator(Animation* current)
+	Animator(Animation* current)
 	{
 		m_CurrentAnimation = current;
 		m_CurrentTime = 0.0;
@@ -20,7 +20,7 @@ public:
 			m_Transforms.push_back(glm::mat4(1.0f));
 	}
 
-	void Animator::UpdateAnimation(float dt)
+	void UpdateAnimation(float dt)
 	{
 		m_DeltaTime = dt;
 		if (m_CurrentAnimation)
@@ -31,13 +31,13 @@ public:
 		}
 	}
 
-	void Animator::PlayAnimation(Animation* pAnimation)
+	void PlayAnimation(Animation* pAnimation)
 	{
 		m_CurrentAnimation = pAnimation;
 		m_CurrentTime = 0.0f;
 	}
 
-	void Animator::CalculateBoneTransform(const AssimpNodeData* node, glm::mat4 parentTransform)
+	void CalculateBoneTransform(const AssimpNodeData* node, glm::mat4 parentTransform)
 	{
 		std::string nodeName = node->name;
 		glm::mat4 nodeTransform = node->transformation;
