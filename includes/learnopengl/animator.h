@@ -9,15 +9,17 @@
 #include <learnopengl/bone.h>
 
 class Animator
-{	
+{
 public:
-	Animator::Animator(Animation* current)
+	Animator::Animator(Animation* animation)
 	{
-		m_CurrentAnimation = current;
 		m_CurrentTime = 0.0;
-		m_Transforms.reserve(100);
+		m_CurrentAnimation = animation;
+
+		m_FinalBoneMatrices.reserve(100);
+
 		for (int i = 0; i < 100; i++)
-			m_Transforms.push_back(glm::mat4(1.0f));
+			m_FinalBoneMatrices.push_back(glm::mat4(1.0f));
 	}
 
 	void Animator::UpdateAnimation(float dt)
@@ -57,22 +59,22 @@ public:
 		{
 			int index = boneInfoMap[nodeName].id;
 			glm::mat4 offset = boneInfoMap[nodeName].offset;
-			m_Transforms[index] = globalTransformation * offset;
+			m_FinalBoneMatrices[index] = globalTransformation * offset;
 		}
 
 		for (int i = 0; i < node->childrenCount; i++)
 			CalculateBoneTransform(&node->children[i], globalTransformation);
 	}
 
-	std::vector<glm::mat4> GetPoseTransforms() 
-	{ 
-		return m_Transforms;  
+	std::vector<glm::mat4> GetFinalBoneMatrices()
+	{
+		return m_FinalBoneMatrices;
 	}
-	
+
 private:
-	std::vector<glm::mat4> m_Transforms;
+	std::vector<glm::mat4> m_FinalBoneMatrices;
 	Animation* m_CurrentAnimation;
 	float m_CurrentTime;
 	float m_DeltaTime;
-	
+
 };

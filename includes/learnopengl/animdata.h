@@ -1,18 +1,13 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include<glm/glm.hpp>
 
 struct BoneInfo
 {
-	/*
-		For uniquely indentifying the bone and
-		for indexing bone transformation in shaders
-	*/
+	/*id is index in finalBoneMatrices*/
 	int id;
-	/*
-		map from bone name to offset matrix.
-		offset matrix transforms bone from bone space to local space
-	*/
+
+	/*offset matrix transforms vertex from model space to bone space*/
 	glm::mat4 offset;
 
 };
