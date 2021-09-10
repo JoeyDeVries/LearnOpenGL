@@ -48,14 +48,14 @@ public:
             meshes[i].Draw(shader);
     }
     
-	auto& GetOffsetMatMap() { return m_OffsetMatMap; }
-	int& GetBoneCount() { return m_BoneCount; }
+	auto& GetBoneInfoMap() { return m_BoneInfoMap; }
+	int& GetBoneCount() { return m_BoneCounter; }
 	
 
 private:
 
-	std::map<string, BoneInfo> m_OffsetMatMap;
-	int m_BoneCount = 0;
+	std::map<string, BoneInfo> m_BoneInfoMap;
+	int m_BoneCounter = 0;
 
     // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
     void loadModel(string const &path)
@@ -97,7 +97,7 @@ private:
 
 	void SetVertexBoneDataToDefault(Vertex& vertex)
 	{
-		for (int i = 0; i < MAX_BONE_WEIGHTS; i++)
+		for (int i = 0; i < MAX_BONE_INFLUENCE; i++)
 		{
 			vertex.m_BoneIDs[i] = -1;
 			vertex.m_Weights[i] = 0.0f;
@@ -154,7 +154,7 @@ private:
 
 	void SetVertexBoneData(Vertex& vertex, int boneID, float weight)
 	{
-		for (int i = 0; i < MAX_BONE_WEIGHTS; ++i)
+		for (int i = 0; i < MAX_BONE_INFLUENCE; ++i)
 		{
 			if (vertex.m_BoneIDs[i] < 0)
 			{
@@ -168,8 +168,8 @@ private:
 
 	void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene)
 	{
-		auto& boneInfoMap = m_OffsetMatMap;
-		int& boneCount = m_BoneCount;
+		auto& boneInfoMap = m_BoneInfoMap;
+		int& boneCount = m_BoneCounter;
 
 		for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
 		{
