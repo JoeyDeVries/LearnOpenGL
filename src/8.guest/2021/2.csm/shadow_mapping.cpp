@@ -320,25 +320,6 @@ void renderScene(const Shader &shader)
         shader.setMat4("model", model);
         renderCube();
     }
-
-
-    // cubes
-    //model = glm::mat4(1.0f);
-    //model = glm::translate(model, glm::vec3(-5.0f, -3.0f, 0.0));
-    //model = glm::scale(model, glm::vec3(2));
-    //shader.setMat4("model", model);
-    //renderCube();
-    //model = glm::mat4(1.0f);
-    //model = glm::translate(model, glm::vec3(2.0f, 3.0f, 1.0));
-    //model = glm::scale(model, glm::vec3(2));
-    //shader.setMat4("model", model);
-    //renderCube();
-    //model = glm::mat4(1.0f);
-    //model = glm::translate(model, glm::vec3(-1.0f, 3.0f, 2.0));
-    //model = glm::rotate(model, glm::radians(60.0f), glm::normalize(glm::vec3(1.0, 0.0, 1.0)));
-    //model = glm::scale(model, glm::vec3(2));
-    //shader.setMat4("model", model);
-    //renderCube();
 }
 
 
@@ -633,20 +614,9 @@ glm::mat4 getLightSpaceMatrix(const float nearPlane, const float farPlane)
         maxZ *= zMult;
     }
 
-    const glm::mat4 lpMatrix = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, minZ, maxZ);
+    const glm::mat4 lightProjection = glm::ortho(minX, maxX, minY, maxY, minZ, maxZ);
 
-    const float scaleX = 2.0f / (maxX - minX);
-    const float scaleY = 2.0f / (maxY - minY);
-    const float offsetX = -0.5f * (minX + maxX) * scaleX;
-    const float offsetY = -0.5f * (minY + maxY) * scaleY;
-
-    glm::mat4 cropMatrix(1.0f);
-    cropMatrix[0][0] = scaleX;
-    cropMatrix[1][1] = scaleY;
-    cropMatrix[3][0] = offsetX;
-    cropMatrix[3][1] = offsetY;
-
-    return cropMatrix * lpMatrix * lightView;
+    return lightProjection * lightView;
 }
 
 std::vector<glm::mat4> getLightSpaceMatrices()
