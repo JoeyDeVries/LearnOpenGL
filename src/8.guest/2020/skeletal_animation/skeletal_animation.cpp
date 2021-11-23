@@ -82,7 +82,7 @@ int main()
 
 	// build and compile shaders
 	// -------------------------
-	Shader ourShader("anim_model_vs.glsl", "anim_model_fs.glsl");
+	Shader ourShader("anim_model.vs", "anim_model.fs");
 
 	
 	// load models
