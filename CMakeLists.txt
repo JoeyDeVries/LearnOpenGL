@@ -3,6 +3,10 @@ cmake_policy(VERSION 3.0)
 
 project (LearnOpenGL)
 
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)
+
 IF(NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
@@ -14,8 +18,6 @@ if(WIN32)
 endif(WIN32)
 
 link_directories(${CMAKE_SOURCE_DIR}/lib)
-
-list(APPEND CMAKE_CXX_FLAGS "-std=c++11")
 
 # find the required packages
 find_package(GLM REQUIRED)
