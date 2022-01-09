@@ -105,11 +105,11 @@ int main()
         model = glm::translate(model, glm::vec3(x, y, z));
 
         // 2. scale: Scale between 0.05 and 0.25f
-        float scale = static_cast<GLfloat>((rand() % 20) / 100.0 + 0.05);
+        float scale = static_cast<float>((rand() % 20) / 100.0 + 0.05);
         model = glm::scale(model, glm::vec3(scale));
 
         // 3. rotation: add random rotation around a (semi)randomly picked rotation axis vector
-        float rotAngle = static_cast<GLfloat>((rand() % 360));
+        float rotAngle = static_cast<float>((rand() % 360));
         model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
 
         // 4. now add to list of matrices
@@ -122,7 +122,7 @@ int main()
     {
         // per-frame time logic
         // --------------------
-        auto currentFrame = static_cast<GLfloat>(glfwGetTime());
+        float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
@@ -196,8 +196,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 // -------------------------------------------------------
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
-    auto xpos = static_cast<GLfloat>(xposIn);
-    auto ypos = static_cast<GLfloat>(yposIn);
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
 
     if (firstMouse)
     {
@@ -219,5 +219,5 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 // ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    camera.ProcessMouseScroll(static_cast<GLfloat>(yoffset));
+    camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }

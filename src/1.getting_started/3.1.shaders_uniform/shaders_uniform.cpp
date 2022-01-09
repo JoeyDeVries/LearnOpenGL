@@ -146,8 +146,8 @@ int main()
         glUseProgram(shaderProgram);
 
         // update shader uniform
-        auto timeValue = glfwGetTime();
-        auto greenValue = static_cast<GLfloat>(sin(timeValue) / 2.0 + 0.5);
+        double  timeValue = glfwGetTime();
+        float greenValue = static_cast<float>(sin(timeValue) / 2.0 + 0.5);
         int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
         glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 

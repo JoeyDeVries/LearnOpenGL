@@ -255,7 +255,7 @@ int main()
     {
         // per-frame time logic
         // --------------------
-        auto currentFrame = static_cast<GLfloat>(glfwGetTime());
+        float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
@@ -371,8 +371,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 // -------------------------------------------------------
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
-    auto xpos = static_cast<GLfloat>(xposIn);
-    auto ypos = static_cast<GLfloat>(yposIn);
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
 
     if (firstMouse)
     {
@@ -394,13 +394,13 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 // ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    camera.ProcessMouseScroll(static_cast<GLfloat>(yoffset));
+    camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }
 
 // renders (and builds at first invocation) a sphere
 // -------------------------------------------------
 unsigned int sphereVAO = 0;
-GLsizei indexCount;
+unsigned int indexCount;
 void renderSphere()
 {
     if (sphereVAO == 0)
@@ -456,7 +456,7 @@ void renderSphere()
             }
             oddRow = !oddRow;
         }
-        indexCount = static_cast<GLsizei>(indices.size());
+        indexCount = static_cast<unsigned int>(indices.size());
 
         std::vector<float> data;
         for (unsigned int i = 0; i < positions.size(); ++i)

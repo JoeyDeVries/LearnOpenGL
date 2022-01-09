@@ -88,7 +88,7 @@ int main()
     {
         // per-frame time logic
         // --------------------
-        auto currentFrame = static_cast<GLfloat>(glfwGetTime());
+        float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
@@ -111,7 +111,7 @@ int main()
         shader.setMat4("model", model);
 
         // add time component to geometry shader in the form of a uniform
-        shader.setFloat("time", static_cast<GLfloat>(glfwGetTime()));
+        shader.setFloat("time", static_cast<float>(glfwGetTime()));
 
         // draw model
         nanosuit.Draw(shader);
@@ -156,8 +156,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 // -------------------------------------------------------
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
-    auto xpos = static_cast<GLfloat>(xposIn);
-    auto ypos = static_cast<GLfloat>(yposIn);
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
     if (firstMouse)
     {
         lastX = xpos;
@@ -178,5 +178,5 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 // ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    camera.ProcessMouseScroll(static_cast<GLfloat>(yoffset));
+    camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }
