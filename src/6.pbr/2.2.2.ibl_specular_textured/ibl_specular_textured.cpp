@@ -314,8 +314,8 @@ int main()
     for (unsigned int mip = 0; mip < maxMipLevels; ++mip)
     {
         // reisze framebuffer according to mip-level size.
-        unsigned int mipWidth = 128 * std::pow(0.5, mip);
-        unsigned int mipHeight = 128 * std::pow(0.5, mip);
+        unsigned int mipWidth = static_cast<unsigned int>(128 * std::pow(0.5, mip));
+        unsigned int mipHeight = static_cast<unsigned int>(128 * std::pow(0.5, mip));
         glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mipWidth, mipHeight);
         glViewport(0, 0, mipWidth, mipHeight);
@@ -380,7 +380,7 @@ int main()
     {
         // per-frame time logic
         // --------------------
-        float currentFrame = glfwGetTime();
+        float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
@@ -567,8 +567,11 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
+
     if (firstMouse)
     {
         lastX = xpos;
@@ -589,13 +592,13 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 // ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    camera.ProcessMouseScroll(yoffset);
+    camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }
  
 // renders (and builds at first invocation) a sphere
 // -------------------------------------------------
 unsigned int sphereVAO = 0;
-unsigned int indexCount;
+GLsizei indexCount;
 void renderSphere()
 {
     if (sphereVAO == 0)
@@ -613,7 +616,7 @@ void renderSphere()
 
         const unsigned int X_SEGMENTS = 64;
         const unsigned int Y_SEGMENTS = 64;
-        const float PI = 3.14159265359;
+        const float PI = 3.14159265359f;
         for (unsigned int x = 0; x <= X_SEGMENTS; ++x)
         {
             for (unsigned int y = 0; y <= Y_SEGMENTS; ++y)
@@ -651,7 +654,7 @@ void renderSphere()
             }
             oddRow = !oddRow;
         }
-        indexCount = indices.size();
+        indexCount = static_cast<GLsizei>(indices.size());
 
         std::vector<float> data;
         for (unsigned int i = 0; i < positions.size(); ++i)

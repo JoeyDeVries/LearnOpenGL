@@ -150,14 +150,14 @@ int main()
     for (unsigned int i = 0; i < NR_LIGHTS; i++)
     {
         // calculate slightly random offsets
-        float xPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
-        float yPos = ((rand() % 100) / 100.0) * 6.0 - 4.0;
-        float zPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
+        float xPos = static_cast<float>(((rand() % 100) / 100.0) * 6.0 - 3.0);
+        float yPos = static_cast<float>(((rand() % 100) / 100.0) * 6.0 - 4.0);
+        float zPos = static_cast<float>(((rand() % 100) / 100.0) * 6.0 - 3.0);
         lightPositions.push_back(glm::vec3(xPos, yPos, zPos));
         // also calculate random color
-        float rColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
-        float gColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
-        float bColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
+        float rColor = static_cast<float>(((rand() % 100) / 200.0f) + 0.5); // between 0.5 and 1.0
+        float gColor = static_cast<float>(((rand() % 100) / 200.0f) + 0.5); // between 0.5 and 1.0
+        float bColor = static_cast<float>(((rand() % 100) / 200.0f) + 0.5); // between 0.5 and 1.0
         lightColors.push_back(glm::vec3(rColor, gColor, bColor));
     }
 
@@ -174,7 +174,7 @@ int main()
     {
         // per-frame time logic
         // --------------------
-        float currentFrame = glfwGetTime();
+        auto currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
@@ -223,8 +223,8 @@ int main()
             shaderLightingPass.setVec3("lights[" + std::to_string(i) + "].Position", lightPositions[i]);
             shaderLightingPass.setVec3("lights[" + std::to_string(i) + "].Color", lightColors[i]);
             // update attenuation parameters and calculate radius
-            const float linear = 0.7;
-            const float quadratic = 1.8;
+            const float linear = 0.7f;
+            const float quadratic = 1.8f;
             shaderLightingPass.setFloat("lights[" + std::to_string(i) + "].Linear", linear);
             shaderLightingPass.setFloat("lights[" + std::to_string(i) + "].Quadratic", quadratic);
         }
@@ -403,8 +403,10 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
     if (firstMouse)
     {
         lastX = xpos;
@@ -425,5 +427,5 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 // ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    camera.ProcessMouseScroll(yoffset);
+    camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }

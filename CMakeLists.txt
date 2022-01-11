@@ -3,6 +3,10 @@ cmake_policy(VERSION 3.0)
 
 project (LearnOpenGL)
 
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)
+
 IF(NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build (Debug or Release)" FORCE)
 ENDIF(NOT CMAKE_BUILD_TYPE)
@@ -14,8 +18,6 @@ if(WIN32)
 endif(WIN32)
 
 link_directories(${CMAKE_SOURCE_DIR}/lib)
-
-list(APPEND CMAKE_CXX_FLAGS "-std=c++11")
 
 # find the required packages
 find_package(GLM REQUIRED)
@@ -31,6 +33,7 @@ message(STATUS "Found ASSIMP in ${ASSIMP_INCLUDE_DIR}")
 
 if(WIN32)
   set(LIBS glfw3 opengl32 assimp freetype irrKlang)
+  add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 elseif(UNIX AND NOT APPLE)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
   find_package(OpenGL REQUIRED)
@@ -195,6 +198,9 @@ foreach(CHAPTER ${CHAPTERS})
         set(NAME "${CHAPTER}__${DEMO}")
         add_executable(${NAME} ${SOURCE})
         target_link_libraries(${NAME} ${LIBS})
+        if(MSVC)
+            target_link_options(${NAME} PUBLIC /ignore:4099)
+        endif(MSVC)
         if(WIN32)
             set_target_properties(${NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${CHAPTER}")
             set_target_properties(${NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${CHAPTER}/Debug")

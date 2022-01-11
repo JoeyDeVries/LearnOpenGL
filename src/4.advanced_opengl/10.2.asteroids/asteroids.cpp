@@ -88,7 +88,7 @@ int main()
     unsigned int amount = 1000;
     glm::mat4* modelMatrices;
     modelMatrices = new glm::mat4[amount];
-    srand(glfwGetTime()); // initialize random seed	
+    srand(static_cast<unsigned int>(glfwGetTime())); // initialize random seed
     float radius = 50.0;
     float offset = 2.5f;
     for (unsigned int i = 0; i < amount; i++)
@@ -105,11 +105,11 @@ int main()
         model = glm::translate(model, glm::vec3(x, y, z));
 
         // 2. scale: Scale between 0.05 and 0.25f
-        float scale = (rand() % 20) / 100.0f + 0.05;
+        float scale = static_cast<float>((rand() % 20) / 100.0 + 0.05);
         model = glm::scale(model, glm::vec3(scale));
 
         // 3. rotation: add random rotation around a (semi)randomly picked rotation axis vector
-        float rotAngle = (rand() % 360);
+        float rotAngle = static_cast<float>((rand() % 360));
         model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
 
         // 4. now add to list of matrices
@@ -122,7 +122,7 @@ int main()
     {
         // per-frame time logic
         // --------------------
-        float currentFrame = glfwGetTime();
+        float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
@@ -194,8 +194,11 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
+
     if (firstMouse)
     {
         lastX = xpos;
@@ -216,5 +219,5 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 // ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    camera.ProcessMouseScroll(yoffset);
+    camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }

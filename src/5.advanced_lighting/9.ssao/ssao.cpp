@@ -173,7 +173,7 @@ int main()
         glm::vec3 sample(randomFloats(generator) * 2.0 - 1.0, randomFloats(generator) * 2.0 - 1.0, randomFloats(generator));
         sample = glm::normalize(sample);
         sample *= randomFloats(generator);
-        float scale = float(i) / 64.0;
+        float scale = float(i) / 64.0f;
 
         // scale samples s.t. they're more aligned to center of kernel
         scale = lerp(0.1f, 1.0f, scale * scale);
@@ -222,7 +222,7 @@ int main()
     {
         // per-frame time logic
         // --------------------
-        float currentFrame = glfwGetTime();
+        float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
@@ -302,8 +302,8 @@ int main()
         shaderLightingPass.setVec3("light.Position", lightPosView);
         shaderLightingPass.setVec3("light.Color", lightColor);
         // Update attenuation parameters
-        const float linear    = 0.09;
-        const float quadratic = 0.032;
+        const float linear    = 0.09f;
+        const float quadratic = 0.032f;
         shaderLightingPass.setFloat("light.Linear", linear);
         shaderLightingPass.setFloat("light.Quadratic", quadratic);
         glActiveTexture(GL_TEXTURE0);
@@ -462,8 +462,10 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
     if (firstMouse)
     {
         lastX = xpos;
@@ -484,5 +486,5 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 // ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    camera.ProcessMouseScroll(yoffset);
+    camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }
