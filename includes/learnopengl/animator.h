@@ -11,7 +11,7 @@
 class Animator
 {
 public:
-	Animator::Animator(Animation* animation)
+	Animator(Animation* animation)
 	{
 		m_CurrentTime = 0.0;
 		m_CurrentAnimation = animation;

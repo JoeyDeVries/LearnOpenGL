@@ -3,7 +3,7 @@ cmake_policy(VERSION 3.0)
 
 project (LearnOpenGL)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17) # this does nothing for MSVC, use target_compile_options below
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
@@ -212,7 +212,7 @@ function(create_project_from_sources chapter demo)
     add_executable(${NAME} ${SOURCE})
     target_link_libraries(${NAME} ${LIBS})
     if(MSVC)
-		target_compile_options(${NAME} PRIVATE /std:c++latest /MP)
+		target_compile_options(${NAME} PRIVATE /std:c++17 /MP)
         target_link_options(${NAME} PUBLIC /ignore:4099)
     endif(MSVC)
     if(WIN32)

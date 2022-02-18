@@ -98,7 +98,7 @@ int main()
 
 	// load entities
 	// -----------
-	Entity ourEntity(FileSystem::getPath("resources/objects/planet/planet.obj"));
+	Entity ourEntity(Model(FileSystem::getPath("resources/objects/planet/planet.obj")));
 	ourEntity.transform.setLocalPosition({ 10, 0, 0 });
 	const float scale = 0.75;
 	ourEntity.transform.setLocalScale({ scale, scale, scale });
@@ -108,7 +108,7 @@ int main()
 
 		for (unsigned int i = 0; i < 10; ++i)
 		{
-			lastEntity->addChild(FileSystem::getPath("resources/objects/planet/planet.obj"));
+			lastEntity->addChild(Model(FileSystem::getPath("resources/objects/planet/planet.obj")));
 			lastEntity = lastEntity->children.back().get();
 
 			//Set tranform values
@@ -154,7 +154,7 @@ int main()
 		while (lastEntity->children.size())
 		{
 			ourShader.setMat4("model", lastEntity->transform.getModelMatrix());
-			lastEntity->Draw(ourShader);
+			lastEntity->pModel->Draw(ourShader);
 			lastEntity = lastEntity->children.back().get();
 		}
 
