@@ -274,7 +274,7 @@ int main()
     glDeleteVertexArrays(1, &cubeVAO);
     glDeleteVertexArrays(1, &skyboxVAO);
     glDeleteBuffers(1, &cubeVBO);
-    glDeleteBuffers(1, &skyboxVAO);
+    glDeleteBuffers(1, &skyboxVBO);
 
     glfwTerminate();
     return 0;
