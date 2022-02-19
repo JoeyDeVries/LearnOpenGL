@@ -23,6 +23,8 @@ void renderScene(const Shader &shader);
 void renderCube();
 void renderQuad();
 std::vector<glm::mat4> getLightSpaceMatrices();
+std::vector<glm::vec4> getFrustumCornersWorldSpace(const glm::mat4& projview);
+void drawCascadeVolumeVisualizers(const std::vector<glm::mat4>& lightMatrices, Shader* shader);
 
 // settings
 const unsigned int SCR_WIDTH = 2560;
@@ -58,8 +60,11 @@ bool showQuad = false;
 std::random_device device;
 std::mt19937 generator = std::mt19937(device());
 
+std::vector<glm::mat4> lightMatricesCache;
+
 int main()
 {
+    //generator.seed(2);
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -105,6 +110,7 @@ int main()
     Shader shader("10.shadow_mapping.vs", "10.shadow_mapping.fs");
     Shader simpleDepthShader("10.shadow_mapping_depth.vs", "10.shadow_mapping_depth.fs", "10.shadow_mapping_depth.gs");
     Shader debugDepthQuad("10.debug_quad.vs", "10.debug_quad_depth.fs");
+    Shader debugCascadeShader("10.debug_cascade.vs", "10.debug_cascade.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
@@ -261,6 +267,17 @@ int main()
         glBindTexture(GL_TEXTURE_2D_ARRAY, lightDepthMaps);
         renderScene(shader);
 
+        if (lightMatricesCache.size() != 0)
+        {
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            debugCascadeShader.use();
+            debugCascadeShader.setMat4("projection", projection);
+            debugCascadeShader.setMat4("view", view);
+            drawCascadeVolumeVisualizers(lightMatricesCache, &debugCascadeShader);
+            glDisable(GL_BLEND);
+        }
+
         // render Depth map to quad for visual debugging
         // ---------------------------------------------
         debugDepthQuad.use();
@@ -271,7 +288,6 @@ int main()
         {
             renderQuad();
         }
-        std::cout << glm::length(camera.Position) << "\n";
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -429,6 +445,76 @@ void renderQuad()
     glBindVertexArray(0);
 }
 
+std::vector<GLuint> visualizerVAOs;
+std::vector<GLuint> visualizerVBOs;
+std::vector<GLuint> visualizerEBOs;
+void drawCascadeVolumeVisualizers(const std::vector<glm::mat4>& lightMatrices, Shader* shader)
+{
+    visualizerVAOs.resize(8);
+    visualizerEBOs.resize(8);
+    visualizerVBOs.resize(8);
+
+    const GLuint indices[] = {
+        0, 2, 3,
+        0, 3, 1,
+        4, 6, 2,
+        4, 2, 0,
+        5, 7, 6,
+        5, 6, 4,
+        1, 3, 7,
+        1, 7, 5,
+        6, 7, 3,
+        6, 3, 2,
+        1, 5, 4,
+        0, 1, 4
+    };
+
+    const glm::vec4 colors[] = {
+        {1.0, 0.0, 0.0, 0.5f},
+        {0.0, 1.0, 0.0, 0.5f},
+        {0.0, 0.0, 1.0, 0.5f},
+    };
+
+    for (int i = 0; i < lightMatrices.size(); ++i)
+    {
+        const auto corners = getFrustumCornersWorldSpace(lightMatrices[i]);
+        std::vector<glm::vec3> vec3s;
+        for (const auto& v : corners)
+        {
+            vec3s.push_back(glm::vec3(v));
+        }
+
+        glGenVertexArrays(1, &visualizerVAOs[i]);
+        glGenBuffers(1, &visualizerVBOs[i]);
+        glGenBuffers(1, &visualizerEBOs[i]);
+
+        glBindVertexArray(visualizerVAOs[i]);
+
+        glBindBuffer(GL_ARRAY_BUFFER, visualizerVBOs[i]);
+        glBufferData(GL_ARRAY_BUFFER, vec3s.size() * sizeof(glm::vec3), &vec3s[0], GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, visualizerEBOs[i]);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, 36 * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
+
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
+
+        glBindVertexArray(visualizerVAOs[i]);
+        shader->setVec4("color", colors[i % 3]);
+        glDrawElements(GL_TRIANGLES, GLsizei(36), GL_UNSIGNED_INT, 0);
+
+        glDeleteBuffers(1, &visualizerVBOs[i]);
+        glDeleteBuffers(1, &visualizerEBOs[i]);
+        glDeleteVertexArrays(1, &visualizerVAOs[i]);
+
+        glBindVertexArray(0);
+    }
+
+    visualizerVAOs.clear();
+    visualizerEBOs.clear();
+    visualizerVBOs.clear();
+}
+
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow *window)
@@ -464,6 +550,13 @@ void processInput(GLFWwindow *window)
         }
     }
     plusPress = glfwGetKey(window, GLFW_KEY_KP_ADD);
+
+    static int cPress = GLFW_RELEASE;
+    if (glfwGetKey(window, GLFW_KEY_C) == GLFW_RELEASE && cPress == GLFW_PRESS)
+    {
+        lightMatricesCache = getLightSpaceMatrices();
+    }
+    cPress = glfwGetKey(window, GLFW_KEY_C);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -541,10 +634,9 @@ unsigned int loadTexture(char const * path)
     return textureID;
 }
 
-
-std::vector<glm::vec4> getFrustumCornersWorldSpace(const glm::mat4& proj, const glm::mat4& view)
+std::vector<glm::vec4> getFrustumCornersWorldSpace(const glm::mat4& projview)
 {
-    const auto inv = glm::inverse(proj * view);
+    const auto inv = glm::inverse(projview);
 
     std::vector<glm::vec4> frustumCorners;
     for (unsigned int x = 0; x < 2; ++x)
@@ -560,6 +652,12 @@ std::vector<glm::vec4> getFrustumCornersWorldSpace(const glm::mat4& proj, const 
     }
 
     return frustumCorners;
+}
+
+
+std::vector<glm::vec4> getFrustumCornersWorldSpace(const glm::mat4& proj, const glm::mat4& view)
+{
+    return getFrustumCornersWorldSpace(proj * view);
 }
 
 glm::mat4 getLightSpaceMatrix(const float nearPlane, const float farPlane)
