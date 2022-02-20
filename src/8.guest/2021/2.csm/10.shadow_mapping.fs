@@ -51,20 +51,23 @@ float ShadowCalculation(vec3 fragPosWorldSpace)
 
     // get depth of current fragment from light's perspective
     float currentDepth = projCoords.z;
-    if (currentDepth  > 1.0)
+
+    // keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
+    if (currentDepth > 1.0)
     {
         return 0.0;
     }
     // calculate bias (based on depth map resolution and slope)
     vec3 normal = normalize(fs_in.Normal);
     float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+    const float biasModifier = 0.5f;
     if (layer == cascadeCount)
     {
-        bias *= 1 / (farPlane * 0.5f);
+        bias *= 1 / (farPlane * biasModifier);
     }
     else
     {
-        bias *= 1 / (cascadePlaneDistances[layer] * 0.5f);
+        bias *= 1 / (cascadePlaneDistances[layer] * biasModifier);
     }
 
     // PCF
@@ -74,17 +77,11 @@ float ShadowCalculation(vec3 fragPosWorldSpace)
     {
         for(int y = -1; y <= 1; ++y)
         {
-            float pcfDepth = texture(shadowMap, vec3(projCoords.xy + vec2(x, y) * texelSize, layer)).r; 
+            float pcfDepth = texture(shadowMap, vec3(projCoords.xy + vec2(x, y) * texelSize, layer)).r;
             shadow += (currentDepth - bias) > pcfDepth ? 1.0 : 0.0;        
         }    
     }
     shadow /= 9.0;
-    
-    // keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
-    if(projCoords.z > 1.0)
-    {
-        shadow = 0.0;
-    }
         
     return shadow;
 }
