@@ -231,7 +231,6 @@ int main()
         simpleDepthShader.use();
 
         glBindFramebuffer(GL_FRAMEBUFFER, lightFBO);
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_TEXTURE_2D_ARRAY, lightDepthMaps, 0);
         glViewport(0, 0, depthMapResolution, depthMapResolution);
         glClear(GL_DEPTH_BUFFER_BIT);
         glCullFace(GL_FRONT);  // peter panning
