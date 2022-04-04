@@ -5,12 +5,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+
 #include <learnopengl/shader_m.h>
+#include <learnopengl/shader_c.h>
 #include <learnopengl/camera.h>
 
 #include <iostream>
-
-#include "computeShader.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void renderQuad();
