@@ -19,10 +19,10 @@ layout (location = 0) uniform float t;                 /**< Time */
 // ----------------------------------------------------------------------------
 
 void main() {
-    vec4 pixel = vec4(0.0, 0.0, 0.0, 1.0);
-    ivec2 pixelCoord = ivec2(gl_GlobalInvocationID.xy);
-    float speed = 0.5;
-    pixel.x = float(int((float(pixelCoord.x)/(gl_NumWorkGroups.x*gl_WorkGroupSize.x)+t*speed)*100)%100)/100;
-	pixel.y = float(pixelCoord.y)/(gl_NumWorkGroups.y*gl_WorkGroupSize.y);
-    imageStore(imgOutput, pixelCoord, pixel);
+	vec4 value = vec4(0.0, 0.0, 0.0, 1.0);
+	ivec2 texelCoord = ivec2(gl_GlobalInvocationID.xy);
+	float speed = 0.5;
+	value.x = float(int((float(texelCoord.x)/(gl_NumWorkGroups.x)+t*speed)*100)%100)/100;
+	value.y = float(texelCoord.y)/(gl_NumWorkGroups.y);
+	imageStore(imgOutput, texelCoord, value);
 }
