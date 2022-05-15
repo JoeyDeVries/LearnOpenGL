@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
 
 	// Create texture for opengl operation
 	// -----------------------------------
-	GLuint texture;
+	unsigned int texture;
 
 	glGenTextures(1, &texture);
 	glActiveTexture(GL_TEXTURE0);
@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
 	while (!glfwWindowShouldClose(window))
 	{
 		// Set frame time
-		GLfloat currentFrame = glfwGetTime();
+		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		if(fCounter > 500) {
@@ -127,7 +127,7 @@ int main(int argc, char* argv[])
 
 		computeShader.use();
 		computeShader.setFloat("t", currentFrame);
-		glDispatchCompute((GLuint)TEXTURE_WIDTH/10, (GLuint)TEXTURE_HEIGHT/10, 1);
+		glDispatchCompute((unsigned int)TEXTURE_WIDTH/10, (unsigned int)TEXTURE_HEIGHT/10, 1);
 
 		// make sure writing to image has finished before read
 		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
