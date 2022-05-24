@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
 	// build and compile shaders
 	// -------------------------
 	Shader screenQuad("screenQuad.vs", "screenQuad.fs");
-	ComputeShader computeShader("computeShader.comp");
+	ComputeShader computeShader("computeShader.cs");
 
 	screenQuad.use();
 	screenQuad.setInt("tex", 0);
