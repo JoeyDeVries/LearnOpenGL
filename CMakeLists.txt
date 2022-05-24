@@ -182,6 +182,7 @@ set(GUEST_ARTICLES
 	#8.guest/2021/3.tessellation/terrain_gpu_dist
 	#8.guest/2021/3.tessellation/terrain_cpu_src
 	8.guest/2021/4.dsa
+	8.guest/2022/5.computeshader_helloworld
 )
 
 configure_file(configuration/root_directory.h.in configuration/root_directory.h)
@@ -205,6 +206,7 @@ function(create_project_from_sources chapter demo)
             "src/${chapter}/${demo}/*.vs"
             "src/${chapter}/${demo}/*.fs"
             "src/${chapter}/${demo}/*.gs"
+            "src/${chapter}/${demo}/*.comp"
     )
 	if (demo STREQUAL "")
 		SET(replaced "")
@@ -235,6 +237,7 @@ function(create_project_from_sources chapter demo)
              # "src/${chapter}/${demo}/*.frag"
              "src/${chapter}/${demo}/*.fs"
              "src/${chapter}/${demo}/*.gs"
+	     "src/${chapter}/${demo}/*.comp"
     )
 	# copy dlls
 	file(GLOB DLLS "dlls/*.dll")
