@@ -236,10 +236,13 @@ function(create_project_from_sources chapter demo)
              "src/${chapter}/${demo}/*.fs"
              "src/${chapter}/${demo}/*.gs"
     )
+	# copy dlls
+	file(GLOB DLLS "dlls/*.dll")
     foreach(SHADER ${SHADERS})
         if(WIN32)
             # configure_file(${SHADER} "test")
             add_custom_command(TARGET ${NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SHADER} $<TARGET_FILE_DIR:${NAME}>)
+			add_custom_command(TARGET ${NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${DLLS} $<TARGET_FILE_DIR:${NAME}>)
         elseif(UNIX AND NOT APPLE)
             file(COPY ${SHADER} DESTINATION ${CMAKE_SOURCE_DIR}/bin/${chapter})
         elseif(APPLE)
