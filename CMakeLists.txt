@@ -183,6 +183,7 @@ set(GUEST_ARTICLES
 	#8.guest/2021/3.tessellation/terrain_cpu_src
 	8.guest/2021/4.dsa
 	8.guest/2022/5.computeshader_helloworld
+	8.guest/2022/6.physically_based_bloom
 )
 
 configure_file(configuration/root_directory.h.in configuration/root_directory.h)
