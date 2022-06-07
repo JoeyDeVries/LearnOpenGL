@@ -21,8 +21,11 @@ layout (location = 0) uniform float t;                 /** Time */
 void main() {
 	vec4 value = vec4(0.0, 0.0, 0.0, 1.0);
 	ivec2 texelCoord = ivec2(gl_GlobalInvocationID.xy);
-	float speed = 0.5;
-	value.x = float(int((float(texelCoord.x)/(gl_NumWorkGroups.x*gl_WorkGroupSize.x)+t*speed)*100)%100)/100;
+	float speed = 100;
+	// the width of the texture
+	float width = 1000;
+
+	value.x = mod(float(texelCoord.x) + t * speed, width) / (gl_NumWorkGroups.x * gl_WorkGroupSize.x);
 	value.y = float(texelCoord.y)/(gl_NumWorkGroups.y*gl_WorkGroupSize.y);
 	imageStore(imgOutput, texelCoord, value);
 }
