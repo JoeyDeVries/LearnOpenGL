@@ -12,6 +12,7 @@
 #include <learnopengl/model.h>
 
 #include <iostream>
+#include <array>
 #include <random>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -50,7 +51,7 @@ unsigned int planeVAO;
 
 // lighting info
 // -------------
-const glm::vec3 lightDir = glm::normalize(glm::vec3(20.0f, 50, 20.0f));
+const glm::vec3 lightDir = glm::normalize(glm::vec3(10.0f, 100.0f, 10.0f));
 unsigned int lightFBO;
 unsigned int lightDepthMaps;
 constexpr unsigned int depthMapResolution = 4096;
@@ -305,6 +306,7 @@ int main()
 
 // renders the 3D scene
 // --------------------
+static std::vector<glm::mat4> modelMatrices;
 void renderScene(const Shader &shader)
 {
     // floor
@@ -313,17 +315,17 @@ void renderScene(const Shader &shader)
     glBindVertexArray(planeVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
-    static std::vector<glm::mat4> modelMatrices;
     if (modelMatrices.size() == 0)
     {
         for (int i = 0; i < 10; ++i)
         {
-            static std::uniform_real_distribution<float> offsetDistribution = std::uniform_real_distribution<float>(-10, 10);
-            static std::uniform_real_distribution<float> scaleDistribution = std::uniform_real_distribution<float>(1.0, 2.0);
-            static std::uniform_real_distribution<float> rotationDistribution = std::uniform_real_distribution<float>(0, 180);
+            static std::uniform_real_distribution<float> offsetDistribution = std::uniform_real_distribution<float>(-20, 20);
+            static std::uniform_real_distribution<float> heightOffsetDistribution = std::uniform_real_distribution<float>(10, 20);
+            static std::uniform_real_distribution<float> scaleDistribution = std::uniform_real_distribution<float>(1.0, 3.0);
+            static std::uniform_real_distribution<float> rotationDistribution = std::uniform_real_distribution<float>(0, 360);
 
             auto model = glm::mat4(1.0f);
-            model = glm::translate(model, glm::vec3(offsetDistribution(generator), offsetDistribution(generator) + 10.0f, offsetDistribution(generator)));
+            model = glm::translate(model, glm::vec3(offsetDistribution(generator), heightOffsetDistribution(generator), offsetDistribution(generator)));
             model = glm::rotate(model, glm::radians(rotationDistribution(generator)), glm::normalize(glm::vec3(1.0, 0.0, 1.0)));
             model = glm::scale(model, glm::vec3(scaleDistribution(generator)));
             modelMatrices.push_back(model);
@@ -666,52 +668,59 @@ glm::mat4 getLightSpaceMatrix(const float nearPlane, const float farPlane)
         farPlane);
     const auto corners = getFrustumCornersWorldSpace(proj, camera.GetViewMatrix());
 
-    glm::vec3 center = glm::vec3(0, 0, 0);
-    for (const auto& v : corners)
-    {
-        center += glm::vec3(v);
-    }
-    center /= corners.size();
+    const auto lightView = glm::lookAt(lightDir, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-    const auto lightView = glm::lookAt(center + lightDir, center, glm::vec3(0.0f, 1.0f, 0.0f));
-
-    float minX = std::numeric_limits<float>::max();
-    float maxX = std::numeric_limits<float>::min();
-    float minY = std::numeric_limits<float>::max();
-    float maxY = std::numeric_limits<float>::min();
-    float minZ = std::numeric_limits<float>::max();
-    float maxZ = std::numeric_limits<float>::min();
+    glm::vec4 mins = glm::vec4(std::numeric_limits<float>::max());
+    glm::vec4 maxs = glm::vec4(std::numeric_limits<float>::lowest());
     for (const auto& v : corners)
     {
         const auto trf = lightView * v;
-        minX = std::min(minX, trf.x);
-        maxX = std::max(maxX, trf.x);
-        minY = std::min(minY, trf.y);
-        maxY = std::max(maxY, trf.y);
-        minZ = std::min(minZ, trf.z);
-        maxZ = std::max(maxZ, trf.z);
+        mins = glm::min(mins, trf);
+        maxs = glm::max(maxs, trf);
     }
 
-    // Tune this parameter according to the scene
-    constexpr float zMult = 10.0f;
-    if (minZ < 0)
-    {
-        minZ *= zMult;
-    }
-    else
-    {
-        minZ /= zMult;
-    }
-    if (maxZ < 0)
-    {
-        maxZ /= zMult;
-    }
-    else
-    {
-        maxZ *= zMult;
+    std::array<glm::vec4, 8> cubeVertices;
+    for (uint32_t x = 0, next = 0; x < 2; ++x)
+        for (uint32_t y = 0; y < 2; ++y)
+            for (uint32_t z = 0; z < 2; ++z) {
+                cubeVertices[next++] = glm::vec4(2.0f * x - 1.0f, 2.0f * y - 1.0f, 2.0f * z - 1.0f, 1.0f);
+            }
+
+    //tune near far
+    mins.z = std::numeric_limits<float>::max();
+    maxs.z = std::numeric_limits<float>::lowest();
+
+    constexpr float planeVertices[] = {
+        // positions
+         25.0f, -2.0f,  25.0f,
+        -25.0f, -2.0f,  25.0f,
+        -25.0f, -2.0f, -25.0f,
+         25.0f, -2.0f,  25.0f,
+        -25.0f, -2.0f, -25.0f,
+         25.0f, -2.0f, -25.0f,
+    };
+    // project plane into lightView space
+    for (uint32_t i = 0; i < 6; ++i) {
+        const auto lvv = lightView * glm::vec4(
+            planeVertices[3 * i + 0],
+            planeVertices[3 * i + 1],
+            planeVertices[3 * i + 2],
+            1.0f
+        );
+        mins.z = std::min(mins.z, lvv.z);
+        maxs.z = std::max(maxs.z, lvv.z);
     }
 
-    const glm::mat4 lightProjection = glm::ortho(minX, maxX, minY, maxY, minZ, maxZ);
+    // project all cubes into lightView space
+    for (const auto& mm : modelMatrices) {
+        for (const auto& cv : cubeVertices) {
+            const auto lvv = lightView * mm * cv;
+            mins.z = std::min(mins.z, lvv.z);
+            maxs.z = std::max(maxs.z, lvv.z);
+        }
+    }
+
+    const glm::mat4 lightProjection = glm::ortho(mins.x, maxs.x, mins.y, maxs.y, -maxs.z, -mins.z);
 
     return lightProjection * lightView;
 }
