@@ -200,7 +200,7 @@ int main()
 
     // shader configuration
     // --------------------
-    shader.use();
+    screenShader.use();
     screenShader.setInt("screenTexture", 0);
 
     // render loop
