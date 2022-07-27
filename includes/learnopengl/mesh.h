@@ -91,7 +91,11 @@ public:
         glBindVertexArray(0);
 
         // always good practice to set everything back to defaults once configured.
-        glActiveTexture(GL_TEXTURE0);
+    	for (unsigned int i = 0; i < textures.size(); i++)
+    	{
+    	    glActiveTexture(GL_TEXTURE0 + i);
+    	    glBindTexture(GL_TEXTURE_2D, 0);
+    	}
     }
 
 private:
