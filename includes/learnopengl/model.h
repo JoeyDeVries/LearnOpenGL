@@ -196,6 +196,8 @@ private:
                 // just create an empty texture
                 unsigned int textureID;
                 glGenTextures(1, &textureID);
+                glBindTexture(GL_TEXTURE_2D, textureID);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
                 texture.id = textureID;
                 //texture.id = textureFromFile(path.c_str(), this->directory);
 
