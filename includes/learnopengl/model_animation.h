@@ -37,7 +37,29 @@ public:
     // constructor, expects a filepath to a 3D model.
     Model(const std::string &path, bool gamma = false) : gammaCorrection(gamma)
     {
-        std::cout << path << "\n";
+    	if (notex==0) // Create only 1 default texture!
+        {
+            uint8_t data[3] = {255,255,255};
+            glGenTextures(1, &notex);
+            glBindTexture(GL_TEXTURE_2D, notex);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        }
+        if (nonorm==0) // Create only 1 default texture!
+        {
+            uint8_t data[3] = {128,128,255};
+            glGenTextures(1, &nonorm);
+            glBindTexture(GL_TEXTURE_2D, nonorm);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        }
+        std::cout << path << "\n"; // Help you know where it's at.
         loadModel(path);
 
     }
@@ -54,7 +76,7 @@ public:
 
 
 private:
-
+    	static unsigned int notex, nonorm;
 	std::map<string, BoneInfo> m_BoneInfoMap;
 	int m_BoneCounter = 0;
 
@@ -247,14 +269,14 @@ private:
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 			stbi_image_free(data);
+            		return textureID;
 		}
 		else
 		{
 			std::cout << "Texture failed to load at path: " << path << std::endl;
 			stbi_image_free(data);
 		}
-
-		return textureID;
+		return notex;
 	}
     
     // checks all material textures of a given type and loads the textures if they're not loaded yet.
@@ -262,6 +284,35 @@ private:
     std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, const std::string& typeName)
     {
         std::vector<Texture> textures;
+	
+        if (mat->GetTextureCount(type) == 0) // there is no texture!
+        {
+            // check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
+            bool skip = false;
+            for(unsigned int j = 0; j < textures_loaded.size(); j++)
+            {
+                //if(std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
+                if(textures_loaded[j].path == "NOTEX")
+                {
+                    textures.push_back(textures_loaded[j]);
+                    skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
+                    break;
+                }
+            }
+            if(!skip)
+            {   // if texture hasn't been loaded already, load it
+                Texture texture;
+                texture.id = notex;
+                if (typeName=="texture_normal")
+                    texture.id++; // Use the next default image which is normalmap!
+                texture.type = typeName;
+                texture.path = "NOTEX"; // There is no path!
+                textures.push_back(texture);
+                textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
+            }
+            std::cout << "Lack " << typeName << "\n";
+        }
+	
         for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
         {
             aiString str;
@@ -284,6 +335,9 @@ private:
                 if (typeName=="texture_diffuse")
                     gamma=true;
                 texture.id = TextureFromFile(str.C_Str(), this->directory, gamma);
+		if (texture.id==notex) // It's using a default image!
+                if (typeName=="texture_normal")
+                    texture.id++; // Switch to default normalmap!
                 texture.type = typeName;
                 texture.path = str.C_Str();
                 textures.push_back(texture);
@@ -293,7 +347,7 @@ private:
         return textures;
     }
 };
-
+unsigned int Model::notex=0, Model::nonorm=0;
 
 
 #endif
