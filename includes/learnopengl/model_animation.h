@@ -39,10 +39,10 @@ public:
     {
     	if (notex==0) // Create only 1 default texture!
         {
-            uint8_t data[3] = {255,255,255};
+            uint8_t data[4] = {255,255,255,255};
             glGenTextures(1, &notex);
             glBindTexture(GL_TEXTURE_2D, notex);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -291,8 +291,7 @@ private:
             bool skip = false;
             for(unsigned int j = 0; j < textures_loaded.size(); j++)
             {
-                //if(std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
-                if(textures_loaded[j].path == "NOTEX")
+                if(textures_loaded[j].path == "DEFAULT_" + typeName)
                 {
                     textures.push_back(textures_loaded[j]);
                     skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
@@ -304,15 +303,16 @@ private:
                 Texture texture;
                 texture.id = notex;
                 if (typeName=="texture_normal")
-                    texture.id++; // Use the next default image which is normalmap!
+                    texture.id=nonorm; // Use the next default image which is normalmap!
                 texture.type = typeName;
-                texture.path = "NOTEX"; // There is no path!
+                texture.path = "No_" + typeName; // A non-path name for a default texture.
                 textures.push_back(texture);
                 textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
             }
             std::cout << "Lack " << typeName << "\n";
         }
-	
+	else
+	{
         for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
         {
             aiString str;
@@ -337,13 +337,14 @@ private:
                 texture.id = TextureFromFile(str.C_Str(), this->directory, gamma);
 		if (texture.id==notex) // It's using a default image!
                 if (typeName=="texture_normal")
-                    texture.id++; // Switch to default normalmap!
+                    texture.id=nonorm; // Must have the proper direction!
                 texture.type = typeName;
                 texture.path = str.C_Str();
                 textures.push_back(texture);
                 textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
             }
         }
+    	}
         return textures;
     }
 };
