@@ -219,7 +219,8 @@ private:
             bool skip = false;
             for (unsigned int j = 0; j < textures_loaded.size(); j++)
             {
-                if (std::strcmp(textures_loaded[j].path.data(), "NO_TEXTURE") == 0)
+                std::string name = "DEFAULT_" + typeName;
+                if (std::strcmp(textures_loaded[j].path.data(), name.c_str()) == 0)
                 {
                     textures.push_back(textures_loaded[j]);
                     skip = true; // A texture with the same filepath has already been loaded, continue to next one. (optimization)
@@ -238,7 +239,7 @@ private:
                     texture.id = noSpecular; // Otherwise use the default specular map because it is just empty
     
                 texture.type = typeName;
-                texture.path = "NO_TEXTURE";
+                texture.path = "DEFAULT_" + typeName;
                 textures.push_back(texture);
                 textures_loaded.push_back(texture); // Store it as texture loaded for entire model, to ensure we won't unnecessary load duplicate textures.
             }
