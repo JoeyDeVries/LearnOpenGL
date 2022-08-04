@@ -26,7 +26,7 @@ unsigned int TextureFromFile(const char *path, const string &directory, bool gam
 class Model 
 {
 public:
-    static unsigned int noDiffuse, noSpecular, noNormal;
+    static unsigned int defaultDiffuse, defaultSpecular, defaultNormal, defaultOther;
     
     // model data 
     vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
@@ -37,37 +37,49 @@ public:
     // constructor, expects a filepath to a 3D model.
     Model(string const &path, bool gamma = false) : gammaCorrection(gamma)
     {
-        noDiffuse = 0;
-        noSpecular = 0;
-        noNormal = 0;
-        if (noDiffuse == 0)
+        defaultDiffuse = 0;
+        defaultSpecular = 0;
+        defaultNormal = 0;
+        defaultOther = 0;
+        if (defaultDiffuse == 0)
         {
             uint8_t data[4] = { 255,255,255 };
-            glGenTextures(1, &noDiffuse);
-            glBindTexture(GL_TEXTURE_2D, noDiffuse);
+            glGenTextures(1, &defaultDiffuse);
+            glBindTexture(GL_TEXTURE_2D, defaultDiffuse);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         }
-        if (noSpecular == 0)
+        if (defaultSpecular == 0)
         {
             uint8_t data[3] = { 255,255,255 };
-            glGenTextures(1, &noSpecular);
-            glBindTexture(GL_TEXTURE_2D, noSpecular);
+            glGenTextures(1, &defaultSpecular);
+            glBindTexture(GL_TEXTURE_2D, defaultSpecular);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         }
-        if (noNormal == 0)
+        if (defaultNormal == 0)
         {
             uint8_t data[3] = { 128,128,255 };
-            glGenTextures(1, &noNormal);
-            glBindTexture(GL_TEXTURE_2D, noNormal);
+            glGenTextures(1, &defaultNormal);
+            glBindTexture(GL_TEXTURE_2D, defaultNormal);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        }
+        if (defaultOther == 0)
+        {
+            uint8_t data[4] = { 0,0,0,0 };
+            glGenTextures(1, &defaultOther);
+            glBindTexture(GL_TEXTURE_2D, defaultOther);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -232,11 +244,13 @@ private:
                 Texture texture;
     
                 if (typeName == "texture_diffuse")
-                    texture.id = noDiffuse; // Use the default diffuse map
+                    texture.id = defaultDiffuse; // Use the default diffuse texture
+			    else if (typeName == "texture_specular")
+				    texture.id = defaultSpecular; // Use the default specular map
                 else if (typeName == "texture_normal")
-                    texture.id = noNormal; // Use the next default normal map
+                    texture.id = defaultNormal; // Use the default normal map
                 else
-                    texture.id = noSpecular; // Otherwise use the default specular map because it is just empty
+                    texture.id = defaultOther; // Otherwise use the default other because it is just empty
     
                 texture.type = typeName;
                 texture.path = "DEFAULT_" + typeName;
@@ -265,12 +279,16 @@ private:
             {   // if texture hasn't been loaded already, load it
                 Texture texture;
                 texture.id = TextureFromFile(str.C_Str(), this->directory);
-                if (texture.id == noDiffuse)
+                if (texture.id == defaultDiffuse)
                 {
+				    if (typeName == "texture_diffuse")
+					    texture.id = defaultDiffuse;
                     if (typeName == "texture_specular")
-                        texture.id = noSpecular;
+                        texture.id = defaultSpecular;
                     else if (typeName == "texture_normal")
-                        texture.id = noNormal;
+                        texture.id = defaultNormal;
+				    else
+					    texture.id = defaultOther;
                 }
                 texture.type = typeName;
                 texture.path = str.C_Str();
@@ -282,7 +300,7 @@ private:
     }
 };
 
-unsigned int Model::noDiffuse = 0, Model::noSpecular = 0, Model::noNormal = 0;
+unsigned int Model::defaultDiffuse = 0, Model::defaultSpecular = 0, Model::defaultNormal = 0, Model::defaultOther = 0;
 
 
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma)
@@ -323,9 +341,9 @@ unsigned int TextureFromFile(const char *path, const string &directory, bool gam
         std::cout << "Texture failed to load at path: " << path << std::endl;
         stbi_image_free(data);
         
-        return Model::noDiffuse;
+        return Model::defaultDiffuse;
     }
 
-    return Model::noDiffuse;
+    return Model::defaultDiffuse;
 }
 #endif
