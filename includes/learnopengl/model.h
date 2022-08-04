@@ -26,6 +26,8 @@ unsigned int TextureFromFile(const char *path, const string &directory, bool gam
 class Model 
 {
 public:
+    static unsigned int noDiffuse, noSpecular, noNormal;
+    
     // model data 
     vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
     vector<Mesh>    meshes;
@@ -35,6 +37,43 @@ public:
     // constructor, expects a filepath to a 3D model.
     Model(string const &path, bool gamma = false) : gammaCorrection(gamma)
     {
+        noDiffuse = 0;
+        noSpecular = 0;
+        noNormal = 0;
+        if (noDiffuse == 0)
+        {
+            uint8_t data[4] = { 255,255,255 };
+            glGenTextures(1, &noDiffuse);
+            glBindTexture(GL_TEXTURE_2D, noDiffuse);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        }
+        if (noSpecular == 0)
+        {
+            uint8_t data[4] = { 0,0,0,0 };
+            glGenTextures(1, &noSpecular);
+            glBindTexture(GL_TEXTURE_2D, noSpecular);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        }
+        if (noNormal == 0)
+        {
+            uint8_t data[3] = { 128,128,255 };
+            glGenTextures(1, &noNormal);
+            glBindTexture(GL_TEXTURE_2D, noNormal);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        }
+    
         loadModel(path);
     }
 
@@ -174,38 +213,38 @@ private:
     {
         vector<Texture> textures;
         
-        // first check if there isn't a texture, if so create an empty image
+        // First check if there isn't a texture, if so create an empty image
         if (mat->GetTextureCount(type) == 0)
         {
-            std::string path = "DefaultTexture";
-
             bool skip = false;
             for (unsigned int j = 0; j < textures_loaded.size(); j++)
             {
-                if (std::strcmp(textures_loaded[j].path.data(), path.c_str()) == 0)
+                if (std::strcmp(textures_loaded[j].path.data(), "NO_TEXTURE") == 0)
                 {
                     textures.push_back(textures_loaded[j]);
-                    skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
+                    skip = true; // A texture with the same filepath has already been loaded, continue to next one. (optimization)
                     break;
                 }
             }
             if (!skip)
-            {   // if the empty texture hasn't been loaded already, load it
+            {   // If texture hasn't been loaded already, load it
                 Texture texture;
-
-                // just create an empty texture
-                unsigned int textureID;
-                glGenTextures(1, &textureID);
-                glBindTexture(GL_TEXTURE_2D, textureID);
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-                texture.id = textureID;
-                //texture.id = textureFromFile(path.c_str(), this->directory);
-
+    
+                if (typeName == "texture_diffuse")
+                    texture.id = noDiffuse; // Use the default diffuse map
+                else if (typeName == "texture_specular")
+                    texture.id = noSpecular; // Use the default specular map
+                else if (typeName == "texture_normal")
+                    texture.id = noNormal; // Use the next default normal map
+                else
+                    texture.id = noSpecular; // Otherwise use the default specular map because it is just empty
+    
                 texture.type = typeName;
-                texture.path = path.c_str();
+                texture.path = "NO_TEXTURE";
                 textures.push_back(texture);
-                textures_loaded.push_back(texture); // store it as texture loaded for entire model, to ensure we won't unnecessary load duplicate textures.
+                textures_loaded.push_back(texture); // Store it as texture loaded for entire model, to ensure we won't unnecessary load duplicate textures.
             }
+            std::cout << "Lack " << typeName << "\n";
         }
 
         for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
@@ -227,6 +266,13 @@ private:
             {   // if texture hasn't been loaded already, load it
                 Texture texture;
                 texture.id = TextureFromFile(str.C_Str(), this->directory);
+                if (texture.id == noDiffuse)
+                {
+                    if (typeName == "texture_specular")
+                        texture.id = noSpecular;
+                    if (typeName == "texture_normal")
+                        texture.id = noNormal;
+                }
                 texture.type = typeName;
                 texture.path = str.C_Str();
                 textures.push_back(texture);
@@ -236,6 +282,8 @@ private:
         return textures;
     }
 };
+
+unsigned int Model::noDiffuse = 0, Model::noSpecular = 0, Model::noNormal = 0;
 
 
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma)
@@ -268,13 +316,17 @@ unsigned int TextureFromFile(const char *path, const string &directory, bool gam
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         stbi_image_free(data);
+        
+        return textureID;
     }
     else
     {
         std::cout << "Texture failed to load at path: " << path << std::endl;
         stbi_image_free(data);
+        
+        return Model::noDiffuse;
     }
 
-    return textureID;
+    return Model::noDiffuse;
 }
 #endif
