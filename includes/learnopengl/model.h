@@ -232,8 +232,6 @@ private:
     
                 if (typeName == "texture_diffuse")
                     texture.id = noDiffuse; // Use the default diffuse map
-                else if (typeName == "texture_specular")
-                    texture.id = noSpecular; // Use the default specular map
                 else if (typeName == "texture_normal")
                     texture.id = noNormal; // Use the next default normal map
                 else
