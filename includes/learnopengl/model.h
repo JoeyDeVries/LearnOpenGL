@@ -268,7 +268,7 @@ private:
                 {
                     if (typeName == "texture_specular")
                         texture.id = noSpecular;
-                    if (typeName == "texture_normal")
+                    else if (typeName == "texture_normal")
                         texture.id = noNormal;
                 }
                 texture.type = typeName;
