@@ -26,7 +26,7 @@ unsigned int TextureFromFile(const char *path, const string &directory, bool gam
 class Model 
 {
 public:
-    static unsigned int defaultDiffuse, defaultSpecular, defaultNormal, defaultOther;
+    static unsigned int defaultDiffuse, defaultSpecular, defaultNormal;
     
     // model data 
     vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
@@ -65,17 +65,6 @@ public:
             glGenTextures(1, &defaultNormal);
             glBindTexture(GL_TEXTURE_2D, defaultNormal);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        }
-        if (defaultOther == 0)
-        {
-            uint8_t data[4] = { 0,0,0,0 };
-            glGenTextures(1, &defaultOther);
-            glBindTexture(GL_TEXTURE_2D, defaultOther);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -240,12 +229,10 @@ private:
     
                 if (typeName == "texture_diffuse")
                     texture.id = defaultDiffuse; // Use the default diffuse texture
-			    else if (typeName == "texture_specular")
-				    texture.id = defaultSpecular; // Use the default specular map
                 else if (typeName == "texture_normal")
                     texture.id = defaultNormal; // Use the default normal map
                 else
-                    texture.id = defaultOther; // Otherwise use the default other because it is just empty
+				    texture.id = defaultSpecular; // Use the default specular map
     
                 texture.type = typeName;
                 texture.path = "DEFAULT_" + typeName;
@@ -278,12 +265,10 @@ private:
                 {
 				    if (typeName == "texture_diffuse")
 					    texture.id = defaultDiffuse;
-                    if (typeName == "texture_specular")
-                        texture.id = defaultSpecular;
                     else if (typeName == "texture_normal")
                         texture.id = defaultNormal;
 				    else
-					    texture.id = defaultOther;
+                        texture.id = defaultSpecular;
                 }
                 texture.type = typeName;
                 texture.path = str.C_Str();
@@ -295,7 +280,7 @@ private:
     }
 };
 
-unsigned int Model::defaultDiffuse = 0, Model::defaultSpecular = 0, Model::defaultNormal = 0, Model::defaultOther = 0;
+unsigned int Model::defaultDiffuse = 0, Model::defaultSpecular = 0, Model::defaultNormal = 0;
 
 
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma)
