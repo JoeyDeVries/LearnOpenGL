@@ -37,10 +37,6 @@ public:
     // constructor, expects a filepath to a 3D model.
     Model(string const &path, bool gamma = false) : gammaCorrection(gamma)
     {
-        defaultDiffuse = 0;
-        defaultSpecular = 0;
-        defaultNormal = 0;
-        defaultOther = 0;
         if (defaultDiffuse == 0)
         {
             uint8_t data[4] = { 255,255,255 };
