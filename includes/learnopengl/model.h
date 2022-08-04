@@ -227,8 +227,7 @@ private:
             bool skip = false;
             for (unsigned int j = 0; j < textures_loaded.size(); j++)
             {
-                std::string name = "DEFAULT_" + typeName;
-                if (std::strcmp(textures_loaded[j].path.data(), name.c_str()) == 0)
+                if (std::strcmp(textures_loaded[j].path.data(), ("DEFAULT_" + typeName).c_str()) == 0)
                 {
                     textures.push_back(textures_loaded[j]);
                     skip = true; // A texture with the same filepath has already been loaded, continue to next one. (optimization)
