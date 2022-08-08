@@ -182,6 +182,8 @@ set(GUEST_ARTICLES
 	#8.guest/2021/3.tessellation/terrain_gpu_dist
 	#8.guest/2021/3.tessellation/terrain_cpu_src
 	8.guest/2021/4.dsa
+	8.guest/2022/5.computeshader_helloworld
+	8.guest/2022/6.physically_based_bloom
 )
 
 configure_file(configuration/root_directory.h.in configuration/root_directory.h)
@@ -205,6 +207,7 @@ function(create_project_from_sources chapter demo)
             "src/${chapter}/${demo}/*.vs"
             "src/${chapter}/${demo}/*.fs"
             "src/${chapter}/${demo}/*.gs"
+            "src/${chapter}/${demo}/*.cs"
     )
 	if (demo STREQUAL "")
 		SET(replaced "")
@@ -235,11 +238,15 @@ function(create_project_from_sources chapter demo)
              # "src/${chapter}/${demo}/*.frag"
              "src/${chapter}/${demo}/*.fs"
              "src/${chapter}/${demo}/*.gs"
+	     "src/${chapter}/${demo}/*.cs"
     )
+	# copy dlls
+	file(GLOB DLLS "dlls/*.dll")
     foreach(SHADER ${SHADERS})
         if(WIN32)
             # configure_file(${SHADER} "test")
             add_custom_command(TARGET ${NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SHADER} $<TARGET_FILE_DIR:${NAME}>)
+			add_custom_command(TARGET ${NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${DLLS} $<TARGET_FILE_DIR:${NAME}>)
         elseif(UNIX AND NOT APPLE)
             file(COPY ${SHADER} DESTINATION ${CMAKE_SOURCE_DIR}/bin/${chapter})
         elseif(APPLE)
