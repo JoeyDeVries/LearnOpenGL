@@ -25,13 +25,11 @@ Using [this project](https://github.com/01e9/docker-ide) you can start IDE in do
 ```
 
 ## Mac OS X building
-Building on Mac OS X is fairly simple (thanks [@hyperknot](https://github.com/hyperknot)):
+Building on Mac OS X is fairly simple:
 ```
 brew install cmake assimp glm glfw freetype
-mkdir build
-cd build
-cmake ../.
-make -j8
+cmake -S . -B build
+cmake --build build -j$(sysctl -n hw.logicalcpu)
 ```
 ## Create Xcode project on Mac platform
 Thanks [@caochao](https://github.com/caochao):
