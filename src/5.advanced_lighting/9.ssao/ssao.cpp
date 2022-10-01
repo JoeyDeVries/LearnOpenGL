@@ -35,7 +35,7 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
-float lerp(float a, float b, float f)
+float ourLerp(float a, float b, float f)
 {
     return a + f * (b - a);
 }
@@ -176,7 +176,7 @@ int main()
         float scale = float(i) / 64.0f;
 
         // scale samples s.t. they're more aligned to center of kernel
-        scale = lerp(0.1f, 1.0f, scale * scale);
+        scale = ourLerp(0.1f, 1.0f, scale * scale);
         sample *= scale;
         ssaoKernel.push_back(sample);
     }
