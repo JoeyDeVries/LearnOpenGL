@@ -1,3 +1,10 @@
+//
+// Implementing Areal Lights with Linearly Transformed Cosines.
+//
+// Inspiration:
+// https://advances.realtimerendering.com/s2016/s2016_ltc_rnd.pdf
+// https://eheitzresearch.wordpress.com/415-2/
+
 // GLAD, GLFW, STB-IMAGE
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -19,8 +26,8 @@
 #include <vector>
 
 // CUSTOM
-#include "ltc_matrix.hpp"
-#include "colors.hpp" // LOOK FOR DIFFERENT COLORS!
+#include "../ltc_matrix.hpp"
+#include "../colors.hpp" // LOOK FOR DIFFERENT COLORS!
 
 // FUNCTION PROTOTYPES
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
