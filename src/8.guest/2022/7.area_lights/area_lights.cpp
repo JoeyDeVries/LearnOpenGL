@@ -20,7 +20,7 @@
 
 // CUSTOM
 #include "ltc_matrix.hpp"
-#include "colors.hpp"
+#include "colors.hpp" // LOOK FOR DIFFERENT COLORS!
 
 // FUNCTION PROTOTYPES
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -35,12 +35,13 @@ void renderCube();
 // SETTINGS AND GLOBALS
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+const glm::vec3 LIGHT_COLOR = Color::BurlyWood; // CHANGE AREA LIGHT COLOR HERE!
 bool keys[1024]; // activated keys
 glm::vec3 areaLightTranslate;
 Shader* ltcShaderPtr;
 
 // camera
-Camera camera(glm::vec3(0.0f, 1.0f, 0.5f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f);
+Camera camera(glm::vec3(0.0f, 1.0f, 0.5f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f, 0.0f);
 float lastX = (float)SCR_WIDTH / 2.0;
 float lastY = (float)SCR_HEIGHT / 2.0;
 bool firstMouse = true;
@@ -288,7 +289,7 @@ int main()
 
     // TEXTURES
     unsigned int concreteTexture = loadTexture(
-	    FileSystem::getPath("resources/textures/concreteTexture.jpg").c_str(), true);
+	    FileSystem::getPath("resources/textures/concreteTexture.png").c_str(), true);
 
     // SHADER CONFIGURATION
     shaderLTC.use();
@@ -296,7 +297,7 @@ int main()
     shaderLTC.setVec3("areaLight.points[1]", areaLightVertices[1].position);
 	shaderLTC.setVec3("areaLight.points[2]", areaLightVertices[4].position);
 	shaderLTC.setVec3("areaLight.points[3]", areaLightVertices[5].position);
-	shaderLTC.setVec3("areaLight.color", Color::White);
+	shaderLTC.setVec3("areaLight.color", LIGHT_COLOR);
 	shaderLTC.setInt("LTC1", 0);
 	shaderLTC.setInt("LTC2", 1);
 	shaderLTC.setInt("material.diffuse", 2);
@@ -310,7 +311,7 @@ int main()
 		glm::mat4 model(1.0f);
 		shaderLightPlane.setMat4("model", model);
 	}
-	shaderLightPlane.setVec3("lightColor", Color::White);
+	shaderLightPlane.setVec3("lightColor", LIGHT_COLOR);
 	glUseProgram(0);
 
 	// 3D OBJECTS
@@ -379,17 +380,19 @@ int main()
 // ---------------------------------------------------------------------------------------------------------
 void do_movement(GLfloat deltaTime)
 {
+	float cameraSpeed = deltaTime * 3.0f;
+
     if(keys[GLFW_KEY_W]) {
-        camera.ProcessKeyboard(FORWARD, deltaTime);
+        camera.ProcessKeyboard(FORWARD, cameraSpeed);
     }
     else if(keys[GLFW_KEY_S]) {
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
+        camera.ProcessKeyboard(BACKWARD, cameraSpeed);
     }
     if(keys[GLFW_KEY_A]) {
-        camera.ProcessKeyboard(LEFT, deltaTime);
+        camera.ProcessKeyboard(LEFT, cameraSpeed);
     }
     else if(keys[GLFW_KEY_D]) {
-        camera.ProcessKeyboard(RIGHT, deltaTime);
+        camera.ProcessKeyboard(RIGHT, cameraSpeed);
     }
 
     if (keys[GLFW_KEY_R]) {
