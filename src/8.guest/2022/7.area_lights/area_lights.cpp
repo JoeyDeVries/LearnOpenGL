@@ -20,27 +20,27 @@
 
 // CUSTOM
 #include "ltc_matrix.hpp"
+#include "colors.hpp"
 
 // FUNCTION PROTOTYPES
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void processInput(GLFWwindow *window);
+void do_movement(GLfloat deltaTime);
 unsigned int loadTexture(const char *path, bool gammaCorrection);
 void renderQuad();
 void renderCube();
 
-// settings
+// SETTINGS AND GLOBALS
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
-bool bloom = true;
-float exposure = 1.0f;
-int programChoice = 1;
-float bloomFilterRadius = 0.005f;
+bool keys[1024]; // activated keys
+glm::vec3 areaLightTranslate;
+Shader* ltcShaderPtr;
 
 // camera
-Camera camera(glm::vec3(0.0f, 0.0f, 5.0f));
+Camera camera(glm::vec3(0.0f, 1.0f, 0.5f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, 0.0f);
 float lastX = (float)SCR_WIDTH / 2.0;
 float lastY = (float)SCR_HEIGHT / 2.0;
 bool firstMouse = true;
@@ -58,22 +58,22 @@ float lastFrame = 0.0f;
 // |/ /  |
 // 1-4---6
 //
-struct Vertex {
+struct VertexAL {
 	glm::vec3 position;
 	glm::vec3 normal;
 	glm::vec2 texcoord;
 };
 
-const GLfloat size = 10.0f;
-Vertex planeVertices[6] = {
-	{ {-size, 0.0f, -size}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f} },
-	{ {-size, 0.0f,  size}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f} },
-	{ { size, 0.0f,  size}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f} },
-	{ {-size, 0.0f, -size}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f} },
-	{ { size, 0.0f,  size}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f} },
-	{ { size, 0.0f, -size}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f} }
+const GLfloat psize = 10.0f;
+VertexAL planeVertices[6] = {
+	{ {-psize, 0.0f, -psize}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f} },
+	{ {-psize, 0.0f,  psize}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f} },
+	{ { psize, 0.0f,  psize}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f} },
+	{ {-psize, 0.0f, -psize}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f} },
+	{ { psize, 0.0f,  psize}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f} },
+	{ { psize, 0.0f, -psize}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f} }
 };
-Vertex areaLightVertices[6] = {
+VertexAL areaLightVertices[6] = {
 	{ {-8.0f, 2.4f, -1.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f} }, // 0 1 5 4
 	{ {-8.0f, 2.4f,  1.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 1.0f} },
 	{ {-8.0f, 0.4f,  1.0f}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f} },
@@ -204,9 +204,9 @@ void incrementRoughness(float step)
 	roughness += step;
 	roughness = glm::clamp(roughness, 0.0f, 1.0f);
 	//std::cout << "roughness: " << roughness << '\n';
-	lightingShader->Activate();
-	lightingShader->SetUniformVec4("material.albedoRoughness", glm::vec4(color, roughness));
-	lightingShader->Deactivate();
+	ltcShaderPtr->use();
+	ltcShaderPtr->setVec4("material.albedoRoughness", glm::vec4(color, roughness));
+	glUseProgram(0);
 }
 
 void incrementLightIntensity(float step)
@@ -215,9 +215,9 @@ void incrementLightIntensity(float step)
 	intensity += step;
 	intensity = glm::clamp(intensity, 0.0f, 10.0f);
 	//std::cout << "intensity: " << intensity << '\n';
-	lightingShader->Activate();
-	lightingShader->SetUniformFloat("areaLight.intensity", intensity);
-	lightingShader->Deactivate();
+	ltcShaderPtr->use();
+	ltcShaderPtr->setFloat("areaLight.intensity", intensity);
+	glUseProgram(0);
 }
 
 void switchTwoSided(bool doSwitch)
@@ -225,9 +225,9 @@ void switchTwoSided(bool doSwitch)
 	static bool twoSided = true;
 	if (doSwitch) twoSided = !twoSided;
 	//std::cout << "twoSided: " << std::boolalpha << twoSided << '\n';
-	lightingShader->Activate();
-	lightingShader->SetUniformBool("areaLight.twoSided", twoSided);
-	lightingShader->Deactivate();
+	ltcShaderPtr->use();
+	ltcShaderPtr->setFloat("areaLight.twoSided", twoSided);
+	glUseProgram(0);
 }
 
 
@@ -276,19 +276,21 @@ int main()
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
 
-    // build and compile shaders
-    // -------------------------
+    // LUT textures
+    LTC_matrices mLTC;
+    mLTC.mat1 = loadMTexture();
+    mLTC.mat2 = loadLUTTexture();
+
+    // SHADERS
     Shader shaderLTC("7.area_light.vs", "7.area_light.fs");
-    // Shader shaderLight("6.bloom.vs", "6.light_box.fs");
-    // Shader shaderBlur("6.old_blur.vs", "6.old_blur.fs");
-    // Shader shaderBloomFinal("6.bloom_final.vs", "6.bloom_final.fs");
+    ltcShaderPtr = &shaderLTC;
+    Shader shaderLightPlane("7.light_plane.vs", "7.light_plane.fs");
 
-    // load textures
-    // -------------
-    unsigned int concreteTexture = loadTexture(FileSystem::getPath("resources/textures/concreteTexture.jpg").c_str(), true);
+    // TEXTURES
+    unsigned int concreteTexture = loadTexture(
+	    FileSystem::getPath("resources/textures/concreteTexture.jpg").c_str(), true);
 
-    // shader configuration
-    // --------------------
+    // SHADER CONFIGURATION
     shaderLTC.use();
     shaderLTC.setVec3("areaLight.points[0]", areaLightVertices[0].position);
     shaderLTC.setVec3("areaLight.points[1]", areaLightVertices[1].position);
@@ -303,180 +305,70 @@ int main()
 	switchTwoSided(false);
 	glUseProgram(0);
 
+	shaderLightPlane.use();
+	{
+		glm::mat4 model(1.0f);
+		shaderLightPlane.setMat4("model", model);
+	}
+	shaderLightPlane.setVec3("lightColor", Color::White);
+	glUseProgram(0);
 
-    // shader.setInt("diffuseTexture", 0);
-    // shaderBlur.use();
-    // shaderBlur.setInt("image", 0);
-    // shaderBloomFinal.use();
-    // shaderBloomFinal.setInt("scene", 0);
-    // shaderBloomFinal.setInt("bloomBlur", 1);
+	// 3D OBJECTS
+	configureMockupData();
+	areaLightTranslate = glm::vec3(0.0f, 0.0f, 0.0f);
 
-    // render loop
-    // -----------
+
+    // RENDER LOOP
     while (!glfwWindowShouldClose(window))
     {
-        // per-frame time logic
-        // --------------------
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        // input
-        // -----
-        processInput(window);
+        glfwPollEvents();
+		do_movement(deltaTime);
 
-        // render
-        // ------
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // 1. render scene into floating point framebuffer
-        // -----------------------------------------------
-        glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        glm::mat4 view = camera.GetViewMatrix();
-        glm::mat4 model = glm::mat4(1.0f);
-        shader.use();
-        shader.setMat4("projection", projection);
-        shader.setMat4("view", view);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, woodTexture);
-        // set lighting uniforms
-        for (unsigned int i = 0; i < lightPositions.size(); i++)
-        {
-            shader.setVec3("lights[" + std::to_string(i) + "].Position", lightPositions[i]);
-            shader.setVec3("lights[" + std::to_string(i) + "].Color", lightColors[i]);
-        }
-        shader.setVec3("viewPos", camera.Position);
-        // create one large cube that acts as the floor
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0));
-        model = glm::scale(model, glm::vec3(12.5f, 0.5f, 12.5f));
-        shader.setMat4("model", model);
-        renderCube();
-        // then create multiple cubes as the scenery
-        glBindTexture(GL_TEXTURE_2D, containerTexture);
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 1.5f, 0.0));
-        model = glm::scale(model, glm::vec3(0.5f));
-        shader.setMat4("model", model);
-        renderCube();
+        shaderLTC.use();
+        glm::mat4 model(1.0f);
+		glm::mat3 normalMatrix = glm::mat3(model);
+		shaderLTC.setMat4("model", model);
+		shaderLTC.setMat3("normalMatrix", normalMatrix);
+		glm::mat4 view = camera.GetViewMatrix();
+		shaderLTC.setMat4("view", view);
+		glm::mat4 projection = glm::perspective(
+			glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		shaderLTC.setMat4("projection", projection);
+		shaderLTC.setVec3("viewPosition", camera.Position);
+		shaderLTC.setVec3("areaLightTranslate", areaLightTranslate);
 
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(2.0f, 0.0f, 1.0));
-        model = glm::scale(model, glm::vec3(0.5f));
-        shader.setMat4("model", model);
-        renderCube();
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mLTC.mat1);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, mLTC.mat2);
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, concreteTexture);
+		renderPlane();
+		glUseProgram(0);
 
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(-1.0f, -1.0f, 2.0));
-        model = glm::rotate(model, glm::radians(60.0f), glm::normalize(glm::vec3(1.0, 0.0, 1.0)));
-        shader.setMat4("model", model);
-        renderCube();
+		shaderLightPlane.use();
+		model = glm::translate(model, areaLightTranslate);
+		shaderLightPlane.setMat4("model", model);
+		shaderLightPlane.setMat4("view", view);
+		shaderLightPlane.setMat4("projection", projection);
+		renderAreaLight();
+		glUseProgram(0);
 
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 2.7f, 4.0));
-        model = glm::rotate(model, glm::radians(23.0f), glm::normalize(glm::vec3(1.0, 0.0, 1.0)));
-        model = glm::scale(model, glm::vec3(1.25));
-        shader.setMat4("model", model);
-        renderCube();
-
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(-2.0f, 1.0f, -3.0));
-        model = glm::rotate(model, glm::radians(124.0f), glm::normalize(glm::vec3(1.0, 0.0, 1.0)));
-        shader.setMat4("model", model);
-        renderCube();
-
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(-3.0f, 0.0f, 0.0));
-        model = glm::scale(model, glm::vec3(0.5f));
-        shader.setMat4("model", model);
-        renderCube();
-
-        // finally show all the light sources as bright cubes
-        shaderLight.use();
-        shaderLight.setMat4("projection", projection);
-        shaderLight.setMat4("view", view);
-
-        for (unsigned int i = 0; i < lightPositions.size(); i++)
-        {
-            model = glm::mat4(1.0f);
-            model = glm::translate(model, glm::vec3(lightPositions[i]));
-            model = glm::scale(model, glm::vec3(0.25f));
-            shaderLight.setMat4("model", model);
-            shaderLight.setVec3("lightColor", lightColors[i]);
-            renderCube();
-        }
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-        if (programChoice < 1 || programChoice > 3) { programChoice = 1; }
-        bloom = (programChoice == 1) ? false : true;
-        bool horizontal = true;
-
-        // 2.A) bloom is disabled
-        // ----------------------
-        if (programChoice == 1)
-        {
-
-        }
-
-        // 2.B) blur bright fragments with two-pass Gaussian Blur
-        // ------------------------------------------------------
-        else if (programChoice == 2)
-        {
-	        bool first_iteration = true;
-	        unsigned int amount = 10;
-	        shaderBlur.use();
-	        for (unsigned int i = 0; i < amount; i++)
-	        {
-		        glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[horizontal]);
-		        shaderBlur.setInt("horizontal", horizontal);
-		        glBindTexture(GL_TEXTURE_2D, first_iteration ? colorBuffers[1] : pingpongColorbuffers[!horizontal]);  // bind texture of other framebuffer (or scene if first iteration)
-		        renderQuad();
-		        horizontal = !horizontal;
-		        if (first_iteration)
-			        first_iteration = false;
-	        }
-	        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        }
-
-        // 2.C) use unthresholded bloom with progressive downsample/upsampling
-        // -------------------------------------------------------------------
-        else if (programChoice == 3)
-        {
-	        bloomRenderer.RenderBloomTexture(colorBuffers[1], bloomFilterRadius);
-        }
-
-        // 3. now render floating point color buffer to 2D quad and tonemap HDR colors to default framebuffer's (clamped) color range
-        // --------------------------------------------------------------------------------------------------------------------------
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        shaderBloomFinal.use();
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, colorBuffers[0]);
-        glActiveTexture(GL_TEXTURE1);
-        if (programChoice == 1) {
-	        glBindTexture(GL_TEXTURE_2D, 0); // trick to bind invalid texture "0", we don't care either way!
-        }
-        if (programChoice == 2) {
-	        glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[!horizontal]);
-        }
-        else if (programChoice == 3) {
-	        glBindTexture(GL_TEXTURE_2D, bloomRenderer.BloomTexture());
-        }
-        shaderBloomFinal.setInt("programChoice", programChoice);
-        shaderBloomFinal.setFloat("exposure", exposure);
-        renderQuad();
-
-        //std::cout << "bloom: " << (bloom ? "on" : "off") << "| exposure: " << exposure << std::endl;
-
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
-        glfwPollEvents();
     }
 
-    bloomRenderer.Destroy();
+    glDeleteVertexArrays(1, &planeVAO);
+    glDeleteBuffers(1, &planeVBO);
+    glDeleteVertexArrays(1, &areaLightVAO);
+    glDeleteBuffers(1, &areaLightVBO);
+
     glfwTerminate();
     return 0;
 }
@@ -487,24 +379,17 @@ int main()
 // ---------------------------------------------------------------------------------------------------------
 void do_movement(GLfloat deltaTime)
 {
-    GLfloat cameraSpeed = 10.0f * deltaTime;
-
     if(keys[GLFW_KEY_W]) {
-        cam->MoveForwards(cameraSpeed);
+        camera.ProcessKeyboard(FORWARD, deltaTime);
     }
     else if(keys[GLFW_KEY_S]) {
-        cam->MoveBackwards(cameraSpeed);
+        camera.ProcessKeyboard(BACKWARD, deltaTime);
     }
     if(keys[GLFW_KEY_A]) {
-        cam->StrafeLeft(cameraSpeed);
+        camera.ProcessKeyboard(LEFT, deltaTime);
     }
     else if(keys[GLFW_KEY_D]) {
-        cam->StrafeRight(cameraSpeed);
-    }
-
-    if (keys[GLFW_KEY_Z]) {
-	    if (keys[GLFW_KEY_LEFT_SHIFT]) cam->MoveDown(cameraSpeed);
-	    else cam->MoveUp(cameraSpeed);
+        camera.ProcessKeyboard(RIGHT, deltaTime);
     }
 
     if (keys[GLFW_KEY_R]) {
@@ -542,13 +427,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         case GLFW_KEY_ESCAPE:
             glfwSetWindowShouldClose(window, GL_TRUE);
             return;
-        case GLFW_KEY_L:
-            screen_lock = !screen_lock;
-            break;
-        case GLFW_KEY_C:
-	        lightingShader = new Shaders::ShaderWrapper(shadername, Shaders::SHADERS_VF);
-	        recompileShader = true;
-	        break;
         case GLFW_KEY_B:
 	        switchTwoSided(true);
 	        break;

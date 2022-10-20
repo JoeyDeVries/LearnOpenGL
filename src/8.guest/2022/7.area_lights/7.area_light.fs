@@ -168,7 +168,7 @@ void main()
     vec3 specular = LTC_Evaluate(N, V, P, Minv, translatedPoints, areaLight.twoSided);
 
     // GGX BRDF shadowing and Fresnel
-    // t2.x: shadowedF90 ??? (F90 normally it should be 1.0)
+    // t2.x: shadowedF90 (F90 normally it should be 1.0)
     // t2.y: Smith function for Geometric Attenuation Term, it is dot(V or L, H).
     specular *= mSpecular*t2.x + (1.0f - mSpecular) * t2.y;
 
