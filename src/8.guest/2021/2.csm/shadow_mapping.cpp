@@ -676,11 +676,11 @@ glm::mat4 getLightSpaceMatrix(const float nearPlane, const float farPlane)
     const auto lightView = glm::lookAt(center + lightDir, center, glm::vec3(0.0f, 1.0f, 0.0f));
 
     float minX = std::numeric_limits<float>::max();
-    float maxX = std::numeric_limits<float>::min();
+    float maxX = std::numeric_limits<float>::lowest();
     float minY = std::numeric_limits<float>::max();
-    float maxY = std::numeric_limits<float>::min();
+    float maxY = std::numeric_limits<float>::lowest();
     float minZ = std::numeric_limits<float>::max();
-    float maxZ = std::numeric_limits<float>::min();
+    float maxZ = std::numeric_limits<float>::lowest();
     for (const auto& v : corners)
     {
         const auto trf = lightView * v;
