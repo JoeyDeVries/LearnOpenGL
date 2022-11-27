@@ -18,12 +18,6 @@ Note that CodeBlocks or other IDEs may have issues running the programs due to p
 
 Running `ls $LOGL_ROOT_PATH` should list, among other things, this README file and the resources direcory.
 
-### Linux building in Docker
-Using [this project](https://github.com/01e9/docker-ide) you can start IDE in docker:
-```
-.../docker-ide/ide cpp-gpu ~/.../clion/bin/clion.sh -x11docker "--gpu"
-```
-
 ## Mac OS X building
 Building on Mac OS X is fairly simple:
 ```
