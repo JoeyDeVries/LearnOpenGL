@@ -52,25 +52,25 @@ namespace glm
 	template<typename genType>
 	GLM_FUNC_DECL genType gaussRand(genType Mean, genType Deviation);
 
-	/// Generate a random 2D vector which coordinates are regulary distributed on a circle of a given radius
+	/// Generate a random 2D vector which coordinates are regularly distributed on a circle of a given radius
 	///
 	/// @see gtc_random
 	template<typename T>
 	GLM_FUNC_DECL vec<2, T, defaultp> circularRand(T Radius);
 
-	/// Generate a random 3D vector which coordinates are regulary distributed on a sphere of a given radius
+	/// Generate a random 3D vector which coordinates are regularly distributed on a sphere of a given radius
 	///
 	/// @see gtc_random
 	template<typename T>
 	GLM_FUNC_DECL vec<3, T, defaultp> sphericalRand(T Radius);
 
-	/// Generate a random 2D vector which coordinates are regulary distributed within the area of a disk of a given radius
+	/// Generate a random 2D vector which coordinates are regularly distributed within the area of a disk of a given radius
 	///
 	/// @see gtc_random
 	template<typename T>
 	GLM_FUNC_DECL vec<2, T, defaultp> diskRand(T Radius);
 
-	/// Generate a random 3D vector which coordinates are regulary distributed within the volume of a ball of a given radius
+	/// Generate a random 3D vector which coordinates are regularly distributed within the volume of a ball of a given radius
 	///
 	/// @see gtc_random
 	template<typename T>
