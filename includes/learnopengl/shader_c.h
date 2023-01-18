@@ -53,7 +53,7 @@ public:
         glAttachShader(ID, compute);
         glLinkProgram(ID);
         checkCompileErrors(ID, "PROGRAM");
-        // delete the shaders as they're linked into our program now and no longer necessery
+        // delete the shaders as they're linked into our program now and no longer necessary
         glDeleteShader(compute);
     }
     // activate the shader
