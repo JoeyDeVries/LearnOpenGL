@@ -117,7 +117,7 @@ int main()
 				ourEntity.addChild(model);
 				lastEntity = ourEntity.children.back().get();
 
-				//Set tranform values
+				//Set transform values
 				lastEntity->transform.setLocalPosition({ x * 10.f - 100.f,  0.f, z * 10.f - 100.f });
 			}
 		}
