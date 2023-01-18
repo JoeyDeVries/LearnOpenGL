@@ -15,7 +15,7 @@
 
 /*	set this =1 if you want to use the covariance matrix method...
 	which is better than my method of using standard deviations
-	overall, except on the infintesimal chance that the power
+	overall, except on the infinitesimal chance that the power
 	method fails for finding the largest eigenvector	*/
 #define USE_COV_MAT	1
 
