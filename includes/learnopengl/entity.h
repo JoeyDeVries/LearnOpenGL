@@ -197,7 +197,7 @@ struct Sphere : public BoundingVolume
 		//Max scale is assuming for the diameter. So, we need the half to apply it to our radius
 		Sphere globalSphere(globalCenter, radius * (maxScale * 0.5f));
 
-		//Check Firstly the result that have the most chance to faillure to avoid to call all functions.
+		//Check Firstly the result that have the most chance to failure to avoid to call all functions.
 		return (globalSphere.isOnOrForwardPlane(camFrustum.leftFace) &&
 			globalSphere.isOnOrForwardPlane(camFrustum.rightFace) &&
 			globalSphere.isOnOrForwardPlane(camFrustum.farFace) &&
