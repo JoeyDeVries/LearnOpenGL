@@ -51,7 +51,7 @@ namespace irrklang
 		 \return Only returns a pointer to an ISound if the parameters 'track', 'startPaused' or 
 		 'enableSoundEffects' have been	 set to true. Note: if this method returns an ISound as result, 
 		 you HAVE to call ISound::drop() after you don't need the ISound interface anymore. Otherwise this 
-		 will cause memory waste. This method also may return 0 altough 'track', 'startPaused' or 
+		 will cause memory waste. This method also may return 0 although 'track', 'startPaused' or 
 		 'enableSoundEffects' have been set to true, if the sound could not be played.*/
 		virtual ISound* play2D(const char* soundFileName, 
 							   bool playLooped = false,
@@ -79,7 +79,7 @@ namespace irrklang
 		 \return Only returns a pointer to an ISound if the parameters 'track', 'startPaused' or 
 		 'enableSoundEffects' have been	 set to true. Note: if this method returns an ISound as result, 
 		 you HAVE to call ISound::drop() after you don't need the ISound interface anymore. Otherwise this 
-		 will cause memory waste. This method also may return 0 altough 'track', 'startPaused' or 
+		 will cause memory waste. This method also may return 0 although 'track', 'startPaused' or 
 		 'enableSoundEffects' have been set to true, if the sound could not be played.*/
 		virtual ISound* play2D(ISoundSource* source, 
 							   bool playLooped = false,
@@ -108,7 +108,7 @@ namespace irrklang
 		 \return Only returns a pointer to an ISound if the parameters 'track', 'startPaused' or 
 		 'enableSoundEffects' have been	 set to true. Note: if this method returns an ISound as result, 
 		 you HAVE to call ISound::drop() after you don't need the ISound interface anymore. Otherwise this 
-		 will cause memory waste. This method also may return 0 altough 'track', 'startPaused' or 
+		 will cause memory waste. This method also may return 0 although 'track', 'startPaused' or 
 		 'enableSoundEffects' have been set to true, if the sound could not be played.*/
 		virtual ISound* play3D(const char* soundFileName, vec3df pos,
 							   bool playLooped = false, 
@@ -137,7 +137,7 @@ namespace irrklang
 		 \return Only returns a pointer to an ISound if the parameters 'track', 'startPaused' or 
 		 'enableSoundEffects' have been	 set to true. Note: if this method returns an ISound as result, 
 		 you HAVE to call ISound::drop() after you don't need the ISound interface anymore. Otherwise this 
-		 will cause memory waste. This method also may return 0 altough 'track', 'startPaused' or 
+		 will cause memory waste. This method also may return 0 although 'track', 'startPaused' or 
 		 'enableSoundEffects' have been set to true, if the sound could not be played.*/
 		virtual ISound* play3D(ISoundSource* source, vec3df pos,
 							   bool playLooped = false, 
