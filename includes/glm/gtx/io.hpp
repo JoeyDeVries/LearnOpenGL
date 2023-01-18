@@ -129,11 +129,11 @@ namespace glm
 		};
 
 		template<typename CTy>
-		struct delimeter
+		struct delimiter
 		{
 			CTy value[3];
 
-			GLM_FUNC_DECL explicit delimeter(CTy /* left */, CTy /* right */, CTy /* separator */ = ',');
+			GLM_FUNC_DECL explicit delimiter(CTy /* left */, CTy /* right */, CTy /* separator */ = ',');
 		};
 
 		struct order
@@ -157,7 +157,7 @@ namespace glm
 		template<typename CTy, typename CTr>
 		std::basic_ostream<CTy, CTr>& operator<<(std::basic_ostream<CTy, CTr>&, width const&);
 		template<typename CTy, typename CTr>
-		std::basic_ostream<CTy, CTr>& operator<<(std::basic_ostream<CTy, CTr>&, delimeter<CTy> const&);
+		std::basic_ostream<CTy, CTr>& operator<<(std::basic_ostream<CTy, CTr>&, delimiter<CTy> const&);
 		template<typename CTy, typename CTr>
 		std::basic_ostream<CTy, CTr>& operator<<(std::basic_ostream<CTy, CTr>&, order const&);
 	}//namespace io

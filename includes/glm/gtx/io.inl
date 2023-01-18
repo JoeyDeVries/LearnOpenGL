@@ -80,7 +80,7 @@ namespace io
 	{}
 
 	template<typename CTy>
-	GLM_FUNC_QUALIFIER delimeter<CTy>::delimeter(CTy a, CTy b, CTy c)
+	GLM_FUNC_QUALIFIER delimiter<CTy>::delimiter(CTy a, CTy b, CTy c)
 		: value()
 	{
 		value[0] = a;
@@ -130,7 +130,7 @@ namespace io
 	}
 
 	template<typename CTy, typename CTr>
-	GLM_FUNC_QUALIFIER  std::basic_ostream<CTy, CTr>& operator<<(std::basic_ostream<CTy, CTr>& os, delimeter<CTy> const& a)
+	GLM_FUNC_QUALIFIER  std::basic_ostream<CTy, CTr>& operator<<(std::basic_ostream<CTy, CTr>& os, delimiter<CTy> const& a)
 	{
 		format_punct<CTy> & fmt(const_cast<format_punct<CTy>&>(get_facet<format_punct<CTy> >(os)));
 
