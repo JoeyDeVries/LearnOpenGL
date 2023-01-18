@@ -725,7 +725,7 @@
  *
  *	if (!engine || !recorder)
  *	{
- *		printf("Could not create audio engine or audio recoder\n");
+ *		printf("Could not create audio engine or audio recorder\n");
  *		return 1;
  *	}
  *
