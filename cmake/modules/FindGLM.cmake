@@ -12,7 +12,7 @@
 # <GLM_ROOT_DIR>/include/glm/glm.hpp
 # This variable can either be a cmake or environment
 # variable. Note however that changing the value
-# of the environment varible will NOT result in
+# of the environment variable will NOT result in
 # re-running the header search and therefore NOT
 # adjust the variables set by this module.
 #=============================================================================
