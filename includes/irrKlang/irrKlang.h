@@ -156,7 +156,7 @@
  *               <li>irrKlang is crashing in your application? This should not happen, irrKlang is pretty stable,
  *                   and in most cases, this is a problem in your code: In a lot of cases the reason is simply
  *                   a wrong call to irrklang::IRefCounted::drop(). Be sure you are doing it correctly. (If you are unsure,
- *                   tempoarily remove all calls to irrklang::IRefCounted::drop() and see if this helps.)</li>
+ *                   temporarily remove all calls to irrklang::IRefCounted::drop() and see if this helps.)</li>
  * </ul>
  *
  * <br/>
