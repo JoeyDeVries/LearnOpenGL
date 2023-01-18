@@ -13,7 +13,7 @@
 #include <string.h>
 #include <stdio.h>
 
-/*	set this =1 if you want to use the covarince matrix method...
+/*	set this =1 if you want to use the covariance matrix method...
 	which is better than my method of using standard deviations
 	overall, except on the infintesimal chance that the power
 	method fails for finding the largest eigenvector	*/
