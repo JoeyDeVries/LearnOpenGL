@@ -14,7 +14,7 @@ protected:
 	glm::vec3 m_eulerRot = { 0.0f, 0.0f, 0.0f }; //In degrees
 	glm::vec3 m_scale = { 1.0f, 1.0f, 1.0f };
 
-	//Global space informaiton concatenate in matrix
+	//Global space information concatenate in matrix
 	glm::mat4 m_modelMatrix = glm::mat4(1.0f);
 
 	//Dirty flag
