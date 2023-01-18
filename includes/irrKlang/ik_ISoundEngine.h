@@ -35,7 +35,7 @@ namespace irrklang
 		//! loads a sound source (if not loaded already) from a file and plays it.
 		/** \param sourceFileName Filename of sound, like "sounds/test.wav" or "foobar.ogg".
 		 \param playLooped plays the sound in loop mode. If set to 'false', the sound is played once, then stopped and deleted from the internal playing list. Calls to
-		 ISound have no effect after such a non looped sound has been stopped automaticly.
+		 ISound have no effect after such a non looped sound has been stopped automatically.
 		 \param startPaused starts the sound paused. This implies that track=true. Use this if you want to modify some of the playing
 		 parameters before the sound actually plays. Usually you would set this parameter to true, then use the ISound interface to
 		 modify some of the sound parameters and then call ISound::setPaused(false);
@@ -66,7 +66,7 @@ namespace irrklang
 		\param source The sound source, specifiying sound file source and default settings for this file.
 		Use the other ISoundEngine::play2D() overloads if you want to specify a filename string instead of this.
 		\param playLooped plays the sound in loop mode. If set to 'false', the sound is played once, then stopped and deleted from the internal playing list. Calls to
-		 ISound have no effect after such a non looped sound has been stopped automaticly.
+		 ISound have no effect after such a non looped sound has been stopped automatically.
 		\param startPaused starts the sound paused. This implies that track=true. Use this if you want to modify some of the playing
 		 parameters before the sound actually plays. Usually you would set this parameter to true, then use the ISound interface to
 		 modify some of the sound parameters and then call ISound::setPaused(false);
@@ -92,7 +92,7 @@ namespace irrklang
 		\param sourceFileName Filename of sound, like "sounds/test.wav" or "foobar.ogg".
 		 \param pos Position of the 3D sound.
 		 \param playLooped plays the sound in loop mode. If set to 'false', the sound is played once, then stopped and deleted from the internal playing list. Calls to
-		 ISound have no effect after such a non looped sound has been stopped automaticly.
+		 ISound have no effect after such a non looped sound has been stopped automatically.
 		 \param startPaused starts the sound paused. This implies that track=true. Use this if you want to modify some of the playing
 		 parameters before the sound actually plays. Usually you would set this parameter to true, then use the ISound interface to
 		 modify some of the sound parameters and then call ISound::setPaused(false);
@@ -124,7 +124,7 @@ namespace irrklang
 		Use the other ISoundEngine::play2D() overloads if you want to specify a filename string instead of this.
 		\param pos Position of the 3D sound.
 		\param playLooped plays the sound in loop mode. If set to 'false', the sound is played once, then stopped and deleted from the internal playing list. Calls to
-		 ISound have no effect after such a non looped sound has been stopped automaticly.
+		 ISound have no effect after such a non looped sound has been stopped automatically.
 		\param startPaused starts the sound paused. This implies that track=true. Use this if you want to modify some of the playing
 		 parameters before the sound actually plays. Usually you would set this parameter to true, then use the ISound interface to
 		 modify some of the sound parameters and then call ISound::setPaused(false);
@@ -291,7 +291,7 @@ namespace irrklang
 		/** This updates the 3d positions of the sounds as well as their volumes, effects,
 		streams and other stuff. Call this several times per frame (the more the better) if you
 		specified irrKlang to run single threaded. Otherwise it is not necessary to use this method.
-		This method is being called by the scene manager automaticly if you are using one, so
+		This method is being called by the scene manager automatically if you are using one, so
 		you might want to ignore this. */
 		virtual void update() = 0;
 
