@@ -84,7 +84,7 @@ public:
     }
 
     /** @brief  Detach a still attached stream from logger */
-    bool detatchStream(LogStream *pStream, unsigned int severity) {
+    bool detachStream(LogStream *pStream, unsigned int severity) {
         (void)pStream; (void)severity; //this avoids compiler warnings
         return false;
     }

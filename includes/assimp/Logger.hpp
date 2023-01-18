@@ -151,7 +151,7 @@ public:
      *    if the result is 0 the stream is detached from the Logger and
      *    the caller retakes the possession of the stream.
      *  @return true if the stream has been detached, false otherwise.*/
-    virtual bool detatchStream(LogStream *pStream,
+    virtual bool detachStream(LogStream *pStream,
         unsigned int severity = Debugging | Err | Warn | Info) = 0;
 
 protected:
