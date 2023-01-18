@@ -351,7 +351,7 @@ void compute_color_line_STDEV(
 		For a given starting vector, the power method can
 		generate all zeros!  So no starting with {1,1,1}
 		as I was doing!  This kind of error is still a
-		slight posibillity, but will be very rare.
+		slight possibility, but will be very rare.
 	*/
 	/*	use the covariance matrix directly
 		(1st iteration, don't use all 1.0 values!)	*/
