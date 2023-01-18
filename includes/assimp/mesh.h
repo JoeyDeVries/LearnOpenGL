@@ -337,7 +337,7 @@ enum aiPrimitiveType
  *
  *  You may think of an #aiAnimMesh as a `patch` for the host mesh, which
  *  replaces only certain vertex data streams at a particular time.
- *  Each mesh stores n attached attached meshes (#aiMesh::mAnimMeshes).
+ *  Each mesh stores n attached meshes (#aiMesh::mAnimMeshes).
  *  The actual relationship between the time line and anim meshes is
  *  established by #aiMeshAnim, which references singular mesh attachments
  *  by their ID and binds them to a time offset.
