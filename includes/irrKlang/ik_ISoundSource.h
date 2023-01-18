@@ -27,7 +27,7 @@ namespace irrklang
 
 		//! Sets the stream mode which should be used for a sound played from this source.
 		/** Note that if this is set to ESM_NO_STREAMING, the engine still might decide
-		to stream the sound if it is too big. The threashold for this can be 
+		to stream the sound if it is too big. The threshold for this can be 
 		adjusted using ISoundSource::setForcedStreamingThreshold(). */
 		virtual void setStreamMode(E_STREAM_MODE mode) = 0;
 
