@@ -128,7 +128,7 @@ namespace irrklang
 			return *this;
 		}
 
-		//! Sets the lenght of the vector to a new value
+		//! Sets the length of the vector to a new value
 		void setLength(T newlength)
 		{
 			normalize();

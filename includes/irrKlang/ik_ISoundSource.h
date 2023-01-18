@@ -15,7 +15,7 @@ namespace irrklang
 {
 
 	//! A sound source describes an input file (.ogg, .mp3, .wav or similar) and its default settings.
-	/** It provides some informations about the sound source like the play lenght and
+	/** It provides some informations about the sound source like the play length and
 	can have default settings for volume, distances for 3d etc. There is some example code on how
 	to use Sound sources at @ref soundSources.*/
 	class ISoundSource : public IVirtualRefCounted
@@ -38,9 +38,9 @@ namespace irrklang
 
 		//! Returns the play length of the sound in milliseconds.
 		/** Returns -1 if not known for this sound for example because its decoder
-		does not support lenght reporting or it is a file stream of unknown size.
+		does not support length reporting or it is a file stream of unknown size.
 		Note: If the sound never has been played before, the sound engine will have to open
-		the file and try to get the play lenght from there, so this call could take a bit depending
+		the file and try to get the play length from there, so this call could take a bit depending
 		on the type of file. */
 		virtual ik_u32 getPlayLength() = 0;
 
@@ -48,7 +48,7 @@ namespace irrklang
 		/** \return Returns the structure filled with 0 or negative values if not known for this sound for example because 
 		because the file could not be opened or similar.
 		Note: If the sound never has been played before, the sound engine will have to open
-		the file and try to get the play lenght from there, so this call could take a bit depending
+		the file and try to get the play length from there, so this call could take a bit depending
 		on the type of file. */
 		virtual SAudioStreamFormat getAudioFormat() = 0;
 
