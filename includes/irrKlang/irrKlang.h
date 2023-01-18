@@ -813,7 +813,7 @@
  * engine->play2D(strBuffer);
  * \endcode
  *
- * Of course, you can use any other unicode converion function for this. makeUTF8fromUTF16string() is only provided
+ * Of course, you can use any other unicode conversion function for this. makeUTF8fromUTF16string() is only provided
  * for convenience.
  * <br/>
  * <br/>
