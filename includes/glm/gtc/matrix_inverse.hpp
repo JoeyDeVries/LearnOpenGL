@@ -31,7 +31,7 @@ namespace glm
 	/// Fast matrix inverse for affine matrix.
 	///
 	/// @param m Input matrix to invert.
-	/// @tparam genType Squared floating-point matrix: half, float or double. Inverse of matrix based of half-qualifier floating point value is highly innacurate.
+	/// @tparam genType Squared floating-point matrix: half, float or double. Inverse of matrix based of half-qualifier floating point value is highly inaccurate.
 	/// @see gtc_matrix_inverse
 	template<typename genType>
 	GLM_FUNC_DECL genType affineInverse(genType const& m);
@@ -39,7 +39,7 @@ namespace glm
 	/// Compute the inverse transpose of a matrix.
 	///
 	/// @param m Input matrix to invert transpose.
-	/// @tparam genType Squared floating-point matrix: half, float or double. Inverse of matrix based of half-qualifier floating point value is highly innacurate.
+	/// @tparam genType Squared floating-point matrix: half, float or double. Inverse of matrix based of half-qualifier floating point value is highly inaccurate.
 	/// @see gtc_matrix_inverse
 	template<typename genType>
 	GLM_FUNC_DECL genType inverseTranspose(genType const& m);
