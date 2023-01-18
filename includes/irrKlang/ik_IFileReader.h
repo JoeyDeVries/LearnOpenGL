@@ -10,7 +10,7 @@
 namespace irrklang
 {
 
-	//! Interface providing read acess to a file.
+	//! Interface providing read access to a file.
 	class IFileReader : public virtual IRefCounted
 	{
 	public:
