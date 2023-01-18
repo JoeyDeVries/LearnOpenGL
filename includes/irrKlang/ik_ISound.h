@@ -26,7 +26,7 @@ namespace irrklang
 	public:
 
 		//! returns source of the sound which stores the filename and other informations about that sound
-		/** \return Returns the sound source poitner of this sound. May return 0 if the sound source
+		/** \return Returns the sound source pointer of this sound. May return 0 if the sound source
 		has been removed.*/
 		virtual ISoundSource* getSoundSource() = 0;
 
