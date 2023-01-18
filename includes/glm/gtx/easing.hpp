@@ -9,7 +9,7 @@
 ///
 /// Include <glm/gtx/easing.hpp> to use the features of this extension.
 ///
-/// Easing functions for animations and transitons
+/// Easing functions for animations and transitions
 /// All functions take a parameter x in the range [0.0,1.0]
 ///
 /// Based on the AHEasing project of Warren Moore (https://github.com/warrenm/AHEasing)
