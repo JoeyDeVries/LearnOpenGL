@@ -23,7 +23,7 @@
 /*
 	Takes a 4x4 block of pixels and compresses it into 8 bytes
 	in DXT1 format (color only, no alpha).  Speed is valued
-	over prettyness, at least for now.
+	over prettiness, at least for now.
 */
 void compress_DDS_color_block(
 				int channels,
@@ -32,7 +32,7 @@ void compress_DDS_color_block(
 /*
 	Takes a 4x4 block of pixels and compresses the alpha
 	component it into 8 bytes for use in DXT5 DDS files.
-	Speed is valued over prettyness, at least for now.
+	Speed is valued over prettiness, at least for now.
 */
 void compress_DDS_alpha_block(
 				const unsigned char *const uncompressed,
