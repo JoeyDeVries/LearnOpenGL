@@ -26,7 +26,7 @@ public:
 	//! sets the position of the audio stream.
 	/** For example to let the stream be read from the beginning of the file again, 
 	setPosition(0) would be called. This is usually done be the sound engine to
-	loop a stream after if has reached the end. Return true if sucessful and 0 if not. 
+	loop a stream after if has reached the end. Return true if successful and 0 if not. 
 	\param pos: Position in frames.*/
 	virtual bool setPosition(ik_s32 pos) = 0;
 

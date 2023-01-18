@@ -182,7 +182,7 @@ namespace irrklang
 		\param preload If this flag is set to false (which is default) the sound engine will
 		not try to load the sound file when calling this method, but only when play() is called
 		with this sound source as parameter. Otherwise the sound will be preloaded.
-		\return Returns the pointer to the added sound source or 0 if not sucessful because for
+		\return Returns the pointer to the added sound source or 0 if not successful because for
 		example a sound already existed with that name. If not successful, the reason will be printed
 		into the log. Note: Don't call drop() to this pointer, it will be managed by irrKlang and
 		exist as long as you don't delete irrKlang or call removeSoundSource(). However,
@@ -204,7 +204,7 @@ namespace irrklang
 		savely. If set to false, the memory is not copied and the user takes the responsibility that 
 		the memory block pointed to remains there as long as the sound engine or at least this sound
 		source exists.
-		\return Returns the pointer to the added sound source or 0 if not sucessful because for example a sound already
+		\return Returns the pointer to the added sound source or 0 if not successful because for example a sound already
 		existed with that name. If not successful, the reason will be printed into the log. 
 		Note: Don't call drop() to this pointer, it will be managed by irrKlang and exist as long as you don't 
 		delete irrKlang or call removeSoundSource(). However, you are free to call grab() if you
@@ -223,7 +223,7 @@ namespace irrklang
 		savely. If set to true, the memory is not copied and the user takes the responsibility that 
 		the memory block pointed to remains there as long as the sound engine or at least this sound
 		source exists. 
-		\return Returns the pointer to the added sound source or 0 if not sucessful because for
+		\return Returns the pointer to the added sound source or 0 if not successful because for
 		example a sound already existed with that name. If not successful, the reason will be printed
 		into the log. */
 		virtual ISoundSource* addSoundSourceFromPCMData(void* memory, ik_s32 sizeInBytes, 
@@ -237,7 +237,7 @@ namespace irrklang
 		source will use the baseSource as base to access the file and similar, but it will have its
 		own name and its own default settings.
 		\param soundName Name of the new sound source to be added.
-		\return Returns the pointer to the added sound source or 0 if not sucessful because for
+		\return Returns the pointer to the added sound source or 0 if not successful because for
 		example a sound already existed with that name. If not successful, the reason will be printed
 		into the log.*/
 		virtual ISoundSource* addSoundSourceAlias(ISoundSource* baseSource, const ik_c8* soundName) = 0;
@@ -390,7 +390,7 @@ namespace irrklang
 		if the parameter ESEO_LOAD_PLUGINS is set (which it is by default), but
 		using this method, it is possible to load plugins from a custom path in addition. 
 		\param path Path to the plugin directory, like "C:\games\somegamegame\irrklangplugins".
-		\return returns true if sucessful or false if not, for example because the path could 
+		\return returns true if successful or false if not, for example because the path could 
 		not be found. */
 		virtual bool loadPlugins(const ik_c8* path) = 0;
 
@@ -402,7 +402,7 @@ namespace irrklang
 		//! Sets the OutputMixedDataReceiver, so you can receive the pure mixed output audio data while it is being played.
 		/** This can be used to store the sound output as .wav file or for creating a Oscillograph or similar.
 		This works only with software based audio drivers, that is ESOD_WIN_MM, ESOD_ALSA, and ESOD_CORE_AUDIO. 
-		Returns true if sucessful and false if the current audio driver doesn't support this feature. Set this to null
+		Returns true if successful and false if the current audio driver doesn't support this feature. Set this to null
 		again once you don't need it anymore. */
 		virtual bool setMixedDataOutputReceiver(ISoundMixedOutputReceiver* receiver) = 0;
 	};

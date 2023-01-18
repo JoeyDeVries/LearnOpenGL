@@ -149,7 +149,7 @@ namespace irrklang
 		using DirectSound.
 		\param speed Factor of the speed increase or decrease. 2 is twice as fast, 
 		0.5 is only half as fast. The default is 1.0.
-		\return Returns true if sucessful, false if not. The current sound driver might not
+		\return Returns true if successful, false if not. The current sound driver might not
 		support changing the playBack speed, or the sound was started with the 
 		'enableSoundEffects' parameter. */
 		virtual bool setPlaybackSpeed(ik_f32 speed = 1.0f) = 0;
