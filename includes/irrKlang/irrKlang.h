@@ -497,7 +497,7 @@
  * Gargle, 3DL2Reverb, ParamEq and WavesReverb, when using the sound driver 
  * irrklang::ESOD_DIRECT_SOUND_8, which selected by default when using Windows.<br/>
  *
- * Using the irrklang::ISound interface, you can optain the irrklang::ISoundEffectControl
+ * Using the irrklang::ISound interface, you can obtain the irrklang::ISoundEffectControl
  * interface if the sound device supports sound effects and the last parameter ('enableSoundEffects')
  * was set to true when calling play2D():
  *
