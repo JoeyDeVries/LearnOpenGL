@@ -2,14 +2,14 @@
 /// @file glm/gtx/quaternion.hpp
 ///
 /// @see core (dependence)
-/// @see gtx_extented_min_max (dependence)
+/// @see gtx_extended_min_max (dependence)
 ///
 /// @defgroup gtx_quaternion GLM_GTX_quaternion
 /// @ingroup gtx
 ///
 /// Include <glm/gtx/quaternion.hpp> to use the features of this extension.
 ///
-/// Extented quaternion types and functions
+/// Extended quaternion types and functions
 
 #pragma once
 

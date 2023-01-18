@@ -2,7 +2,7 @@
 /// @file glm/gtx/associated_min_max.hpp
 ///
 /// @see core (dependence)
-/// @see gtx_extented_min_max (dependence)
+/// @see gtx_extended_min_max (dependence)
 ///
 /// @defgroup gtx_associated_min_max GLM_GTX_associated_min_max
 /// @ingroup gtx

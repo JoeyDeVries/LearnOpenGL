@@ -2,7 +2,7 @@
 /// @file glm/gtx/std_based_type.hpp
 ///
 /// @see core (dependence)
-/// @see gtx_extented_min_max (dependence)
+/// @see gtx_extended_min_max (dependence)
 ///
 /// @defgroup gtx_std_based_type GLM_GTX_std_based_type
 /// @ingroup gtx
