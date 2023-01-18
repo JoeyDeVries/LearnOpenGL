@@ -311,7 +311,7 @@ namespace irrklang
 		virtual void registerAudioStreamLoader(IAudioStreamLoader* loader) = 0;
 
 		//! Returns if irrKlang is running in the same thread as the application or is using multithreading.
-		/** This basicly returns the flag set by the user when creating the sound engine.*/
+		/** This basically returns the flag set by the user when creating the sound engine.*/
 		virtual bool isMultiThreaded() const = 0;
 
 		//! Adds a file factory to the sound engine, making it possible to override file access of the sound engine.
