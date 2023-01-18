@@ -39,7 +39,7 @@ namespace glm
 			q[i] = in[i];
 
 			//j = [0,i[
-			// Make that column orthogonal to all the previous ones by substracting to it the non-orthogonal projection of all the previous columns.
+			// Make that column orthogonal to all the previous ones by subtracting to it the non-orthogonal projection of all the previous columns.
 			// Also: Fill the zero elements of R
 			for (length_t j = 0; j < i; j++)
 			{
