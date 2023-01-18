@@ -117,13 +117,13 @@ namespace glm
 		if (position.y < typename genType::value_type(0) || position.y > typename genType::value_type(1))
 			return false;
 
-		genType Cotengant = cross(Tengant, edge1);
+		genType Cotangent = cross(Tengant, edge1);
 
-		position.z = dot(dir, Cotengant) * inv_det;
+		position.z = dot(dir, Cotangent) * inv_det;
 		if (position.z < typename genType::value_type(0) || position.y + position.z > typename genType::value_type(1))
 			return false;
 
-		position.x = dot(edge2, Cotengant) * inv_det;
+		position.x = dot(edge2, Cotangent) * inv_det;
 
 		return true;
 	}
