@@ -166,7 +166,7 @@ namespace irrklang
 		virtual ik_u32 getPlayLength() = 0;
 
 		//! Returns the sound effect control interface for this sound.
-		/** Sound effects such as Chorus, Distorsions, Echo, Reverb and similar can
+		/** Sound effects such as Chorus, Distortions, Echo, Reverb and similar can
 		be controlled using this. The interface pointer is only valid as long as the ISound pointer is valid.
 		If the ISound pointer gets dropped (IVirtualRefCounted::drop()), the ISoundEffects
 		may not be used any more. 

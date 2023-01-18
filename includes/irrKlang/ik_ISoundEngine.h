@@ -45,7 +45,7 @@ namespace irrklang
 		 \param streamMode Specifies if the file should be streamed or loaded completely into memory for playing.
 		 ESM_AUTO_DETECT sets this to autodetection. Note: if the sound has been loaded or played before into the
 		 engine, this parameter has no effect.
-		 \param enableSoundEffects Makes it possible to use sound effects such as chorus, distorsions, echo, 
+		 \param enableSoundEffects Makes it possible to use sound effects such as chorus, distortions, echo, 
 		 reverb and similar for this sound. Sound effects can then be controlled via ISound::getSoundEffectControl().
 		 Only enable if necessary. 
 		 \return Only returns a pointer to an ISound if the parameters 'track', 'startPaused' or 
@@ -73,7 +73,7 @@ namespace irrklang
 		 Note: You need to call ISound::drop() when setting this parameter to true and you don't need the ISound
 		 object anymore. See 'return' for details.
 		 \param track Makes it possible to track the sound. Causes the method to return an ISound interface. See 'return' for details.
-		 \param enableSoundEffects Makes it possible to use sound effects such as chorus, distorsions, echo, 
+		 \param enableSoundEffects Makes it possible to use sound effects such as chorus, distortions, echo, 
 		 reverb and similar for this sound. Sound effects can then be controlled via ISound::getSoundEffectControl().
 		 Only enable if necessary. 
 		 \return Only returns a pointer to an ISound if the parameters 'track', 'startPaused' or 
@@ -102,7 +102,7 @@ namespace irrklang
  		 \param streamMode Specifies if the file should be streamed or loaded completely into memory for playing.
 		 ESM_AUTO_DETECT sets this to autodetection. Note: if the sound has been loaded or played before into the
 		 engine, this parameter has no effect.
-		 \param enableSoundEffects Makes it possible to use sound effects such as chorus, distorsions, echo, 
+		 \param enableSoundEffects Makes it possible to use sound effects such as chorus, distortions, echo, 
 		 reverb and similar for this sound. Sound effects can then be controlled via ISound::getSoundEffectControl().
 		 Only enable if necessary. 
 		 \return Only returns a pointer to an ISound if the parameters 'track', 'startPaused' or 
@@ -131,7 +131,7 @@ namespace irrklang
 		 Note: You need to call ISound::drop() when setting this parameter to true and you don't need the ISound
 		 object anymore. See 'return' for details.
 		 \param track Makes it possible to track the sound. Causes the method to return an ISound interface. See 'return' for details.
-		 \param enableSoundEffects Makes it possible to use sound effects such as chorus, distorsions, echo, 
+		 \param enableSoundEffects Makes it possible to use sound effects such as chorus, distortions, echo, 
 		 reverb and similar for this sound. Sound effects can then be controlled via ISound::getSoundEffectControl().
 		 Only enable if necessary. 
 		 \return Only returns a pointer to an ISound if the parameters 'track', 'startPaused' or 
