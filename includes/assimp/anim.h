@@ -144,7 +144,7 @@ struct aiMeshKey
     double mTime;
 
     /** Index into the aiMesh::mAnimMeshes array of the
-     *  mesh coresponding to the #aiMeshAnim hosting this
+     *  mesh corresponding to the #aiMeshAnim hosting this
      *  key frame. The referenced anim mesh is evaluated
      *  according to the rules defined in the docs for #aiAnimMesh.*/
     unsigned int mValue;
