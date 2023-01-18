@@ -532,7 +532,7 @@
  * It is possible to let irrKlang use your own file access functions.
  * This is useful if you want to read sounds from other sources than
  * just files, for example from custom internet streams or 
- * an own encypted archive format. There is an example in the SDK in 
+ * an own encrypted archive format. There is an example in the SDK in 
  * examples/04.OverrideFileAccess which shows this as well.<br/>
  *
  * The only thing to do for this is to implement your own  irrklang::IFileFactory,
