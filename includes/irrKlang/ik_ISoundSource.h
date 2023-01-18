@@ -111,7 +111,7 @@ namespace irrklang
 		the default max distance of the sound engine to take effect. */
 		virtual void setDefaultMaxDistance(ik_f32 maxDistance) = 0;
 
-		//! returns the default maxmial distance for 3D sounds played from this source.
+		//! returns the default maximal distance for 3D sounds played from this source.
 		/** This value influences how loud a sound is heard based on its distance.
 		Changing this value is usually not necessary. Use setDefaultMinDistance() instead.
 		Don't change this value if you don't know what you are doing: This value causes the sound
