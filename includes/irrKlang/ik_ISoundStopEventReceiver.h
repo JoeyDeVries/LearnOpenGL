@@ -32,7 +32,7 @@ enum E_STOP_EVENT_CAUSE
 };
 
 
-//! Interface to be implemented by the user, which recieves sound stop events.
+//! Interface to be implemented by the user, which receives sound stop events.
 /** The interface has only one method to be implemented by the user: OnSoundStopped().
 Implement this interface and set it via ISound::setSoundStopEventReceiver().
 The sound stop event is guaranteed to be called when a sound or sound stream is finished,
