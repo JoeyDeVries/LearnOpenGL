@@ -149,7 +149,7 @@ ASSIMP_API void aiFreeScene(const C_STRUCT aiScene* pIn);
 *   triangulate data so they would run the step anyway.
 *
 *   If assimp detects that the input scene was directly taken from the importer side of
-*   the library (i.e. not copied using aiCopyScene and potetially modified afterwards),
+*   the library (i.e. not copied using aiCopyScene and potentially modified afterwards),
 *   any postprocessing steps already applied to the scene will not be applied again, unless
 *   they show non-idempotent behaviour (#aiProcess_MakeLeftHanded, #aiProcess_FlipUVs and
 *   #aiProcess_FlipWindingOrder).
