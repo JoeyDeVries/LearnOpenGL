@@ -16,7 +16,7 @@ Note that CodeBlocks or other IDEs may have issues running the programs due to p
 
     `export LOGL_ROOT_PATH=/home/user/tutorials/LearnOpenGL`
 
-Running `ls $LOGL_ROOT_PATH` should list, among other things, this README file and the resources direcory.
+Running `ls $LOGL_ROOT_PATH` should list, among other things, this README file and the resources directory.
 
 ## Mac OS X building
 Building on Mac OS X is fairly simple:
