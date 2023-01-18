@@ -604,7 +604,7 @@ struct aiMesh
 
     /** NOT CURRENTLY IN USE. Attachment meshes for this mesh, for vertex-based animation.
      *  Attachment meshes carry replacement data for some of the
-     *  mesh'es vertex components (usually positions, normals). */
+     *  mesh's vertex components (usually positions, normals). */
     C_STRUCT aiAnimMesh** mAnimMeshes;
 
 
