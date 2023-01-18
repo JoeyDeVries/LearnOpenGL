@@ -191,7 +191,7 @@ set(GUEST_ARTICLES
 configure_file(configuration/root_directory.h.in configuration/root_directory.h)
 include_directories(${CMAKE_BINARY_DIR}/configuration)
 
-# first create relevant static libraries requried for other projects
+# first create relevant static libraries required for other projects
 add_library(STB_IMAGE "src/stb_image.cpp")
 set(LIBS ${LIBS} STB_IMAGE)
 
