@@ -83,7 +83,7 @@ namespace irrklang
 			return X*other.X + Y*other.Y + Z*other.Z;
 		}
 
-		//! Returns distance from an other point.
+		//! Returns distance from another point.
 		/** Here, the vector is interpreted as point in 3 dimensional space. */
 		ik_f64 getDistanceFrom(const vec3d<T>& other) const
 		{
@@ -91,7 +91,7 @@ namespace irrklang
 			return sqrt(vx*vx + vy*vy + vz*vz);
 		}
 
-		//! Returns squared distance from an other point.
+		//! Returns squared distance from another point.
 		/** Here, the vector is interpreted as point in 3 dimensional space. */
 		ik_f32 getDistanceFromSQ(const vec3d<T>& other) const
 		{
