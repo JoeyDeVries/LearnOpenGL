@@ -287,7 +287,7 @@ enum aiPostProcessSteps
      * their work if two meshes have different materials. Because several
      * material settings are lost during Assimp's import filters,
      * (and because many exporters don't check for redundant materials), huge
-     * models often have materials which are are defined several times with
+     * models often have materials which are defined several times with
      * exactly the same settings.
      *
      * Several material settings not contributing to the final appearance of
