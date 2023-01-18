@@ -425,7 +425,7 @@ namespace irrklang
 		void* pALSA_SND_PCM;
 
 		//! AudioDeviceID handle, this is not null when using the ESOD_CORE_AUDIO audio driver
-		ik_u32 pCoreAudioDeciceID;
+		ik_u32 pCoreAudioDeviceID;
 	};
 
 
