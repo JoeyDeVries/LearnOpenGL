@@ -212,7 +212,7 @@ namespace glm
 		T left, T right, T bottom, T top, T near, T far);
 
 
-	/// Creates a matrix for a right handed, symetric perspective-view frustum.
+	/// Creates a matrix for a right handed, symmetric perspective-view frustum.
 	/// The near and far clip planes correspond to z normalized device coordinates of 0 and +1 respectively. (Direct3D clip volume definition)
 	///
 	/// @param fovy Specifies the field of view angle, in degrees, in the y direction. Expressed in radians.
@@ -225,7 +225,7 @@ namespace glm
 	GLM_FUNC_DECL mat<4, 4, T, defaultp> perspectiveRH_ZO(
 		T fovy, T aspect, T near, T far);
 
-	/// Creates a matrix for a right handed, symetric perspective-view frustum.
+	/// Creates a matrix for a right handed, symmetric perspective-view frustum.
 	/// The near and far clip planes correspond to z normalized device coordinates of -1 and +1 respectively. (OpenGL clip volume definition)
 	///
 	/// @param fovy Specifies the field of view angle, in degrees, in the y direction. Expressed in radians.
@@ -238,7 +238,7 @@ namespace glm
 	GLM_FUNC_DECL mat<4, 4, T, defaultp> perspectiveRH_NO(
 		T fovy, T aspect, T near, T far);
 
-	/// Creates a matrix for a left handed, symetric perspective-view frustum.
+	/// Creates a matrix for a left handed, symmetric perspective-view frustum.
 	/// The near and far clip planes correspond to z normalized device coordinates of 0 and +1 respectively. (Direct3D clip volume definition)
 	///
 	/// @param fovy Specifies the field of view angle, in degrees, in the y direction. Expressed in radians.
@@ -251,7 +251,7 @@ namespace glm
 	GLM_FUNC_DECL mat<4, 4, T, defaultp> perspectiveLH_ZO(
 		T fovy, T aspect, T near, T far);
 
-	/// Creates a matrix for a left handed, symetric perspective-view frustum.
+	/// Creates a matrix for a left handed, symmetric perspective-view frustum.
 	/// The near and far clip planes correspond to z normalized device coordinates of -1 and +1 respectively. (OpenGL clip volume definition)
 	///
 	/// @param fovy Specifies the field of view angle, in degrees, in the y direction. Expressed in radians.
@@ -264,7 +264,7 @@ namespace glm
 	GLM_FUNC_DECL mat<4, 4, T, defaultp> perspectiveLH_NO(
 		T fovy, T aspect, T near, T far);
 
-	/// Creates a matrix for a symetric perspective-view frustum using left-handed coordinates if GLM_FORCE_LEFT_HANDED if defined or right-handed coordinates otherwise.
+	/// Creates a matrix for a symmetric perspective-view frustum using left-handed coordinates if GLM_FORCE_LEFT_HANDED if defined or right-handed coordinates otherwise.
 	/// The near and far clip planes correspond to z normalized device coordinates of 0 and +1 respectively. (Direct3D clip volume definition)
 	///
 	/// @param fovy Specifies the field of view angle, in degrees, in the y direction. Expressed in radians.
@@ -277,7 +277,7 @@ namespace glm
 	GLM_FUNC_DECL mat<4, 4, T, defaultp> perspectiveZO(
 		T fovy, T aspect, T near, T far);
 
-	/// Creates a matrix for a symetric perspective-view frustum using left-handed coordinates if GLM_FORCE_LEFT_HANDED if defined or right-handed coordinates otherwise.
+	/// Creates a matrix for a symmetric perspective-view frustum using left-handed coordinates if GLM_FORCE_LEFT_HANDED if defined or right-handed coordinates otherwise.
 	/// The near and far clip planes correspond to z normalized device coordinates of -1 and +1 respectively. (OpenGL clip volume definition)
 	///
 	/// @param fovy Specifies the field of view angle, in degrees, in the y direction. Expressed in radians.
@@ -290,7 +290,7 @@ namespace glm
 	GLM_FUNC_DECL mat<4, 4, T, defaultp> perspectiveNO(
 		T fovy, T aspect, T near, T far);
 
-	/// Creates a matrix for a right handed, symetric perspective-view frustum.
+	/// Creates a matrix for a right handed, symmetric perspective-view frustum.
 	/// If GLM_FORCE_DEPTH_ZERO_TO_ONE is defined, the near and far clip planes correspond to z normalized device coordinates of 0 and +1 respectively. (Direct3D clip volume definition)
 	/// Otherwise, the near and far clip planes correspond to z normalized device coordinates of -1 and +1 respectively. (OpenGL clip volume definition)
 	///
@@ -304,7 +304,7 @@ namespace glm
 	GLM_FUNC_DECL mat<4, 4, T, defaultp> perspectiveRH(
 		T fovy, T aspect, T near, T far);
 
-	/// Creates a matrix for a left handed, symetric perspective-view frustum.
+	/// Creates a matrix for a left handed, symmetric perspective-view frustum.
 	/// If GLM_FORCE_DEPTH_ZERO_TO_ONE is defined, the near and far clip planes correspond to z normalized device coordinates of 0 and +1 respectively. (Direct3D clip volume definition)
 	/// Otherwise, the near and far clip planes correspond to z normalized device coordinates of -1 and +1 respectively. (OpenGL clip volume definition)
 	///
@@ -318,7 +318,7 @@ namespace glm
 	GLM_FUNC_DECL mat<4, 4, T, defaultp> perspectiveLH(
 		T fovy, T aspect, T near, T far);
 
-	/// Creates a matrix for a symetric perspective-view frustum based on the default handedness and default near and far clip planes definition.
+	/// Creates a matrix for a symmetric perspective-view frustum based on the default handedness and default near and far clip planes definition.
 	/// To change default handedness use GLM_FORCE_LEFT_HANDED. To change default near and far clip planes definition use GLM_FORCE_DEPTH_ZERO_TO_ONE.
 	///
 	/// @param fovy Specifies the field of view angle in the y direction. Expressed in radians.
