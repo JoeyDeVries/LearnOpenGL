@@ -339,7 +339,7 @@
  * \endcode
  * 
  * There is also the possibility to change the maxDistance, but it is only necessary to change this
- * in very rare cicumstances.
+ * in very rare circumstances.
  * If the sound moves, it is also a good idea to update its position from time to time:
  * 
  * \code
