@@ -185,7 +185,7 @@ namespace irrklang
 		should be as long valid as the sound exists or another stop event receiver is set.
 		Set this to null to set no sound stop event receiver.
 		\param userData: A iser data pointer, can be null. */
-		virtual void setSoundStopEventReceiver(ISoundStopEventReceiver* reciever, void* userData=0) = 0;
+		virtual void setSoundStopEventReceiver(ISoundStopEventReceiver* receiver, void* userData=0) = 0;
 	};
 
 } // end namespace irrklang
