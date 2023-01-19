@@ -122,19 +122,19 @@ public:
 	}
 };
 
-struct Plan
+struct Plane
 {
 	glm::vec3 normal = { 0.f, 1.f, 0.f }; // unit vector
 	float     distance = 0.f;        // Distance with origin
 
-	Plan() = default;
+	Plane() = default;
 
-	Plan(const glm::vec3& p1, const glm::vec3& norm)
+	Plane(const glm::vec3& p1, const glm::vec3& norm)
 		: normal(glm::normalize(norm)),
 		distance(glm::dot(normal, p1))
 	{}
 
-	float getSignedDistanceToPlan(const glm::vec3& point) const
+	float getSignedDistanceToPlane(const glm::vec3& point) const
 	{
 		return glm::dot(normal, point) - distance;
 	}
@@ -142,30 +142,30 @@ struct Plan
 
 struct Frustum
 {
-	Plan topFace;
-	Plan bottomFace;
+	Plane topFace;
+	Plane bottomFace;
 
-	Plan rightFace;
-	Plan leftFace;
+	Plane rightFace;
+	Plane leftFace;
 
-	Plan farFace;
-	Plan nearFace;
+	Plane farFace;
+	Plane nearFace;
 };
 
 struct BoundingVolume
 {
 	virtual bool isOnFrustum(const Frustum& camFrustum, const Transform& transform) const = 0;
 
-	virtual bool isOnOrForwardPlan(const Plan& plan) const = 0;
+	virtual bool isOnOrForwardPlane(const Plane& plane) const = 0;
 
 	bool isOnFrustum(const Frustum& camFrustum) const
 	{
-		return (isOnOrForwardPlan(camFrustum.leftFace) &&
-			isOnOrForwardPlan(camFrustum.rightFace) &&
-			isOnOrForwardPlan(camFrustum.topFace) &&
-			isOnOrForwardPlan(camFrustum.bottomFace) &&
-			isOnOrForwardPlan(camFrustum.nearFace) &&
-			isOnOrForwardPlan(camFrustum.farFace));
+		return (isOnOrForwardPlane(camFrustum.leftFace) &&
+			isOnOrForwardPlane(camFrustum.rightFace) &&
+			isOnOrForwardPlane(camFrustum.topFace) &&
+			isOnOrForwardPlane(camFrustum.bottomFace) &&
+			isOnOrForwardPlane(camFrustum.nearFace) &&
+			isOnOrForwardPlane(camFrustum.farFace));
 	};
 };
 
@@ -178,9 +178,9 @@ struct Sphere : public BoundingVolume
 		: BoundingVolume{}, center{ inCenter }, radius{ inRadius }
 	{}
 
-	bool isOnOrForwardPlan(const Plan& plan) const final
+	bool isOnOrForwardPlane(const Plane& plane) const final
 	{
-		return plan.getSignedDistanceToPlan(center) > -radius;
+		return plane.getSignedDistanceToPlane(center) > -radius;
 	}
 
 	bool isOnFrustum(const Frustum& camFrustum, const Transform& transform) const final
@@ -198,12 +198,12 @@ struct Sphere : public BoundingVolume
 		Sphere globalSphere(globalCenter, radius * (maxScale * 0.5f));
 
 		//Check Firstly the result that have the most chance to faillure to avoid to call all functions.
-		return (globalSphere.isOnOrForwardPlan(camFrustum.leftFace) &&
-			globalSphere.isOnOrForwardPlan(camFrustum.rightFace) &&
-			globalSphere.isOnOrForwardPlan(camFrustum.farFace) &&
-			globalSphere.isOnOrForwardPlan(camFrustum.nearFace) &&
-			globalSphere.isOnOrForwardPlan(camFrustum.topFace) &&
-			globalSphere.isOnOrForwardPlan(camFrustum.bottomFace));
+		return (globalSphere.isOnOrForwardPlane(camFrustum.leftFace) &&
+			globalSphere.isOnOrForwardPlane(camFrustum.rightFace) &&
+			globalSphere.isOnOrForwardPlane(camFrustum.farFace) &&
+			globalSphere.isOnOrForwardPlane(camFrustum.nearFace) &&
+			globalSphere.isOnOrForwardPlane(camFrustum.topFace) &&
+			globalSphere.isOnOrForwardPlane(camFrustum.bottomFace));
 	};
 };
 
@@ -216,11 +216,11 @@ struct SquareAABB : public BoundingVolume
 		: BoundingVolume{}, center{ inCenter }, extent{ inExtent }
 	{}
 
-	bool isOnOrForwardPlan(const Plan& plan) const final
+	bool isOnOrForwardPlane(const Plane& plane) const final
 	{
 		// Compute the projection interval radius of b onto L(t) = b.c + t * p.n
-		const float r = extent * (std::abs(plan.normal.x) + std::abs(plan.normal.y) + std::abs(plan.normal.z));
-		return -r <= plan.getSignedDistanceToPlan(center);
+		const float r = extent * (std::abs(plane.normal.x) + std::abs(plane.normal.y) + std::abs(plane.normal.z));
+		return -r <= plane.getSignedDistanceToPlane(center);
 	}
 
 	bool isOnFrustum(const Frustum& camFrustum, const Transform& transform) const final
@@ -247,12 +247,12 @@ struct SquareAABB : public BoundingVolume
 
 		const SquareAABB globalAABB(globalCenter, std::max(std::max(newIi, newIj), newIk));
 
-		return (globalAABB.isOnOrForwardPlan(camFrustum.leftFace) &&
-			globalAABB.isOnOrForwardPlan(camFrustum.rightFace) &&
-			globalAABB.isOnOrForwardPlan(camFrustum.topFace) &&
-			globalAABB.isOnOrForwardPlan(camFrustum.bottomFace) &&
-			globalAABB.isOnOrForwardPlan(camFrustum.nearFace) &&
-			globalAABB.isOnOrForwardPlan(camFrustum.farFace));
+		return (globalAABB.isOnOrForwardPlane(camFrustum.leftFace) &&
+			globalAABB.isOnOrForwardPlane(camFrustum.rightFace) &&
+			globalAABB.isOnOrForwardPlane(camFrustum.topFace) &&
+			globalAABB.isOnOrForwardPlane(camFrustum.bottomFace) &&
+			globalAABB.isOnOrForwardPlane(camFrustum.nearFace) &&
+			globalAABB.isOnOrForwardPlane(camFrustum.farFace));
 	};
 };
 
@@ -283,14 +283,14 @@ struct AABB : public BoundingVolume
 		return vertice;
 	}
 
-	//see https://gdbooks.gitbooks.io/3dcollisions/content/Chapter2/static_aabb_plan.html
-	bool isOnOrForwardPlan(const Plan& plan) const final
+	//see https://gdbooks.gitbooks.io/3dcollisions/content/Chapter2/static_aabb_plane.html
+	bool isOnOrForwardPlane(const Plane& plane) const final
 	{
 		// Compute the projection interval radius of b onto L(t) = b.c + t * p.n
-		const float r = extents.x * std::abs(plan.normal.x) + extents.y * std::abs(plan.normal.y) +
-			extents.z * std::abs(plan.normal.z);
+		const float r = extents.x * std::abs(plane.normal.x) + extents.y * std::abs(plane.normal.y) +
+			extents.z * std::abs(plane.normal.z);
 
-		return -r <= plan.getSignedDistanceToPlan(center);
+		return -r <= plane.getSignedDistanceToPlane(center);
 	}
 
 	bool isOnFrustum(const Frustum& camFrustum, const Transform& transform) const final
@@ -317,12 +317,12 @@ struct AABB : public BoundingVolume
 
 		const AABB globalAABB(globalCenter, newIi, newIj, newIk);
 
-		return (globalAABB.isOnOrForwardPlan(camFrustum.leftFace) &&
-			globalAABB.isOnOrForwardPlan(camFrustum.rightFace) &&
-			globalAABB.isOnOrForwardPlan(camFrustum.topFace) &&
-			globalAABB.isOnOrForwardPlan(camFrustum.bottomFace) &&
-			globalAABB.isOnOrForwardPlan(camFrustum.nearFace) &&
-			globalAABB.isOnOrForwardPlan(camFrustum.farFace));
+		return (globalAABB.isOnOrForwardPlane(camFrustum.leftFace) &&
+			globalAABB.isOnOrForwardPlane(camFrustum.rightFace) &&
+			globalAABB.isOnOrForwardPlane(camFrustum.topFace) &&
+			globalAABB.isOnOrForwardPlane(camFrustum.bottomFace) &&
+			globalAABB.isOnOrForwardPlane(camFrustum.nearFace) &&
+			globalAABB.isOnOrForwardPlane(camFrustum.farFace));
 	};
 };
 
@@ -335,11 +335,10 @@ Frustum createFrustumFromCamera(const Camera& cam, float aspect, float fovY, flo
 
 	frustum.nearFace = { cam.Position + zNear * cam.Front, cam.Front };
 	frustum.farFace = { cam.Position + frontMultFar, -cam.Front };
-	frustum.rightFace = { cam.Position, glm::cross(cam.Up, frontMultFar + cam.Right * halfHSide) };
-	frustum.leftFace = { cam.Position, glm::cross(frontMultFar - cam.Right * halfHSide, cam.Up) };
+	frustum.rightFace = { cam.Position, glm::cross(frontMultFar - cam.Right * halfHSide, cam.Up) };
+	frustum.leftFace = { cam.Position, glm::cross(cam.Up, frontMultFar + cam.Right * halfHSide) };
 	frustum.topFace = { cam.Position, glm::cross(cam.Right, frontMultFar - cam.Up * halfVSide) };
 	frustum.bottomFace = { cam.Position, glm::cross(frontMultFar + cam.Up * halfVSide, cam.Right) };
-
 	return frustum;
 }
 
