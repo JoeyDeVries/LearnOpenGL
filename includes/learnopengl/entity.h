@@ -38,11 +38,13 @@ public:
 	void computeModelMatrix()
 	{
 		m_modelMatrix = getLocalModelMatrix();
+		m_isDirty = false;
 	}
 
 	void computeModelMatrix(const glm::mat4& parentGlobalModelMatrix)
 	{
 		m_modelMatrix = parentGlobalModelMatrix * getLocalModelMatrix();
+		m_isDirty = false;
 	}
 
 	void setLocalPosition(const glm::vec3& newPosition)
@@ -439,10 +441,15 @@ public:
 	//Update transform if it was changed
 	void updateSelfAndChild()
 	{
-		if (!transform.isDirty())
+		if (transform.isDirty()) {
+			forceUpdateSelfAndChild();
 			return;
-
-		forceUpdateSelfAndChild();
+		}
+			
+		for (auto&& child : children)
+		{
+			child->updateSelfAndChild();
+		}
 	}
 
 	//Force update of transform even if local space don't change
