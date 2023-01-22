@@ -150,7 +150,7 @@ namespace glm
 		template<typename FTy, typename CTy, typename CTr>
 		std::basic_ios<CTy,CTr>& formatted(std::basic_ios<CTy,CTr>&);
 		template<typename FTy, typename CTy, typename CTr>
-		std::basic_ios<CTy,CTr>& unformattet(std::basic_ios<CTy,CTr>&);
+		std::basic_ios<CTy,CTr>& unformatted(std::basic_ios<CTy,CTr>&);
 
 		template<typename CTy, typename CTr>
 		std::basic_ostream<CTy, CTr>& operator<<(std::basic_ostream<CTy, CTr>&, precision const&);
