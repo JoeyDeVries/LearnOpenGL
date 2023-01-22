@@ -784,7 +784,7 @@ enum aiComponent
  *
  * Assimp provides full conversion of LightWave's envelope system, including
  * pre and post conditions. The loader computes linearly subsampled animation
- * chanels with the frame rate given in the LWS file. This property defines
+ * channels with the frame rate given in the LWS file. This property defines
  * the start time. Note: animation channels are only generated if a node
  * has at least one envelope with more tan one key assigned. This property.
  * is given in frames, '0' is the first frame. By default, if this property
