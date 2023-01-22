@@ -118,7 +118,7 @@
  *	<ul>
  *       <li>ALSA</li>
  *	</ul>
- *  <li>MacOSX (x86 and PPC)</li>
+ *  <li>Mac OS X (x86 and PPC)</li>
  *	<ul>
  *       <li>CoreAudio</li>
  *	</ul>
