@@ -3,7 +3,7 @@
 ///
 /// @see core (dependence)
 ///
-/// @defgroup gtx_mixed_product GLM_GTX_mixed_producte
+/// @defgroup gtx_mixed_product GLM_GTX_mixed_product
 /// @ingroup gtx
 ///
 /// Include <glm/gtx/mixed_product.hpp> to use the features of this extension.
