@@ -55,7 +55,7 @@ public:
 	the user thread is calling ISoundEngine::update().
 	\param sound: Sound which has been stopped. 
 	\param reason: The reason why the sound stop event was fired. Usually, this will be ESEC_SOUND_FINISHED_PLAYING.
-	When the sound was aborded by calling ISound::stop() or ISoundEngine::stopAllSounds();, this would be 
+	When the sound was aborted by calling ISound::stop() or ISoundEngine::stopAllSounds();, this would be 
 	ESEC_SOUND_STOPPED_BY_USER. If irrKlang was deleted or the sound source was removed, the value is 
 	ESEC_SOUND_STOPPED_BY_SOURCE_REMOVAL.
 	\param userData: userData pointer set by the user when registering the interface
