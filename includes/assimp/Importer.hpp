@@ -557,7 +557,7 @@ public:
     inline void GetExtensionList(std::string& szOut) const;
 
     // -------------------------------------------------------------------
-    /** Get the number of importrs currently registered with Assimp. */
+    /** Get the number of imports currently registered with Assimp. */
     size_t GetImporterCount() const;
 
     // -------------------------------------------------------------------
