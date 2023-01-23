@@ -32,7 +32,7 @@ enum E_STOP_EVENT_CAUSE
 };
 
 
-//! Interface to be implemented by the user, which recieves sound stop events.
+//! Interface to be implemented by the user, which receives sound stop events.
 /** The interface has only one method to be implemented by the user: OnSoundStopped().
 Implement this interface and set it via ISound::setSoundStopEventReceiver().
 The sound stop event is guaranteed to be called when a sound or sound stream is finished,
@@ -55,7 +55,7 @@ public:
 	the user thread is calling ISoundEngine::update().
 	\param sound: Sound which has been stopped. 
 	\param reason: The reason why the sound stop event was fired. Usually, this will be ESEC_SOUND_FINISHED_PLAYING.
-	When the sound was aborded by calling ISound::stop() or ISoundEngine::stopAllSounds();, this would be 
+	When the sound was aborted by calling ISound::stop() or ISoundEngine::stopAllSounds();, this would be 
 	ESEC_SOUND_STOPPED_BY_USER. If irrKlang was deleted or the sound source was removed, the value is 
 	ESEC_SOUND_STOPPED_BY_SOURCE_REMOVAL.
 	\param userData: userData pointer set by the user when registering the interface

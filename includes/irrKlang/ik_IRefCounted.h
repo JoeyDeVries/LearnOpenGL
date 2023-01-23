@@ -19,7 +19,7 @@ namespace irrklang
 	to call drop(). This will destroy the object, if grab() was not called
 	in another part of you program, because this part still needs the object.
 	Note, that you only don't need to call drop() for all objects you receive, it
-	will be explicitely noted in the documentation.
+	will be explicitly noted in the documentation.
 
 	A simple example:
 
@@ -66,7 +66,7 @@ namespace irrklang
 		//! to call drop(). This will destroy the object, if grab() was not called
 		//! in another part of you program, because this part still needs the object.
 		//! Note, that you only don't need to call drop() for all objects you receive, it
-		//! will be explicitely noted in the documentation.
+		//! will be explicitly noted in the documentation.
 		//! 
 		//! A simple example:
 		//! 
@@ -84,7 +84,7 @@ namespace irrklang
 		//! to call drop(). This will destroy the object, if grab() was not called
 		//! in another part of you program, because this part still needs the object.
 		//! Note, that you only don't need to call drop() for all objects you receive, it
-		//! will be explicitely noted in the documentation.
+		//! will be explicitly noted in the documentation.
 		//! 
 		//! A simple example:
 		//! 

@@ -32,7 +32,7 @@ public:
 		m_TicksPerSecond = animation->mTicksPerSecond;
 		aiMatrix4x4 globalTransformation = scene->mRootNode->mTransformation;
 		globalTransformation = globalTransformation.Inverse();
-		ReadHeirarchyData(m_RootNode, scene->mRootNode);
+		ReadHierarchyData(m_RootNode, scene->mRootNode);
 		ReadMissingBones(animation, *model);
 	}
 
@@ -87,7 +87,7 @@ private:
 		m_BoneInfoMap = boneInfoMap;
 	}
 
-	void ReadHeirarchyData(AssimpNodeData& dest, const aiNode* src)
+	void ReadHierarchyData(AssimpNodeData& dest, const aiNode* src)
 	{
 		assert(src);
 
@@ -98,7 +98,7 @@ private:
 		for (int i = 0; i < src->mNumChildren; i++)
 		{
 			AssimpNodeData newData;
-			ReadHeirarchyData(newData, src->mChildren[i]);
+			ReadHierarchyData(newData, src->mChildren[i]);
 			dest.children.push_back(newData);
 		}
 	}

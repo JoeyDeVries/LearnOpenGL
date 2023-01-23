@@ -12,11 +12,11 @@
 namespace irrklang
 {
 	//! Interface to control the active sound effects (echo, reverb,...) of an ISound object, a playing sound.
-	/** Sound effects such as chorus, distorsions, echo, reverb and similar can
+	/** Sound effects such as chorus, distortions, echo, reverb and similar can
 	be controlled using this. An instance of this interface can be obtained via
 	ISound::getSoundEffectControl(). The sound containing this interface has to be started via 
 	ISoundEngine::play2D() or ISoundEngine::play3D() with the flag enableSoundEffects=true, 
-	otherwise no acccess to this interface will be available.
+	otherwise no access to this interface will be available.
 	For the DirectSound driver, these are effects available since DirectSound8. For most 
 	effects, sounds should have a sample rate of 44 khz and should be at least
 	150 milli seconds long for optimal quality when using the DirectSound driver.

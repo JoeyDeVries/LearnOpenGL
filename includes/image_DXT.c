@@ -13,9 +13,9 @@
 #include <string.h>
 #include <stdio.h>
 
-/*	set this =1 if you want to use the covarince matrix method...
+/*	set this =1 if you want to use the covariance matrix method...
 	which is better than my method of using standard deviations
-	overall, except on the infintesimal chance that the power
+	overall, except on the infinitesimal chance that the power
 	method fails for finding the largest eigenvector	*/
 #define USE_COV_MAT	1
 
@@ -23,7 +23,7 @@
 /*
 	Takes a 4x4 block of pixels and compresses it into 8 bytes
 	in DXT1 format (color only, no alpha).  Speed is valued
-	over prettyness, at least for now.
+	over prettiness, at least for now.
 */
 void compress_DDS_color_block(
 				int channels,
@@ -32,7 +32,7 @@ void compress_DDS_color_block(
 /*
 	Takes a 4x4 block of pixels and compresses the alpha
 	component it into 8 bytes for use in DXT5 DDS files.
-	Speed is valued over prettyness, at least for now.
+	Speed is valued over prettiness, at least for now.
 */
 void compress_DDS_alpha_block(
 				const unsigned char *const uncompressed,
@@ -351,7 +351,7 @@ void compute_color_line_STDEV(
 		For a given starting vector, the power method can
 		generate all zeros!  So no starting with {1,1,1}
 		as I was doing!  This kind of error is still a
-		slight posibillity, but will be very rare.
+		slight possibility, but will be very rare.
 	*/
 	/*	use the covariance matrix directly
 		(1st iteration, don't use all 1.0 values!)	*/

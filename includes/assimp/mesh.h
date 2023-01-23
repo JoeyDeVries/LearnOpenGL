@@ -54,7 +54,7 @@ extern "C" {
 
 // ---------------------------------------------------------------------------
 // Limits. These values are required to match the settings Assimp was
-// compiled against. Therfore, do not redefine them unless you build the
+// compiled against. Therefore, do not redefine them unless you build the
 // library from source using the same definitions.
 // ---------------------------------------------------------------------------
 
@@ -337,7 +337,7 @@ enum aiPrimitiveType
  *
  *  You may think of an #aiAnimMesh as a `patch` for the host mesh, which
  *  replaces only certain vertex data streams at a particular time.
- *  Each mesh stores n attached attached meshes (#aiMesh::mAnimMeshes).
+ *  Each mesh stores n attached meshes (#aiMesh::mAnimMeshes).
  *  The actual relationship between the time line and anim meshes is
  *  established by #aiMeshAnim, which references singular mesh attachments
  *  by their ID and binds them to a time offset.
@@ -506,7 +506,7 @@ struct aiMesh
     * #define IS_QNAN(f) (f != f)
     * @endcode
     * still dangerous because even 1.f == 1.f could evaluate to false! (
-    * remember the subtleties of IEEE754 artithmetics). Use stuff like
+    * remember the subtleties of IEEE754 arithmetics). Use stuff like
     * @c fpclassify instead.
     * @note Normal vectors computed by Assimp are always unit-length.
     * However, this needn't apply for normals that have been taken
@@ -604,7 +604,7 @@ struct aiMesh
 
     /** NOT CURRENTLY IN USE. Attachment meshes for this mesh, for vertex-based animation.
      *  Attachment meshes carry replacement data for some of the
-     *  mesh'es vertex components (usually positions, normals). */
+     *  mesh's vertex components (usually positions, normals). */
     C_STRUCT aiAnimMesh** mAnimMeshes;
 
 

@@ -112,7 +112,7 @@ int main()
 			lastEntity->addChild(model);
 			lastEntity = lastEntity->children.back().get();
 
-			//Set tranform values
+			//Set transform values
 			lastEntity->transform.setLocalPosition({ 10, 0, 0 });
 			lastEntity->transform.setLocalScale({ scale, scale, scale });
 		}

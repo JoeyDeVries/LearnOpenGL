@@ -2,7 +2,7 @@
 /// @file glm/gtx/normal.hpp
 ///
 /// @see core (dependence)
-/// @see gtx_extented_min_max (dependence)
+/// @see gtx_extended_min_max (dependence)
 ///
 /// @defgroup gtx_normal GLM_GTX_normal
 /// @ingroup gtx

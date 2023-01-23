@@ -20,7 +20,7 @@
 #endif
 
 #if !GLM_HAS_RANGE_FOR
-#	error "GLM_GTX_range requires C++11 suppport or 'range for'"
+#	error "GLM_GTX_range requires C++11 support or 'range for'"
 #endif
 
 #include "../gtc/type_ptr.hpp"

@@ -118,7 +118,7 @@
  *	<ul>
  *       <li>ALSA</li>
  *	</ul>
- *  <li>MacOSX (x86 and PPC)</li>
+ *  <li>Mac OS X (x86 and PPC)</li>
  *	<ul>
  *       <li>CoreAudio</li>
  *	</ul>
@@ -156,7 +156,7 @@
  *               <li>irrKlang is crashing in your application? This should not happen, irrKlang is pretty stable,
  *                   and in most cases, this is a problem in your code: In a lot of cases the reason is simply
  *                   a wrong call to irrklang::IRefCounted::drop(). Be sure you are doing it correctly. (If you are unsure,
- *                   tempoarily remove all calls to irrklang::IRefCounted::drop() and see if this helps.)</li>
+ *                   temporarily remove all calls to irrklang::IRefCounted::drop() and see if this helps.)</li>
  * </ul>
  *
  * <br/>
@@ -339,7 +339,7 @@
  * \endcode
  * 
  * There is also the possibility to change the maxDistance, but it is only necessary to change this
- * in very rare cicumstances.
+ * in very rare circumstances.
  * If the sound moves, it is also a good idea to update its position from time to time:
  * 
  * \code
@@ -497,7 +497,7 @@
  * Gargle, 3DL2Reverb, ParamEq and WavesReverb, when using the sound driver 
  * irrklang::ESOD_DIRECT_SOUND_8, which selected by default when using Windows.<br/>
  *
- * Using the irrklang::ISound interface, you can optain the irrklang::ISoundEffectControl
+ * Using the irrklang::ISound interface, you can obtain the irrklang::ISoundEffectControl
  * interface if the sound device supports sound effects and the last parameter ('enableSoundEffects')
  * was set to true when calling play2D():
  *
@@ -532,7 +532,7 @@
  * It is possible to let irrKlang use your own file access functions.
  * This is useful if you want to read sounds from other sources than
  * just files, for example from custom internet streams or 
- * an own encypted archive format. There is an example in the SDK in 
+ * an own encrypted archive format. There is an example in the SDK in 
  * examples/04.OverrideFileAccess which shows this as well.<br/>
  *
  * The only thing to do for this is to implement your own  irrklang::IFileFactory,
@@ -725,7 +725,7 @@
  *
  *	if (!engine || !recorder)
  *	{
- *		printf("Could not create audio engine or audio recoder\n");
+ *		printf("Could not create audio engine or audio recorder\n");
  *		return 1;
  *	}
  *
@@ -813,7 +813,7 @@
  * engine->play2D(strBuffer);
  * \endcode
  *
- * Of course, you can use any other unicode converion function for this. makeUTF8fromUTF16string() is only provided
+ * Of course, you can use any other unicode conversion function for this. makeUTF8fromUTF16string() is only provided
  * for convenience.
  * <br/>
  * <br/>

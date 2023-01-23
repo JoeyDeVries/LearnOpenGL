@@ -29,7 +29,7 @@ namespace glm
 	template<length_t L, typename T, qualifier Q>
 	GLM_FUNC_DECL T length(vec<L, T, Q> const& x);
 
-	/// Returns the distance betwwen p0 and p1, i.e., length(p0 - p1).
+	/// Returns the distance between p0 and p1, i.e., length(p0 - p1).
 	///
 	/// @tparam L An integer between 1 and 4 included that qualify the dimension of the vector.
 	/// @tparam T Floating-point scalar types.

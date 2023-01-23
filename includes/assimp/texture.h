@@ -142,7 +142,7 @@ struct aiTexture
      *  to determine the type of embedded compressed textures.
      *
      * If mHeight != 0 this member is undefined. Otherwise it
-     * is set set to '\\0\\0\\0\\0' if the loader has no additional
+     * is set to '\\0\\0\\0\\0' if the loader has no additional
      * information about the texture file format used OR the
      * file extension of the format without a trailing dot. If there
      * are multiple file extensions for a format, the shortest

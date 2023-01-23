@@ -13,7 +13,7 @@ namespace irrklang
 {
 
 
-//! Interface to be implemented by the user, which recieves the mixed output when it it played by the sound engine.
+//! Interface to be implemented by the user, which receives the mixed output when it it played by the sound engine.
 /** This can be used to store the sound output as .wav file or for creating a Oscillograph or similar. 
  Simply implement your own class derived from ISoundMixedOutputReceiver and use ISoundEngine::setMixedDataOutputReceiver
  to let the audio driver know about it. */

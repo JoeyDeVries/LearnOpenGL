@@ -12,7 +12,7 @@ layout (binding = 1) uniform sampler2D reveal;
 // epsilon number
 const float EPSILON = 0.00001f;
 
-// caluclate floating point numbers equality accurately
+// calculate floating point numbers equality accurately
 bool isApproximatelyEqual(float a, float b)
 {
 	return abs(a - b) <= (abs(a) < abs(b) ? abs(b) : abs(a)) * EPSILON;

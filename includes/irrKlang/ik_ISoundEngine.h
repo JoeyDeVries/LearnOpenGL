@@ -35,7 +35,7 @@ namespace irrklang
 		//! loads a sound source (if not loaded already) from a file and plays it.
 		/** \param sourceFileName Filename of sound, like "sounds/test.wav" or "foobar.ogg".
 		 \param playLooped plays the sound in loop mode. If set to 'false', the sound is played once, then stopped and deleted from the internal playing list. Calls to
-		 ISound have no effect after such a non looped sound has been stopped automaticly.
+		 ISound have no effect after such a non looped sound has been stopped automatically.
 		 \param startPaused starts the sound paused. This implies that track=true. Use this if you want to modify some of the playing
 		 parameters before the sound actually plays. Usually you would set this parameter to true, then use the ISound interface to
 		 modify some of the sound parameters and then call ISound::setPaused(false);
@@ -45,13 +45,13 @@ namespace irrklang
 		 \param streamMode Specifies if the file should be streamed or loaded completely into memory for playing.
 		 ESM_AUTO_DETECT sets this to autodetection. Note: if the sound has been loaded or played before into the
 		 engine, this parameter has no effect.
-		 \param enableSoundEffects Makes it possible to use sound effects such as chorus, distorsions, echo, 
+		 \param enableSoundEffects Makes it possible to use sound effects such as chorus, distortions, echo, 
 		 reverb and similar for this sound. Sound effects can then be controlled via ISound::getSoundEffectControl().
 		 Only enable if necessary. 
 		 \return Only returns a pointer to an ISound if the parameters 'track', 'startPaused' or 
 		 'enableSoundEffects' have been	 set to true. Note: if this method returns an ISound as result, 
 		 you HAVE to call ISound::drop() after you don't need the ISound interface anymore. Otherwise this 
-		 will cause memory waste. This method also may return 0 altough 'track', 'startPaused' or 
+		 will cause memory waste. This method also may return 0 although 'track', 'startPaused' or 
 		 'enableSoundEffects' have been set to true, if the sound could not be played.*/
 		virtual ISound* play2D(const char* soundFileName, 
 							   bool playLooped = false,
@@ -63,23 +63,23 @@ namespace irrklang
 		//! Plays a sound source as 2D sound with its default settings stored in ISoundSource.
 		/** An ISoundSource object will be created internally when playing a sound the first time,
 		or can be added with getSoundSource().
-		\param source The sound source, specifiying sound file source and default settings for this file.
+		\param source The sound source, specifying sound file source and default settings for this file.
 		Use the other ISoundEngine::play2D() overloads if you want to specify a filename string instead of this.
 		\param playLooped plays the sound in loop mode. If set to 'false', the sound is played once, then stopped and deleted from the internal playing list. Calls to
-		 ISound have no effect after such a non looped sound has been stopped automaticly.
+		 ISound have no effect after such a non looped sound has been stopped automatically.
 		\param startPaused starts the sound paused. This implies that track=true. Use this if you want to modify some of the playing
 		 parameters before the sound actually plays. Usually you would set this parameter to true, then use the ISound interface to
 		 modify some of the sound parameters and then call ISound::setPaused(false);
 		 Note: You need to call ISound::drop() when setting this parameter to true and you don't need the ISound
 		 object anymore. See 'return' for details.
 		 \param track Makes it possible to track the sound. Causes the method to return an ISound interface. See 'return' for details.
-		 \param enableSoundEffects Makes it possible to use sound effects such as chorus, distorsions, echo, 
+		 \param enableSoundEffects Makes it possible to use sound effects such as chorus, distortions, echo, 
 		 reverb and similar for this sound. Sound effects can then be controlled via ISound::getSoundEffectControl().
 		 Only enable if necessary. 
 		 \return Only returns a pointer to an ISound if the parameters 'track', 'startPaused' or 
 		 'enableSoundEffects' have been	 set to true. Note: if this method returns an ISound as result, 
 		 you HAVE to call ISound::drop() after you don't need the ISound interface anymore. Otherwise this 
-		 will cause memory waste. This method also may return 0 altough 'track', 'startPaused' or 
+		 will cause memory waste. This method also may return 0 although 'track', 'startPaused' or 
 		 'enableSoundEffects' have been set to true, if the sound could not be played.*/
 		virtual ISound* play2D(ISoundSource* source, 
 							   bool playLooped = false,
@@ -92,7 +92,7 @@ namespace irrklang
 		\param sourceFileName Filename of sound, like "sounds/test.wav" or "foobar.ogg".
 		 \param pos Position of the 3D sound.
 		 \param playLooped plays the sound in loop mode. If set to 'false', the sound is played once, then stopped and deleted from the internal playing list. Calls to
-		 ISound have no effect after such a non looped sound has been stopped automaticly.
+		 ISound have no effect after such a non looped sound has been stopped automatically.
 		 \param startPaused starts the sound paused. This implies that track=true. Use this if you want to modify some of the playing
 		 parameters before the sound actually plays. Usually you would set this parameter to true, then use the ISound interface to
 		 modify some of the sound parameters and then call ISound::setPaused(false);
@@ -102,13 +102,13 @@ namespace irrklang
  		 \param streamMode Specifies if the file should be streamed or loaded completely into memory for playing.
 		 ESM_AUTO_DETECT sets this to autodetection. Note: if the sound has been loaded or played before into the
 		 engine, this parameter has no effect.
-		 \param enableSoundEffects Makes it possible to use sound effects such as chorus, distorsions, echo, 
+		 \param enableSoundEffects Makes it possible to use sound effects such as chorus, distortions, echo, 
 		 reverb and similar for this sound. Sound effects can then be controlled via ISound::getSoundEffectControl().
 		 Only enable if necessary. 
 		 \return Only returns a pointer to an ISound if the parameters 'track', 'startPaused' or 
 		 'enableSoundEffects' have been	 set to true. Note: if this method returns an ISound as result, 
 		 you HAVE to call ISound::drop() after you don't need the ISound interface anymore. Otherwise this 
-		 will cause memory waste. This method also may return 0 altough 'track', 'startPaused' or 
+		 will cause memory waste. This method also may return 0 although 'track', 'startPaused' or 
 		 'enableSoundEffects' have been set to true, if the sound could not be played.*/
 		virtual ISound* play3D(const char* soundFileName, vec3df pos,
 							   bool playLooped = false, 
@@ -120,24 +120,24 @@ namespace irrklang
 		//! Plays a sound source as 3D sound with its default settings stored in ISoundSource.
 		/** An ISoundSource object will be created internally when playing a sound the first time,
 		or can be added with getSoundSource(). There is some example code on how to work with 3D sound @ref sound3d.
-		\param source The sound source, specifiying sound file source and default settings for this file.
+		\param source The sound source, specifying sound file source and default settings for this file.
 		Use the other ISoundEngine::play2D() overloads if you want to specify a filename string instead of this.
 		\param pos Position of the 3D sound.
 		\param playLooped plays the sound in loop mode. If set to 'false', the sound is played once, then stopped and deleted from the internal playing list. Calls to
-		 ISound have no effect after such a non looped sound has been stopped automaticly.
+		 ISound have no effect after such a non looped sound has been stopped automatically.
 		\param startPaused starts the sound paused. This implies that track=true. Use this if you want to modify some of the playing
 		 parameters before the sound actually plays. Usually you would set this parameter to true, then use the ISound interface to
 		 modify some of the sound parameters and then call ISound::setPaused(false);
 		 Note: You need to call ISound::drop() when setting this parameter to true and you don't need the ISound
 		 object anymore. See 'return' for details.
 		 \param track Makes it possible to track the sound. Causes the method to return an ISound interface. See 'return' for details.
-		 \param enableSoundEffects Makes it possible to use sound effects such as chorus, distorsions, echo, 
+		 \param enableSoundEffects Makes it possible to use sound effects such as chorus, distortions, echo, 
 		 reverb and similar for this sound. Sound effects can then be controlled via ISound::getSoundEffectControl().
 		 Only enable if necessary. 
 		 \return Only returns a pointer to an ISound if the parameters 'track', 'startPaused' or 
 		 'enableSoundEffects' have been	 set to true. Note: if this method returns an ISound as result, 
 		 you HAVE to call ISound::drop() after you don't need the ISound interface anymore. Otherwise this 
-		 will cause memory waste. This method also may return 0 altough 'track', 'startPaused' or 
+		 will cause memory waste. This method also may return 0 although 'track', 'startPaused' or 
 		 'enableSoundEffects' have been set to true, if the sound could not be played.*/
 		virtual ISound* play3D(ISoundSource* source, vec3df pos,
 							   bool playLooped = false, 
@@ -182,7 +182,7 @@ namespace irrklang
 		\param preload If this flag is set to false (which is default) the sound engine will
 		not try to load the sound file when calling this method, but only when play() is called
 		with this sound source as parameter. Otherwise the sound will be preloaded.
-		\return Returns the pointer to the added sound source or 0 if not sucessful because for
+		\return Returns the pointer to the added sound source or 0 if not successful because for
 		example a sound already existed with that name. If not successful, the reason will be printed
 		into the log. Note: Don't call drop() to this pointer, it will be managed by irrKlang and
 		exist as long as you don't delete irrKlang or call removeSoundSource(). However,
@@ -204,7 +204,7 @@ namespace irrklang
 		savely. If set to false, the memory is not copied and the user takes the responsibility that 
 		the memory block pointed to remains there as long as the sound engine or at least this sound
 		source exists.
-		\return Returns the pointer to the added sound source or 0 if not sucessful because for example a sound already
+		\return Returns the pointer to the added sound source or 0 if not successful because for example a sound already
 		existed with that name. If not successful, the reason will be printed into the log. 
 		Note: Don't call drop() to this pointer, it will be managed by irrKlang and exist as long as you don't 
 		delete irrKlang or call removeSoundSource(). However, you are free to call grab() if you
@@ -223,7 +223,7 @@ namespace irrklang
 		savely. If set to true, the memory is not copied and the user takes the responsibility that 
 		the memory block pointed to remains there as long as the sound engine or at least this sound
 		source exists. 
-		\return Returns the pointer to the added sound source or 0 if not sucessful because for
+		\return Returns the pointer to the added sound source or 0 if not successful because for
 		example a sound already existed with that name. If not successful, the reason will be printed
 		into the log. */
 		virtual ISoundSource* addSoundSourceFromPCMData(void* memory, ik_s32 sizeInBytes, 
@@ -237,7 +237,7 @@ namespace irrklang
 		source will use the baseSource as base to access the file and similar, but it will have its
 		own name and its own default settings.
 		\param soundName Name of the new sound source to be added.
-		\return Returns the pointer to the added sound source or 0 if not sucessful because for
+		\return Returns the pointer to the added sound source or 0 if not successful because for
 		example a sound already existed with that name. If not successful, the reason will be printed
 		into the log.*/
 		virtual ISoundSource* addSoundSourceAlias(ISoundSource* baseSource, const ik_c8* soundName) = 0;
@@ -291,7 +291,7 @@ namespace irrklang
 		/** This updates the 3d positions of the sounds as well as their volumes, effects,
 		streams and other stuff. Call this several times per frame (the more the better) if you
 		specified irrKlang to run single threaded. Otherwise it is not necessary to use this method.
-		This method is being called by the scene manager automaticly if you are using one, so
+		This method is being called by the scene manager automatically if you are using one, so
 		you might want to ignore this. */
 		virtual void update() = 0;
 
@@ -311,7 +311,7 @@ namespace irrklang
 		virtual void registerAudioStreamLoader(IAudioStreamLoader* loader) = 0;
 
 		//! Returns if irrKlang is running in the same thread as the application or is using multithreading.
-		/** This basicly returns the flag set by the user when creating the sound engine.*/
+		/** This basically returns the flag set by the user when creating the sound engine.*/
 		virtual bool isMultiThreaded() const = 0;
 
 		//! Adds a file factory to the sound engine, making it possible to override file access of the sound engine.
@@ -390,7 +390,7 @@ namespace irrklang
 		if the parameter ESEO_LOAD_PLUGINS is set (which it is by default), but
 		using this method, it is possible to load plugins from a custom path in addition. 
 		\param path Path to the plugin directory, like "C:\games\somegamegame\irrklangplugins".
-		\return returns true if sucessful or fals if not, for example because the path could 
+		\return returns true if successful or false if not, for example because the path could 
 		not be found. */
 		virtual bool loadPlugins(const ik_c8* path) = 0;
 
@@ -402,7 +402,7 @@ namespace irrklang
 		//! Sets the OutputMixedDataReceiver, so you can receive the pure mixed output audio data while it is being played.
 		/** This can be used to store the sound output as .wav file or for creating a Oscillograph or similar.
 		This works only with software based audio drivers, that is ESOD_WIN_MM, ESOD_ALSA, and ESOD_CORE_AUDIO. 
-		Returns true if sucessful and fals if the current audio driver doesn't support this feature. Set this to null
+		Returns true if successful and false if the current audio driver doesn't support this feature. Set this to null
 		again once you don't need it anymore. */
 		virtual bool setMixedDataOutputReceiver(ISoundMixedOutputReceiver* receiver) = 0;
 	};
@@ -425,7 +425,7 @@ namespace irrklang
 		void* pALSA_SND_PCM;
 
 		//! AudioDeviceID handle, this is not null when using the ESOD_CORE_AUDIO audio driver
-		ik_u32 pCoreAudioDeciceID;
+		ik_u32 pCoreAudioDeviceID;
 	};
 
 

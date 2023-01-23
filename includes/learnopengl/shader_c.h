@@ -37,7 +37,7 @@ public:
         }
         catch (std::ifstream::failure& e)
         {
-            std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ: " << e.what() << std::endl;
+            std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << e.what() << std::endl;
         }
         const char* cShaderCode = computeCode.c_str();
         // 2. compile shaders
@@ -53,7 +53,7 @@ public:
         glAttachShader(ID, compute);
         glLinkProgram(ID);
         checkCompileErrors(ID, "PROGRAM");
-        // delete the shaders as they're linked into our program now and no longer necessery
+        // delete the shaders as they're linked into our program now and no longer necessary
         glDeleteShader(compute);
     }
     // activate the shader

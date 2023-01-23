@@ -14,7 +14,7 @@ protected:
 	glm::vec3 m_eulerRot = { 0.0f, 0.0f, 0.0f }; //In degrees
 	glm::vec3 m_scale = { 1.0f, 1.0f, 1.0f };
 
-	//Global space informaiton concatenate in matrix
+	//Global space information concatenate in matrix
 	glm::mat4 m_modelMatrix = glm::mat4(1.0f);
 
 	//Dirty flag
@@ -28,10 +28,10 @@ protected:
 		const glm::mat4 transformZ = glm::rotate(glm::mat4(1.0f), glm::radians(m_eulerRot.z), glm::vec3(0.0f, 0.0f, 1.0f));
 
 		// Y * X * Z
-		const glm::mat4 roationMatrix = transformY * transformX * transformZ;
+		const glm::mat4 rotationMatrix = transformY * transformX * transformZ;
 
 		// translation * rotation * scale (also know as TRS matrix)
-		return glm::translate(glm::mat4(1.0f), m_pos) * roationMatrix * glm::scale(glm::mat4(1.0f), m_scale);
+		return glm::translate(glm::mat4(1.0f), m_pos) * rotationMatrix * glm::scale(glm::mat4(1.0f), m_scale);
 	}
 public:
 
@@ -197,7 +197,7 @@ struct Sphere : public BoundingVolume
 		//Max scale is assuming for the diameter. So, we need the half to apply it to our radius
 		Sphere globalSphere(globalCenter, radius * (maxScale * 0.5f));
 
-		//Check Firstly the result that have the most chance to faillure to avoid to call all functions.
+		//Check Firstly the result that have the most chance to failure to avoid to call all functions.
 		return (globalSphere.isOnOrForwardPlane(camFrustum.leftFace) &&
 			globalSphere.isOnOrForwardPlane(camFrustum.rightFace) &&
 			globalSphere.isOnOrForwardPlane(camFrustum.farFace) &&

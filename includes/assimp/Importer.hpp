@@ -107,7 +107,7 @@ namespace Assimp    {
 * If you need the Importer to do custom file handling to access the files,
 * implement IOSystem and IOStream and supply an instance of your custom
 * IOSystem implementation by calling SetIOHandler() before calling ReadFile().
-* If you do not assign a custion IO handler, a default handler using the
+* If you do not assign a custom IO handler, a default handler using the
 * standard C++ IO logic will be used.
 *
 * @note One Importer instance is not thread-safe. If you use multiple
@@ -291,10 +291,10 @@ public:
 
     // -------------------------------------------------------------------
     /** Supplies a custom IO handler to the importer to use to open and
-     * access files. If you need the importer to use custion IO logic to
+     * access files. If you need the importer to use custom IO logic to
      * access the files, you need to provide a custom implementation of
      * IOSystem and IOFile to the importer. Then create an instance of
-     * your custion IOSystem implementation and supply it by this function.
+     * your custom IOSystem implementation and supply it by this function.
      *
      * The Importer takes ownership of the object and will destroy it
      * afterwards. The previously assigned handler will be deleted.
@@ -557,7 +557,7 @@ public:
     inline void GetExtensionList(std::string& szOut) const;
 
     // -------------------------------------------------------------------
-    /** Get the number of importrs currently registered with Assimp. */
+    /** Get the number of imports currently registered with Assimp. */
     size_t GetImporterCount() const;
 
     // -------------------------------------------------------------------

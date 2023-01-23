@@ -16,7 +16,7 @@ namespace irrklang
 	{
 		//! If specified (default), it will make irrKlang run in a separate thread.
 		/** Using this flag, irrKlang will update
-		all streams, sounds, 3d positions and whatever automaticly. You also don't need to call ISoundEngine::update()
+		all streams, sounds, 3d positions and whatever automatically. You also don't need to call ISoundEngine::update()
 		if irrKlang is running multithreaded. However, if you want to run irrKlang in the same thread
 		as your application (for easier debugging for example), don't set this. But you need to call ISoundEngine::update()
 		as often as you can (at least about 2-3 times per second) to make irrKlang update everything correctly then. */
@@ -26,7 +26,7 @@ namespace irrklang
 		/** This will only work when irrKlang is using the DirectSound output driver. */
 		ESEO_MUTE_IF_NOT_FOCUSED = 0x02,
 
-		//! Automaticly loads external plugins when starting up.
+		//! Automatically loads external plugins when starting up.
 		/** Plugins usually are .dll, .so or .dylib
 		files named for example ikpMP3.dll (= short for irrKlangPluginMP3) which are executed
 		after the startup of the sound engine and modify it for example to make it possible
@@ -60,7 +60,7 @@ namespace irrklang
 		 physically correct.
 		 Note that this option may not work when used together with the ESEO_USE_3D_BUFFERS
 		 option when using Direct3D for example, irrKlang will then turn off ESEO_USE_3D_BUFFERS
-		 automaticly to be able to use this option and write out a warning. */
+		 automatically to be able to use this option and write out a warning. */
 		ESEO_LINEAR_ROLLOFF = 0x40,
 
 		//! Default parameters when starting up the engine.

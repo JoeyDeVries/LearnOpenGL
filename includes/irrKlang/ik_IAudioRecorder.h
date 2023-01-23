@@ -77,7 +77,7 @@ namespace irrklang
 		//! Returns a pointer to the recorded audio data.
 		/** This method will only succeed if audio recording is currently stopped and
 		something was recorded previously using startRecordingBufferedAudio(). 
-		The lenght of the buffer can be retrieved using 
+		The length of the buffer can be retrieved using 
 		getAudioFormat().getSampleDataSize(). Note that the pointer is only valid
 		as long as not clearRecordedAudioDataBuffer() is called or another sample is
 		recorded.*/

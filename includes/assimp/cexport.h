@@ -107,7 +107,7 @@ ASSIMP_API void aiReleaseExportFormatDescription( const C_STRUCT aiExportFormatD
  *  export them again. Since the scene returned by the various importer functions
  *  is const, a modifiable copy is needed.
  *  @param pIn Valid scene to be copied
- *  @param pOut Receives a modifyable copy of the scene. Use aiFreeScene() to
+ *  @param pOut Receives a modifiable copy of the scene. Use aiFreeScene() to
  *    delete it again.
  */
 ASSIMP_API void aiCopyScene(const C_STRUCT aiScene* pIn,
@@ -149,7 +149,7 @@ ASSIMP_API void aiFreeScene(const C_STRUCT aiScene* pIn);
 *   triangulate data so they would run the step anyway.
 *
 *   If assimp detects that the input scene was directly taken from the importer side of
-*   the library (i.e. not copied using aiCopyScene and potetially modified afterwards),
+*   the library (i.e. not copied using aiCopyScene and potentially modified afterwards),
 *   any postprocessing steps already applied to the scene will not be applied again, unless
 *   they show non-idempotent behaviour (#aiProcess_MakeLeftHanded, #aiProcess_FlipUVs and
 *   #aiProcess_FlipWindingOrder).

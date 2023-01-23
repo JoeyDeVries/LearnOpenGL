@@ -26,7 +26,7 @@ namespace irrklang
 	public:
 
 		//! returns source of the sound which stores the filename and other informations about that sound
-		/** \return Returns the sound source poitner of this sound. May return 0 if the sound source
+		/** \return Returns the sound source pointer of this sound. May return 0 if the sound source
 		has been removed.*/
 		virtual ISoundSource* getSoundSource() = 0;
 
@@ -149,7 +149,7 @@ namespace irrklang
 		using DirectSound.
 		\param speed Factor of the speed increase or decrease. 2 is twice as fast, 
 		0.5 is only half as fast. The default is 1.0.
-		\return Returns true if sucessful, false if not. The current sound driver might not
+		\return Returns true if successful, false if not. The current sound driver might not
 		support changing the playBack speed, or the sound was started with the 
 		'enableSoundEffects' parameter. */
 		virtual bool setPlaybackSpeed(ik_f32 speed = 1.0f) = 0;
@@ -166,7 +166,7 @@ namespace irrklang
 		virtual ik_u32 getPlayLength() = 0;
 
 		//! Returns the sound effect control interface for this sound.
-		/** Sound effects such as Chorus, Distorsions, Echo, Reverb and similar can
+		/** Sound effects such as Chorus, Distortions, Echo, Reverb and similar can
 		be controlled using this. The interface pointer is only valid as long as the ISound pointer is valid.
 		If the ISound pointer gets dropped (IVirtualRefCounted::drop()), the ISoundEffects
 		may not be used any more. 
@@ -185,7 +185,7 @@ namespace irrklang
 		should be as long valid as the sound exists or another stop event receiver is set.
 		Set this to null to set no sound stop event receiver.
 		\param userData: A iser data pointer, can be null. */
-		virtual void setSoundStopEventReceiver(ISoundStopEventReceiver* reciever, void* userData=0) = 0;
+		virtual void setSoundStopEventReceiver(ISoundStopEventReceiver* receiver, void* userData=0) = 0;
 	};
 
 } // end namespace irrklang

@@ -1015,7 +1015,7 @@ FT_BEGIN_HEADER
    *
    *   If the @FT_RASTER_FLAG_DIRECT bit flag is set in `flags`, the raster
    *   will call the `gray_spans` callback to draw gray pixel spans.  This
-   *   allows direct composition over a pre-existing bitmap through
+   *   allows direct composition over a preexisting bitmap through
    *   user-provided callbacks to perform the span drawing and composition.
    *   Not supported by the monochrome rasterizer.
    */

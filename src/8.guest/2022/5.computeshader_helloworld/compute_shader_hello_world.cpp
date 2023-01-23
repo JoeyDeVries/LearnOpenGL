@@ -73,13 +73,13 @@ int main(int argc, char* argv[])
 	glGetIntegerv(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, &max_compute_work_group_invocations);
 
 	std::cout << "OpenGL Limitations: " << std::endl;
-	std::cout << "maxmimum number of work groups in X dimension " << max_compute_work_group_count[0] << std::endl;
-	std::cout << "maxmimum number of work groups in Y dimension " << max_compute_work_group_count[1] << std::endl;
-	std::cout << "maxmimum number of work groups in Z dimension " << max_compute_work_group_count[2] << std::endl;
+	std::cout << "maximum number of work groups in X dimension " << max_compute_work_group_count[0] << std::endl;
+	std::cout << "maximum number of work groups in Y dimension " << max_compute_work_group_count[1] << std::endl;
+	std::cout << "maximum number of work groups in Z dimension " << max_compute_work_group_count[2] << std::endl;
 
-	std::cout << "maxmimum size of a work group in X dimension " << max_compute_work_group_size[0] << std::endl;
-	std::cout << "maxmimum size of a work group in Y dimension " << max_compute_work_group_size[1] << std::endl;
-	std::cout << "maxmimum size of a work group in Z dimension " << max_compute_work_group_size[2] << std::endl;
+	std::cout << "maximum size of a work group in X dimension " << max_compute_work_group_size[0] << std::endl;
+	std::cout << "maximum size of a work group in Y dimension " << max_compute_work_group_size[1] << std::endl;
+	std::cout << "maximum size of a work group in Z dimension " << max_compute_work_group_size[2] << std::endl;
 
 	std::cout << "Number of invocations in a single local work group that may be dispatched to a compute shader " << max_compute_work_group_invocations << std::endl;
 

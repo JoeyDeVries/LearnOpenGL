@@ -65,7 +65,7 @@ void main()
 {		
     vec3 N = normalize(WorldPos);
     
-    // make the simplyfying assumption that V equals R equals the normal 
+    // make the simplifying assumption that V equals R equals the normal 
     vec3 R = N;
     vec3 V = R;
 

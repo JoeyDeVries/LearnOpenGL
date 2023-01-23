@@ -434,7 +434,7 @@ Collision CheckCollision(BallObject &one, GameObject &two) // AABB - Circle coll
     // get difference vector between both centers
     glm::vec2 difference = center - aabb_center;
     glm::vec2 clamped = glm::clamp(difference, -aabb_half_extents, aabb_half_extents);
-    // now that we know the the clamped values, add this to AABB_center and we get the value of box closest to circle
+    // now that we know the clamped values, add this to AABB_center and we get the value of box closest to circle
     glm::vec2 closest = aabb_center + clamped;
     // now retrieve vector between center circle and closest point AABB and check if length < radius
     difference = closest - center;

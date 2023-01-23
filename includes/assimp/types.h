@@ -435,7 +435,7 @@ enum aiDefaultLogStream
     /** Stream the log to std::cerr */
     aiDefaultLogStream_STDERR = 0x4,
 
-    /** MSVC only: Stream the log the the debugger
+    /** MSVC only: Stream the log the debugger
      * (this relies on OutputDebugString from the Win32 SDK)
      */
     aiDefaultLogStream_DEBUGGER = 0x8,

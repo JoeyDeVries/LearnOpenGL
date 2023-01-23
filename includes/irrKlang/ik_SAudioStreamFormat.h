@@ -29,7 +29,7 @@ namespace irrklang
 		ik_s32 ChannelCount; 
 
 		//! amount of frames in the sample data or stream. 
-		/** If the stream has an unknown lenght, this is -1 */
+		/** If the stream has an unknown length, this is -1 */
 		ik_s32 FrameCount;		
 
 		//! samples per second
@@ -51,7 +51,7 @@ namespace irrklang
 		}
 
 		//! returns the size of the sample data in bytes
-		/* Returns an invalid negative value when the stream has an unknown lenght */
+		/* Returns an invalid negative value when the stream has an unknown length */
 		inline ik_s32 getSampleDataSize() const
 		{
 			return getFrameSize() * FrameCount;

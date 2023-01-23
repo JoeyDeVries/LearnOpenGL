@@ -53,7 +53,7 @@ namespace glm
 	template<length_t L, typename T, qualifier Q>
 	GLM_FUNC_DECL vec<L, T, Q> sign(vec<L, T, Q> const& x);
 
-	/// Returns a value equal to the nearest integer that is less then or equal to x.
+	/// Returns a value equal to the nearest integer that is less than or equal to x.
 	///
 	/// @tparam L Integer between 1 and 4 included that qualify the dimension of the vector
 	/// @tparam T Floating-point scalar types

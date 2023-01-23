@@ -873,7 +873,7 @@ FT_BEGIN_HEADER
    *     The LCD filter weights for ClearType-style subpixel rendering.
    *
    *   lcd_filter_func ::
-   *     The LCD filtering callback function for for ClearType-style subpixel
+   *     The LCD filtering callback function for ClearType-style subpixel
    *     rendering.
    *
    *   lcd_geometry ::

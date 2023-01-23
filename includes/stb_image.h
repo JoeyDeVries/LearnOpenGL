@@ -67,7 +67,7 @@ See final bullet items below for more info on SIMD.
 
 - Added STBI_MALLOC, STBI_REALLOC, and STBI_FREE macros for replacing
 the memory allocator. Unlike other STBI libraries, these macros don't
-support a context parameter, so if you need to pass a context in to
+support a context parameter, so if you need to pass a context into
 the allocator, you'll have to store it in a global or a thread-local
 variable.
 

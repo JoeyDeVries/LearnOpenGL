@@ -413,7 +413,7 @@ enum aiTextureFlags
  *    SourceColor * SourceBlend + DestColor * DestBlend
  *  @endcode
  *  where DestColor is the previous color in the framebuffer at this
- *  position and SourceColor is the material colro before the transparency
+ *  position and SourceColor is the material color before the transparency
  *  calculation.<br>
  *  This corresponds to the #AI_MATKEY_BLEND_FUNC property.
 */
@@ -1506,7 +1506,7 @@ ASSIMP_API unsigned int aiGetMaterialTextureCount(const C_STRUCT aiMaterial* pMa
  *      Pass NULL if you're not interested in this information. Otherwise,
  *      pass a pointer to an array of two aiTextureMapMode's (one for each
  *      axis, UV order).
- *  @param[out] flags Receives the the texture flags.
+ *  @param[out] flags Receives the texture flags.
  *  @return AI_SUCCESS on success, otherwise something else. Have fun.*/
 // ---------------------------------------------------------------------------
 #ifdef __cplusplus

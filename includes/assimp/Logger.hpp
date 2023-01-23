@@ -151,7 +151,7 @@ public:
      *    if the result is 0 the stream is detached from the Logger and
      *    the caller retakes the possession of the stream.
      *  @return true if the stream has been detached, false otherwise.*/
-    virtual bool detatchStream(LogStream *pStream,
+    virtual bool detachStream(LogStream *pStream,
         unsigned int severity = Debugging | Err | Warn | Info) = 0;
 
 protected:
@@ -174,7 +174,7 @@ protected:
     // ----------------------------------------------------------------------
     /** @brief Called as a request to write a specific info message
      *  @param  message Info message. Never longer than
-     *    MAX_LOG_MESSAGE_LENGTH characters (ecxluding the '0').
+     *    MAX_LOG_MESSAGE_LENGTH characters (excluding the '0').
      *  @note  The message string is only valid until the scope of
      *    the function is left.
      */
@@ -183,16 +183,16 @@ protected:
     // ----------------------------------------------------------------------
     /** @brief Called as a request to write a specific warn message
      *  @param  message Warn message. Never longer than
-     *    MAX_LOG_MESSAGE_LENGTH characters (exluding the '0').
+     *    MAX_LOG_MESSAGE_LENGTH characters (excluding the '0').
      *  @note  The message string is only valid until the scope of
      *    the function is left.
      */
-    virtual void OnWarn(const char* essage) = 0;
+    virtual void OnWarn(const char* message) = 0;
 
     // ----------------------------------------------------------------------
     /** @brief Called as a request to write a specific error message
      *  @param  message Error message. Never longer than
-     *    MAX_LOG_MESSAGE_LENGTH characters (exluding the '0').
+     *    MAX_LOG_MESSAGE_LENGTH characters (excluding the '0').
      *  @note  The message string is only valid until the scope of
      *    the function is left.
      */
