@@ -1,11 +1,13 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include <glad/glad.h> 
+#include <glad/glad.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
 #include <stb_image.h>
+
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -22,23 +24,44 @@
 #include <learnopengl/assimp_glm_helpers.h>
 #include <learnopengl/animdata.h>
 
-using namespace std;
 
-class Model 
+class Model
 {
 public:
-    // model data 
-    vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
-    vector<Mesh>    meshes;
-    string directory;
+    // model data
+    std::vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
+    std::vector<Mesh>    meshes;
+    std::string directory;
     bool gammaCorrection;
-	
-	
 
     // constructor, expects a filepath to a 3D model.
-    Model(string const &path, bool gamma = false) : gammaCorrection(gamma)
+    Model(const std::string &path, bool gamma = false) : gammaCorrection(gamma)
     {
+    	if (notex==0) // Create only 1 default texture!
+        {
+            uint8_t data[4] = {255,255,255,255};
+            glGenTextures(1, &notex);
+            glBindTexture(GL_TEXTURE_2D, notex);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        }
+        if (nonorm==0) // Create only 1 default texture!
+        {
+            uint8_t data[3] = {128,128,255};
+            glGenTextures(1, &nonorm);
+            glBindTexture(GL_TEXTURE_2D, nonorm);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        }
+        std::cout << path << "\n"; // Help you know where it's at.
         loadModel(path);
+
     }
 
     // draws the model, and thus all its meshes
@@ -47,18 +70,18 @@ public:
         for(unsigned int i = 0; i < meshes.size(); i++)
             meshes[i].Draw(shader);
     }
-    
+
 	auto& GetBoneInfoMap() { return m_BoneInfoMap; }
 	int& GetBoneCount() { return m_BoneCounter; }
-	
+
 
 private:
-
+    	static unsigned int notex, nonorm;
 	std::map<string, BoneInfo> m_BoneInfoMap;
 	int m_BoneCounter = 0;
 
     // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
-    void loadModel(string const &path)
+    void loadModel(const std::string &path)
     {
         // read file via ASSIMP
         Assimp::Importer importer;
@@ -66,7 +89,7 @@ private:
         // check for errors
         if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
         {
-            cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << endl;
+            std::cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << "\n";
             return;
         }
         // retrieve the directory path of the filepath
@@ -82,7 +105,7 @@ private:
         // process each mesh located at the current node
         for(unsigned int i = 0; i < node->mNumMeshes; i++)
         {
-            // the node object only contains indices to index the actual objects in the scene. 
+            // the node object only contains indices to index the actual objects in the scene.
             // the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
             aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
             meshes.push_back(processMesh(mesh, scene));
@@ -107,17 +130,17 @@ private:
 
 	Mesh processMesh(aiMesh* mesh, const aiScene* scene)
 	{
-		vector<Vertex> vertices;
-		vector<unsigned int> indices;
-		vector<Texture> textures;
-
+		std::vector<Vertex> vertices;
+		std::vector<unsigned int> indices;
+		std::vector<Texture> textures;
+        
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 		{
 			Vertex vertex;
 			SetVertexBoneDataToDefault(vertex);
 			vertex.Position = AssimpGLMHelpers::GetGLMVec(mesh->mVertices[i]);
 			vertex.Normal = AssimpGLMHelpers::GetGLMVec(mesh->mNormals[i]);
-			
+
 			if (mesh->mTextureCoords[0])
 			{
 				glm::vec2 vec;
@@ -127,6 +150,8 @@ private:
 			}
 			else
 				vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+			vertex.Tangent = AssimpGLMHelpers::GetGLMVec(mesh->mTangents[i]);
+			vertex.Bitangent = AssimpGLMHelpers::GetGLMVec(mesh->mBitangents[i]);
 
 			vertices.push_back(vertex);
 		}
@@ -138,14 +163,15 @@ private:
 		}
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-		vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+		std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-		vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+		std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 		std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
 		textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 		std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 		textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+
 
 		ExtractBoneWeightForVertices(vertices,mesh,scene);
 
@@ -201,11 +227,11 @@ private:
 			}
 		}
 	}
-
-
-	unsigned int TextureFromFile(const char* path, const string& directory, bool gamma = false)
+    
+    
+	unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma = false)
 	{
-		string filename = string(path);
+		std::string filename = std::string(path);
 		filename = directory + '/' + filename;
 
 		unsigned int textureID;
@@ -215,16 +241,23 @@ private:
 		unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
 		if (data)
 		{
-			GLenum format;
-			if (nrComponents == 1)
-				format = GL_RED;
-			else if (nrComponents == 3)
-				format = GL_RGB;
-			else if (nrComponents == 4)
-				format = GL_RGBA;
-
+            GLenum format = GL_RED, format2 = GL_RED;
+            switch(nrComponents)
+            {
+                case 1:
+                    format = format2 = GL_RED;
+                    break;
+                case 3:
+                    format = gamma ? GL_SRGB : GL_RGB;
+                    format2=GL_RGB;
+                    break;
+                case 4:
+                    format = gamma ? GL_SRGB_ALPHA : GL_RGBA;
+                    format2=GL_RGBA;
+                    break;
+            }
 			glBindTexture(GL_TEXTURE_2D, textureID);
-			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format2, GL_UNSIGNED_BYTE, data);
 			glGenerateMipmap(GL_TEXTURE_2D);
 
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -233,21 +266,50 @@ private:
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 			stbi_image_free(data);
+            		return textureID;
 		}
 		else
 		{
 			std::cout << "Texture failed to load at path: " << path << std::endl;
 			stbi_image_free(data);
 		}
-
-		return textureID;
+		return notex;
 	}
     
     // checks all material textures of a given type and loads the textures if they're not loaded yet.
     // the required info is returned as a Texture struct.
-    vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName)
+    std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, const std::string& typeName)
     {
-        vector<Texture> textures;
+        std::vector<Texture> textures;
+	
+        if (mat->GetTextureCount(type) == 0) // there is no texture!
+        {
+            // check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
+            bool skip = false;
+            for(unsigned int j = 0; j < textures_loaded.size(); j++)
+            {
+                if(textures_loaded[j].path == "DEFAULT_" + typeName)
+                {
+                    textures.push_back(textures_loaded[j]);
+                    skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
+                    break;
+                }
+            }
+            if(!skip)
+            {   // if texture hasn't been loaded already, load it
+                Texture texture;
+                texture.id = notex;
+                if (typeName=="texture_normal")
+                    texture.id=nonorm; // Use the next default image which is normalmap!
+                texture.type = typeName;
+                texture.path = "No_" + typeName; // A non-path name for a default texture.
+                textures.push_back(texture);
+                textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
+            }
+            std::cout << "Lack " << typeName << "\n";
+        }
+	else
+	{
         for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
         {
             aiString str;
@@ -266,17 +328,24 @@ private:
             if(!skip)
             {   // if texture hasn't been loaded already, load it
                 Texture texture;
-                texture.id = TextureFromFile(str.C_Str(), this->directory);
+                bool gamma=false;
+                if (typeName=="texture_diffuse")
+                    gamma=true;
+                texture.id = TextureFromFile(str.C_Str(), this->directory, gamma);
+		if (texture.id==notex) // It's using a default image!
+                if (typeName=="texture_normal")
+                    texture.id=nonorm; // Must have the proper direction!
                 texture.type = typeName;
                 texture.path = str.C_Str();
                 textures.push_back(texture);
                 textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecessary load duplicate textures.
             }
         }
+    	}
         return textures;
     }
 };
-
+unsigned int Model::notex=0, Model::nonorm=0;
 
 
 #endif
