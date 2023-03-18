@@ -297,6 +297,7 @@ int main()
                     -2.0f
                 ));
                 pbrShader.setMat4("model", model);
+                pbrShader.setMat3("normalMatrix", glm::transpose(glm::inverse(glm::mat3(model))));
                 renderSphere();
             }
         }
@@ -316,6 +317,7 @@ int main()
             model = glm::translate(model, newPos);
             model = glm::scale(model, glm::vec3(0.5f));
             pbrShader.setMat4("model", model);
+            pbrShader.setMat3("normalMatrix", glm::transpose(glm::inverse(glm::mat3(model))));
             renderSphere();
         }
 
