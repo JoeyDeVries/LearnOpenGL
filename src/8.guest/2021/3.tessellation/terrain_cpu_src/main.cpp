@@ -90,7 +90,7 @@ int main()
     // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
     stbi_set_flip_vertically_on_load(true);
     int width, height, nrChannels;
-    unsigned char *data = stbi_load("resources/heightmaps/iceland_heightmap.png", &width, &height, &nrChannels, 0);
+    unsigned char *data = stbi_load("heightmaps/iceland_heightmap.png", &width, &height, &nrChannels, 0);
     if (data)
     {
         std::cout << "Loaded heightmap of size " << height << " x " << width << std::endl;
