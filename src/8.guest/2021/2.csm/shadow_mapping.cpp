@@ -30,6 +30,10 @@ void drawCascadeVolumeVisualizers(const std::vector<glm::mat4>& lightMatrices, S
 const unsigned int SCR_WIDTH = 2560;
 const unsigned int SCR_HEIGHT = 1440;
 
+// framebuffer size
+int fb_width;
+int fb_height;
+
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = (float)SCR_WIDTH / 2.0;
@@ -69,7 +73,7 @@ int main()
     // ------------------------------
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 #ifdef __APPLE__
@@ -89,6 +93,7 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
+    glfwGetFramebufferSize(window, &fb_width, &fb_height);
 
     // tell GLFW to capture our mouse
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -239,15 +244,15 @@ int main()
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         // reset viewport
-        glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+        glViewport(0, 0, fb_width, fb_height);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // 2. render scene as normal using the generated depth/shadow map  
         // --------------------------------------------------------------
-        glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+        glViewport(0, 0, fb_width, fb_height);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         shader.use();
-        const glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, cameraNearPlane, cameraFarPlane);
+        const glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)fb_width / (float)fb_height, cameraNearPlane, cameraFarPlane);
         const glm::mat4 view = camera.GetViewMatrix();
         shader.setMat4("projection", projection);
         shader.setMat4("view", view);
@@ -540,7 +545,7 @@ void processInput(GLFWwindow *window)
     fPress = glfwGetKey(window, GLFW_KEY_F);
 
     static int plusPress = GLFW_RELEASE;
-    if (glfwGetKey(window, GLFW_KEY_KP_ADD) == GLFW_RELEASE && plusPress == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_N) == GLFW_RELEASE && plusPress == GLFW_PRESS)
     {
         debugLayer++;
         if (debugLayer > shadowCascadeLevels.size())
@@ -548,7 +553,7 @@ void processInput(GLFWwindow *window)
             debugLayer = 0;
         }
     }
-    plusPress = glfwGetKey(window, GLFW_KEY_KP_ADD);
+    plusPress = glfwGetKey(window, GLFW_KEY_N);
 
     static int cPress = GLFW_RELEASE;
     if (glfwGetKey(window, GLFW_KEY_C) == GLFW_RELEASE && cPress == GLFW_PRESS)
@@ -564,6 +569,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
+    fb_width = width;
+    fb_height = height;
     glViewport(0, 0, width, height);
 }
 
@@ -662,7 +669,7 @@ std::vector<glm::vec4> getFrustumCornersWorldSpace(const glm::mat4& proj, const 
 glm::mat4 getLightSpaceMatrix(const float nearPlane, const float farPlane)
 {
     const auto proj = glm::perspective(
-        glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, nearPlane,
+        glm::radians(camera.Zoom), (float)fb_width / (float)fb_height, nearPlane,
         farPlane);
     const auto corners = getFrustumCornersWorldSpace(proj, camera.GetViewMatrix());
 
@@ -712,7 +719,6 @@ glm::mat4 getLightSpaceMatrix(const float nearPlane, const float farPlane)
     }
 
     const glm::mat4 lightProjection = glm::ortho(minX, maxX, minY, maxY, minZ, maxZ);
-
     return lightProjection * lightView;
 }
 

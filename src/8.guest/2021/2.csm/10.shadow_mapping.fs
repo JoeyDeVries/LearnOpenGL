@@ -1,4 +1,4 @@
-#version 460 core
+#version 410 core
 out vec4 FragColor;
 
 in VS_OUT {
@@ -16,7 +16,7 @@ uniform float farPlane;
 
 uniform mat4 view;
 
-layout (std140, binding = 0) uniform LightSpaceMatrices
+layout (std140) uniform LightSpaceMatrices
 {
     mat4 lightSpaceMatrices[16];
 };
