@@ -1,4 +1,4 @@
-#version 400 core
+#version 420 core
 
 // shader inputs
 in vec2 texture_coords;
