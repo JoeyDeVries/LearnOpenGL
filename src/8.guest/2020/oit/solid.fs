@@ -1,4 +1,4 @@
-#version 400 core
+#version 420 core
 
 // shader outputs
 layout (location = 0) out vec4 frag;
