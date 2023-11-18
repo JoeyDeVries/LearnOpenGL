@@ -273,4 +273,5 @@ foreach(GUEST_ARTICLE ${GUEST_ARTICLES})
 	create_project_from_sources(${GUEST_ARTICLE} "")
 endforeach(GUEST_ARTICLE)
 
+include_directories(${ASSIMP_INCLUDE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/includes)
