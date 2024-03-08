@@ -111,8 +111,11 @@ int main()
         // disable byte-alignment restriction
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
+        unsigned int gindex = 0;
+        // load all characters，NOTE: char->ulong/char32_t , std::string->str::u32string
+        // for (unsigned long c = FT_Get_First_Char(face, &gindex); gindex != 0; c = FT_Get_Next_Char(face, c, &gindex))
         // load first 128 characters of ASCII set
-        for (unsigned char c = 0; c < 128; c++)
+        for (unsigned long c = FT_Get_First_Char(face, &gindex); c < 128 && gindex != 0; c = FT_Get_Next_Char(face, c, &gindex))
         {
             // Load character glyph 
             if (FT_Load_Char(face, c, FT_LOAD_RENDER))
