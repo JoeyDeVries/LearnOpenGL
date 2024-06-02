@@ -1,5 +1,9 @@
 #version 330 core
+
+// Input variables from the vertex shader
 in vec4 FragPos;
+in vec3 fragNormal;
+in vec2 fragTexCoord;
 
 uniform vec3 lightPos;
 uniform float far_plane;
