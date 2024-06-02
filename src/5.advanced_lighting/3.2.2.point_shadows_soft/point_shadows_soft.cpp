@@ -30,6 +30,7 @@ bool shadows = true;
 bool shadowsKeyPressed = false;
 bool lightFollowsCamera = false;
 bool lightKeyPressed = false;
+bool debugShadows = false;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -205,6 +206,8 @@ int main()
         shader.setVec3("viewPos", camera.Position);
         shader.setInt("shadows", shadows); // enable/disable shadows by pressing 'SPACE'
         shader.setFloat("far_plane", far_plane);
+        // Add ability to debug shadows
+        shader.setInt("debugShadows", debugShadows);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, woodTexture);
         glActiveTexture(GL_TEXTURE1);
