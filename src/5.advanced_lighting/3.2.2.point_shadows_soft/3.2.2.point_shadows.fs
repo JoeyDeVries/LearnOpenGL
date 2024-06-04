@@ -93,7 +93,7 @@ void main()
     vec3 normal = normalize(fs_in.Normal);
     vec3 lightColor = vec3(0.7);
     // ambient
-    vec3 ambient = 0.3 * lightColor;
+    vec3 ambient = 0.2 * lightColor;
     // diffuse
     vec3 lightDir = normalize(light.position - fs_in.FragPos);
     float diff = max(dot(lightDir, normal), 0.0);
