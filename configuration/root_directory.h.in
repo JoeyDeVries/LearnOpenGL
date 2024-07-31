@@ -1,1 +1,1 @@
-const char * logl_root = "${CMAKE_SOURCE_DIR}";
+const char * const logl_root = "${CMAKE_SOURCE_DIR}";
