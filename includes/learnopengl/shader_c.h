@@ -56,6 +56,12 @@ public:
         // delete the shaders as they're linked into our program now and no longer necessary
         glDeleteShader(compute);
     }
+
+    // free the shader resource
+    ~ComputeShader()
+    {
+        glDeleteProgram(ID);
+    }
     // activate the shader
     // ------------------------------------------------------------------------
     void use() 

@@ -70,6 +70,12 @@ public:
         glDeleteShader(fragment);
 
     }
+    // free the shader resource
+    // ------------------------------------------------------------------------
+    ~Shader()
+    {
+        glDeleteProgram(ID);
+    }
     // activate the shader
     // ------------------------------------------------------------------------
     void use() const
