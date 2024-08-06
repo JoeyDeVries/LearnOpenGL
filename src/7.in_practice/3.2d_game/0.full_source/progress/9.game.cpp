@@ -279,7 +279,7 @@ void Game::SpawnPowerUps(GameObject &block)
         this->PowerUps.push_back(PowerUp("chaos", glm::vec3(0.9f, 0.25f, 0.25f), 15.0f, block.Position, ResourceManager::GetTexture("powerup_chaos")));
 }
 
-void ActivatePowerUp(PowerUp &powerUp)
+void ActivatePowerUp(PowerUp &powerUp, unsigned int width)
 {
     if (powerUp.Type == "speed")
     {
@@ -295,7 +295,7 @@ void ActivatePowerUp(PowerUp &powerUp)
         Ball->PassThrough = true;
         Ball->Color = glm::vec3(1.0f, 0.5f, 0.5f);
     }
-    else if (powerUp.Type == "pad-size-increase")
+    else if (powerUp.Type == "pad-size-increase" && Player->Size.x <= (width / 2)) // add a fix so that paddle size does not exceed screen bounds
     {
         Player->Size.x += 50;
     }
@@ -392,7 +392,7 @@ void Game::DoCollisions()
 
             if (CheckCollision(*Player, powerUp))
             {	// collided with player, now activate powerup
-                ActivatePowerUp(powerUp);
+                ActivatePowerUp(powerUp, this->Width);
                 powerUp.Destroyed = true;
                 powerUp.Activated = true;
                 SoundEngine->play2D("audio/powerup.wav", false);
