@@ -26,6 +26,8 @@ unsigned int TextureFromFile(const char *path, const string &directory, bool gam
 class Model 
 {
 public:
+    static unsigned int defaultDiffuse, defaultSpecular, defaultNormal;
+    
     // model data 
     vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
     vector<Mesh>    meshes;
@@ -35,6 +37,40 @@ public:
     // constructor, expects a filepath to a 3D model.
     Model(string const &path, bool gamma = false) : gammaCorrection(gamma)
     {
+        if (defaultDiffuse == 0)
+        {
+            uint8_t data[4] = { 255,255,255 };
+            glGenTextures(1, &defaultDiffuse);
+            glBindTexture(GL_TEXTURE_2D, defaultDiffuse);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        }
+        if (defaultSpecular == 0)
+        {
+            uint8_t data[3] = { 255,255,255 };
+            glGenTextures(1, &defaultSpecular);
+            glBindTexture(GL_TEXTURE_2D, defaultSpecular);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        }
+        if (defaultNormal == 0)
+        {
+            uint8_t data[3] = { 128,128,255 };
+            glGenTextures(1, &defaultNormal);
+            glBindTexture(GL_TEXTURE_2D, defaultNormal);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        }
+    
         loadModel(path);
     }
 
@@ -173,6 +209,39 @@ private:
     vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName)
     {
         vector<Texture> textures;
+        
+        // First check if there isn't a texture, if so create an empty image
+        if (mat->GetTextureCount(type) == 0)
+        {
+            bool skip = false;
+            for (unsigned int j = 0; j < textures_loaded.size(); j++)
+            {
+                if (std::strcmp(textures_loaded[j].path.data(), ("DEFAULT_" + typeName).c_str()) == 0)
+                {
+                    textures.push_back(textures_loaded[j]);
+                    skip = true; // A texture with the same filepath has already been loaded, continue to next one. (optimization)
+                    break;
+                }
+            }
+            if (!skip)
+            {   // If texture hasn't been loaded already, load it
+                Texture texture;
+    
+                if (typeName == "texture_diffuse")
+                    texture.id = defaultDiffuse; // Use the default diffuse texture
+                else if (typeName == "texture_normal")
+                    texture.id = defaultNormal; // Use the default normal map
+                else
+				    texture.id = defaultSpecular; // Use the default specular map
+    
+                texture.type = typeName;
+                texture.path = "DEFAULT_" + typeName;
+                textures.push_back(texture);
+                textures_loaded.push_back(texture); // Store it as texture loaded for entire model, to ensure we won't unnecessary load duplicate textures.
+            }
+            std::cout << "Lack " << typeName << "\n";
+        }
+
         for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
         {
             aiString str;
@@ -192,6 +261,15 @@ private:
             {   // if texture hasn't been loaded already, load it
                 Texture texture;
                 texture.id = TextureFromFile(str.C_Str(), this->directory);
+                if (texture.id == defaultDiffuse)
+                {
+				    if (typeName == "texture_diffuse")
+					    texture.id = defaultDiffuse;
+                    else if (typeName == "texture_normal")
+                        texture.id = defaultNormal;
+				    else
+                        texture.id = defaultSpecular;
+                }
                 texture.type = typeName;
                 texture.path = str.C_Str();
                 textures.push_back(texture);
@@ -201,6 +279,8 @@ private:
         return textures;
     }
 };
+
+unsigned int Model::defaultDiffuse = 0, Model::defaultSpecular = 0, Model::defaultNormal = 0;
 
 
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma)
@@ -233,13 +313,17 @@ unsigned int TextureFromFile(const char *path, const string &directory, bool gam
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         stbi_image_free(data);
+        
+        return textureID;
     }
     else
     {
         std::cout << "Texture failed to load at path: " << path << std::endl;
         stbi_image_free(data);
+        
+        return Model::defaultDiffuse;
     }
 
-    return textureID;
+    return Model::defaultDiffuse;
 }
 #endif
