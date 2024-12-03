@@ -54,11 +54,12 @@ public:
 
 		glm::mat4 globalTransformation = parentTransform * nodeTransform;
 
-		auto boneInfoMap = m_CurrentAnimation->GetBoneIDMap();
-		if (boneInfoMap.find(nodeName) != boneInfoMap.end())
+		auto& boneInfoMap = m_CurrentAnimation->GetBoneIDMap();
+		auto boneInfo = boneInfoMap.find(nodeName);
+		if (boneInfo != boneInfoMap.end())
 		{
-			int index = boneInfoMap[nodeName].id;
-			glm::mat4 offset = boneInfoMap[nodeName].offset;
+			int index = boneInfo->second.id;
+			glm::mat4 offset = boneInfo->second.offset;
 			m_FinalBoneMatrices[index] = globalTransformation * offset;
 		}
 
