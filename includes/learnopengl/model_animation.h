@@ -166,12 +166,12 @@ private:
 	}
 
 
-	void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene)
+	void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene*)
 	{
 		auto& boneInfoMap = m_BoneInfoMap;
 		int& boneCount = m_BoneCounter;
 
-		for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
+		for (auto boneIndex = 0u; boneIndex < mesh->mNumBones; ++boneIndex)
 		{
 			int boneID = -1;
 			std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
@@ -196,14 +196,14 @@ private:
 			{
 				int vertexId = weights[weightIndex].mVertexId;
 				float weight = weights[weightIndex].mWeight;
-				assert(vertexId <= vertices.size());
+				assert(static_cast<size_t>(vertexId) <= vertices.size());
 				SetVertexBoneData(vertices[vertexId], boneID, weight);
 			}
 		}
 	}
 
 
-	unsigned int TextureFromFile(const char* path, const string& directory, bool gamma = false)
+	unsigned int TextureFromFile(const char* path, const string& directory)
 	{
 		string filename = string(path);
 		filename = directory + '/' + filename;
@@ -222,6 +222,8 @@ private:
 				format = GL_RGB;
 			else if (nrComponents == 4)
 				format = GL_RGBA;
+			else
+				throw std::runtime_error("textures are required to havve 1,3 or 4 components\n");
 
 			glBindTexture(GL_TEXTURE_2D, textureID);
 			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);

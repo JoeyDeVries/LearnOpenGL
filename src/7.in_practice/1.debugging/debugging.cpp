@@ -45,9 +45,9 @@ void APIENTRY glDebugOutput(GLenum source,
                             GLenum type, 
                             unsigned int id, 
                             GLenum severity, 
-                            GLsizei length, 
+                            GLsizei, 
                             const char *message, 
-                            const void *userParam)
+                            const void *)
 {
     if(id == 131169 || id == 131185 || id == 131218 || id == 131204) return; // ignore these non-significant error codes
 
@@ -306,7 +306,7 @@ void processInput(GLFWwindow *window)
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void framebuffer_size_callback(GLFWwindow*, int width, int height)
 {
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.

@@ -128,7 +128,7 @@ int main()
 	{
 		// per-frame time logic
 		// --------------------
-		float currentFrame = glfwGetTime();
+		float currentFrame = (float)glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
@@ -193,7 +193,7 @@ void processInput(GLFWwindow* window)
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void framebuffer_size_callback(GLFWwindow*, int width, int height)
 {
 	// make sure the viewport matches the new window dimensions; note that width and 
 	// height will be significantly larger than specified on retina displays.
@@ -202,27 +202,27 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void mouse_callback(GLFWwindow*, double xpos, double ypos)
 {
 	if (firstMouse)
 	{
-		lastX = xpos;
-		lastY = ypos;
+		lastX = (float)xpos;
+		lastY = (float)ypos;
 		firstMouse = false;
 	}
 
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+	float xoffset = (float)(xpos - lastX);
+	float yoffset = (float)(lastY - ypos); // reversed since y-coordinates go from bottom to top
 
-	lastX = xpos;
-	lastY = ypos;
+	lastX = (float)xpos;
+	lastY = (float)ypos;
 
 	camera.ProcessMouseMovement(xoffset, yoffset);
 }
 
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
 // ----------------------------------------------------------------------
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+void scroll_callback(GLFWwindow*, double, double yoffset)
 {
-	camera.ProcessMouseScroll(yoffset);
+	camera.ProcessMouseScroll((float)yoffset);
 }

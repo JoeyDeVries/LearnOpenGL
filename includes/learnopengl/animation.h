@@ -28,8 +28,8 @@ public:
 		const aiScene* scene = importer.ReadFile(animationPath, aiProcess_Triangulate);
 		assert(scene && scene->mRootNode);
 		auto animation = scene->mAnimations[0];
-		m_Duration = animation->mDuration;
-		m_TicksPerSecond = animation->mTicksPerSecond;
+		m_Duration = (float)animation->mDuration;
+		m_TicksPerSecond = (int)animation->mTicksPerSecond;
 		aiMatrix4x4 globalTransformation = scene->mRootNode->mTransformation;
 		globalTransformation = globalTransformation.Inverse();
 		ReadHierarchyData(m_RootNode, scene->mRootNode);
@@ -53,7 +53,7 @@ public:
 	}
 
 	
-	inline float GetTicksPerSecond() { return m_TicksPerSecond; }
+	inline float GetTicksPerSecond() { return (float)m_TicksPerSecond; }
 	inline float GetDuration() { return m_Duration;}
 	inline const AssimpNodeData& GetRootNode() { return m_RootNode; }
 	inline const std::map<std::string,BoneInfo>& GetBoneIDMap() 
@@ -95,7 +95,7 @@ private:
 		dest.transformation = AssimpGLMHelpers::ConvertMatrixToGLMFormat(src->mTransformation);
 		dest.childrenCount = src->mNumChildren;
 
-		for (int i = 0; i < src->mNumChildren; i++)
+		for (auto i = 0u; i < src->mNumChildren; i++)
 		{
 			AssimpNodeData newData;
 			ReadHierarchyData(newData, src->mChildren[i]);

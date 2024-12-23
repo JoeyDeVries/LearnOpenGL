@@ -33,16 +33,16 @@ class Bone
 public:
 	Bone(const std::string& name, int ID, const aiNodeAnim* channel)
 		:
+		m_LocalTransform(1.0f),
 		m_Name(name),
-		m_ID(ID),
-		m_LocalTransform(1.0f)
+		m_ID(ID)
 	{
 		m_NumPositions = channel->mNumPositionKeys;
 
 		for (int positionIndex = 0; positionIndex < m_NumPositions; ++positionIndex)
 		{
 			aiVector3D aiPosition = channel->mPositionKeys[positionIndex].mValue;
-			float timeStamp = channel->mPositionKeys[positionIndex].mTime;
+			float timeStamp = (float)channel->mPositionKeys[positionIndex].mTime;
 			KeyPosition data;
 			data.position = AssimpGLMHelpers::GetGLMVec(aiPosition);
 			data.timeStamp = timeStamp;
@@ -53,7 +53,7 @@ public:
 		for (int rotationIndex = 0; rotationIndex < m_NumRotations; ++rotationIndex)
 		{
 			aiQuaternion aiOrientation = channel->mRotationKeys[rotationIndex].mValue;
-			float timeStamp = channel->mRotationKeys[rotationIndex].mTime;
+			float timeStamp = (float)channel->mRotationKeys[rotationIndex].mTime;
 			KeyRotation data;
 			data.orientation = AssimpGLMHelpers::GetGLMQuat(aiOrientation);
 			data.timeStamp = timeStamp;
@@ -64,7 +64,7 @@ public:
 		for (int keyIndex = 0; keyIndex < m_NumScalings; ++keyIndex)
 		{
 			aiVector3D scale = channel->mScalingKeys[keyIndex].mValue;
-			float timeStamp = channel->mScalingKeys[keyIndex].mTime;
+			float timeStamp = (float)channel->mScalingKeys[keyIndex].mTime;
 			KeyScale data;
 			data.scale = AssimpGLMHelpers::GetGLMVec(scale);
 			data.timeStamp = timeStamp;
@@ -93,6 +93,7 @@ public:
 				return index;
 		}
 		assert(0);
+		return 0;
 	}
 
 	int GetRotationIndex(float animationTime)
@@ -103,6 +104,7 @@ public:
 				return index;
 		}
 		assert(0);
+		return 0;
 	}
 
 	int GetScaleIndex(float animationTime)
@@ -113,6 +115,7 @@ public:
 				return index;
 		}
 		assert(0);
+		return 0;
 	}
 
 

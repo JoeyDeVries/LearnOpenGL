@@ -65,11 +65,6 @@ public:
 		m_isDirty = true;
 	}
 
-	const glm::vec3& getGlobalPosition() const
-	{
-		return m_modelMatrix[3];
-	}
-
 	const glm::vec3& getLocalPosition() const
 	{
 		return m_pos;
@@ -268,6 +263,8 @@ struct AABB : public BoundingVolume
 	AABB(const glm::vec3& inCenter, float iI, float iJ, float iK)
 		: BoundingVolume{}, center{ inCenter }, extents{ iI, iJ, iK }
 	{}
+	
+	virtual ~AABB() = default;
 
 	std::array<glm::vec3, 8> getVertice() const
 	{

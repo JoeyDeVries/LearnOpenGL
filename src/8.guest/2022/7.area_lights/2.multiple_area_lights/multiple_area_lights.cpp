@@ -51,7 +51,7 @@ const int NUM_AREA_LIGHTS = 16;
 Shader* ltcShaderPtr;
 
 // camera
-Camera camera(glm::vec3(-0.224556, 10.4038, -18.9259), glm::vec3(0.0f, 1.0f, 0.0f), 89.3999, -34.3001);
+Camera camera(glm::vec3(-0.224556, 10.4038, -18.9259), glm::vec3(0.0f, 1.0f, 0.0f), 89.3999f, -34.3001f);
 float lastX = (float)SCR_WIDTH / 2.0;
 float lastY = (float)SCR_HEIGHT / 2.0;
 bool firstMouse = true;
@@ -112,7 +112,7 @@ void configureAreaLights()
 	// CONFIGURE AREA LIGHTS
 	std::uniform_real_distribution<GLfloat> random_floats(0.0f, 1.0f);
 	typedef std::chrono::high_resolution_clock myclock;
-	unsigned seed = myclock::now().time_since_epoch().count();
+	unsigned seed = (unsigned)myclock::now().time_since_epoch().count();
 	std::default_random_engine generator(seed);
 	std::function<float(void)> fn =
 		[&random_floats, &generator]{ return random_floats(generator); };
@@ -429,7 +429,7 @@ int main()
 		shaderLightPlane.use();
 		shaderLightPlane.setMat4("view", view);
 		shaderLightPlane.setMat4("projection", projection);
-		float sinNowTime = glm::sin(currentFrame);
+		//float sinNowTime = glm::sin(currentFrame);
 		for (int i = 0; i < NUM_AREA_LIGHTS; i++)
 		{
 			model = glm::mat4(1.0f);
@@ -497,7 +497,7 @@ void do_movement(GLfloat deltaTime)
     // }
 }
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+void key_callback(GLFWwindow* window, int key, int, int action, int)
 {
     static unsigned short wireframe = 0;
 
@@ -540,7 +540,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void framebuffer_size_callback(GLFWwindow*, int width, int height)
 {
     // make sure the viewport matches the new window dimensions; note that width and
     // height will be significantly larger than specified on retina displays.
@@ -549,7 +549,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
-void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
+void mouse_callback(GLFWwindow*, double xposIn, double yposIn)
 {
     float xpos = static_cast<float>(xposIn);
     float ypos = static_cast<float>(yposIn);
@@ -571,7 +571,7 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
 // ----------------------------------------------------------------------
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+void scroll_callback(GLFWwindow*, double, double yoffset)
 {
     camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }
@@ -603,6 +603,8 @@ unsigned int loadTexture(char const * path, bool gammaCorrection)
             internalFormat = gammaCorrection ? GL_SRGB_ALPHA : GL_RGBA;
             dataFormat = GL_RGBA;
         }
+        else
+            throw std::runtime_error("textures are required to havve 1,3 or 4 components\n");
 
         glBindTexture(GL_TEXTURE_2D, textureID);
         glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);

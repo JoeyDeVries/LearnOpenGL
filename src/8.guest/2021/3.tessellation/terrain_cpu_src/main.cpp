@@ -124,11 +124,11 @@ int main()
     stbi_image_free(data);
 
     std::vector<unsigned> indices;
-    for(unsigned i = 0; i < height-1; i += rez)
+    for(int i = 0; i < height-1; i += rez)
     {
-        for(unsigned j = 0; j < width; j += rez)
+        for(int j = 0; j < width; j += rez)
         {
-            for(unsigned k = 0; k < 2; k++)
+            for(int k = 0; k < 2; k++)
             {
                 indices.push_back(j + width * (i + k*rez));
             }
@@ -164,7 +164,7 @@ int main()
     {
         // per-frame time logic
         // --------------------
-        float currentFrame = glfwGetTime();
+        float currentFrame = (float)glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
@@ -195,7 +195,7 @@ int main()
         // render the cube
         glBindVertexArray(terrainVAO);
 //        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        for(unsigned strip = 0; strip < numStrips; strip++)
+        for(int strip = 0; strip < numStrips; strip++)
         {
             glDrawElements(GL_TRIANGLE_STRIP,   // primitive type
                            numTrisPerStrip+2,   // number of indices to render
@@ -240,7 +240,7 @@ void processInput(GLFWwindow *window)
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void framebuffer_size_callback(GLFWwindow*, int width, int height)
 {
     // make sure the viewport matches the new window dimensions; note that width and
     // height will be significantly larger than specified on retina displays.
@@ -249,7 +249,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 // glfw: whenever a key event occurs, this callback is called
 // ---------------------------------------------------------------------------------------------
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int modifiers)
+void key_callback(GLFWwindow*, int key, int, int action, int)
 {
     if(action == GLFW_PRESS)
     {
@@ -270,27 +270,27 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void mouse_callback(GLFWwindow*, double xpos, double ypos)
 {
     if (firstMouse)
     {
-        lastX = xpos;
-        lastY = ypos;
+        lastX = (float)xpos;
+        lastY = (float)ypos;
         firstMouse = false;
     }
 
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+    float xoffset = (float)(xpos - lastX);
+    float yoffset = (float)(lastY - ypos); // reversed since y-coordinates go from bottom to top
 
-    lastX = xpos;
-    lastY = ypos;
+    lastX = (float)xpos;
+    lastY = (float)ypos;
 
     camera.ProcessMouseMovement(xoffset, yoffset);
 }
 
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
 // ----------------------------------------------------------------------
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+void scroll_callback(GLFWwindow*, double, double yoffset)
 {
-    camera.ProcessMouseScroll(yoffset);
+    camera.ProcessMouseScroll((float)yoffset);
 }
