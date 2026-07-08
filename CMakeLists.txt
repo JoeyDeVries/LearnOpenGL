@@ -186,6 +186,7 @@ set(GUEST_ARTICLES
 	8.guest/2022/6.physically_based_bloom
 	8.guest/2022/7.area_lights/1.area_light
 	8.guest/2022/7.area_lights/2.multiple_area_lights
+	8.guest/2024/1.fps_demo
 )
 
 configure_file(configuration/root_directory.h.in configuration/root_directory.h)
